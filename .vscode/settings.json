@@ -1,0 +1,44 @@
+{
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.productIconTheme": "Default",
+    "editor.fontFamily": "'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, 'Courier New', monospace",
+    "editor.fontSize": 14,
+    "editor.fontLigatures": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.showTabs": "multiple",
+    "workbench.sideBar.location": "left",
+    "workbench.activityBar.location": "default",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "dart.lineLength": 80,
+    "dart.insertArgumentPlaceholders": false,
+    "dart.previewFlutterUiGuides": true,
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "dart.showSkippedTests": true,
+    "dart.warnWhenEditingFilesOutsideWorkspace": true,
+    "dart.enableSdkFormatter": true,
+    "dart.insertArgumentPlaceholders": false,
+    "dart.completeFunctionCalls": true,
+    "dart.autoAddConst": true,
+    "dart.analysisExcludedFolders": [
+        "build",
+        ".dart_tool"
+    ],
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.rulers": [
+            80
+        ],
+        "editor.selectionHighlight": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "onlySnippets",
+        "editor.wordBasedSuggestions": "off"
+    }
+}

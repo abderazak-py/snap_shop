@@ -4,9 +4,9 @@ import 'core/utils/injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  di.init();
+  await di.init();
   runApp(const SnapShop());
-}
+} 
 
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});
