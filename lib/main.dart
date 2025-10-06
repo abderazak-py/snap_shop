@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
+import 'core/utils/injection_container.dart' as di;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  di.init();
   runApp(const SnapShop());
 }
 
