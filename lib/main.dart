@@ -6,7 +6,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   runApp(const SnapShop());
-} 
+}
 
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});

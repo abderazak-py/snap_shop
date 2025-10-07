@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.snap_shop"
+    namespace = "com.abderazak.snap_shop"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,11 +20,9 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.snap_shop"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        applicationId = "com.abderazak.snap_shop"
+        // Increase minSdk to at least 21 for Google Sign-In
+        minSdk = flutter.minSdkVersion  // Changed from flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -41,4 +39,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Add Google Play Services Auth for Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 }

@@ -16,7 +16,6 @@
     "editor.formatOnPaste": true,
     "editor.formatOnType": true,
     "dart.lineLength": 80,
-    "dart.insertArgumentPlaceholders": false,
     "dart.previewFlutterUiGuides": true,
     "dart.previewFlutterUiGuidesCustomTracking": true,
     "dart.showSkippedTests": true,
