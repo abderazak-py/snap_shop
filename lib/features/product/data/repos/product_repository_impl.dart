@@ -1,0 +1,93 @@
+import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
+
+class ProductRepositoryImpl implements ProductRepository {
+  final ProductRemoteDataSource remoteDataSource;
+
+  ProductRepositoryImpl(this.remoteDataSource);
+
+  @override
+  Future<List<ProductEntity>> getAllProducts() async {
+    final productModels = await remoteDataSource.getProducts();
+    return productModels
+        .map(
+          (model) => ProductEntity(
+            id: model.id,
+            name: model.name,
+            description: model.description,
+            category: model.category,
+            price: model.price,
+            createdAt: model.createdAt,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Future<ProductEntity?> getProductById(String productId) async {
+    final productModel = await remoteDataSource.getProductById(productId);
+    if (productModel == null) return null;
+    return ProductEntity(
+      id: productModel.id,
+      name: productModel.name,
+      description: productModel.description,
+      category: productModel.category,
+      price: productModel.price,
+      createdAt: productModel.createdAt,
+    );
+  }
+
+  @override
+  Future<List<ProductEntity>> getProductsByCategory(String category) async {
+    final productModels = await remoteDataSource.getProductsByCategory(
+      category,
+    );
+    return productModels
+        .map(
+          (model) => ProductEntity(
+            id: model.id,
+            name: model.name,
+            description: model.description,
+            category: model.category,
+            price: model.price,
+            createdAt: model.createdAt,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Future<List<ProductEntity>> searchProducts(String query) async {
+    final productModels = await remoteDataSource.searchProducts(query);
+    return productModels
+        .map(
+          (model) => ProductEntity(
+            id: model.id,
+            name: model.name,
+            description: model.description,
+            category: model.category,
+            price: model.price,
+            createdAt: model.createdAt,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  Future<void> addProduct(ProductEntity product) async {
+    // Convert entity back to model for data layer
+    // Note: You may need to create a ProductModel from entity or adjust as needed
+    await remoteDataSource.addProduct(product as dynamic);
+  }
+
+  @override
+  Future<void> updateProduct(ProductEntity product) async {
+    await remoteDataSource.updateProduct(product as dynamic);
+  }
+
+  @override
+  Future<void> deleteProduct(String productId) async {
+    await remoteDataSource.deleteProduct(productId);
+  }
+}

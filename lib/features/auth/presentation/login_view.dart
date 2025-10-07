@@ -10,8 +10,12 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    TextEditingController emailController = TextEditingController(
+      text: 'a@gmail.com',
+    );
+    TextEditingController passwordController = TextEditingController(
+      text: '000000',
+    );
 
     return BlocProvider(
       create: (context) => AuthCubit(),
