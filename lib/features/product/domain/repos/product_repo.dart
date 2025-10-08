@@ -3,7 +3,7 @@ import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 abstract class ProductRepository {
   Future<List<ProductEntity>> getAllProducts();
 
-  Future<ProductEntity?> getProductById(String productId);
+  Future<ProductEntity?> getProductById(int productId);
 
   Future<List<ProductEntity>> getProductsByCategory(String category);
 
@@ -13,5 +13,5 @@ abstract class ProductRepository {
 
   Future<void> updateProduct(ProductEntity product);
 
-  Future<void> deleteProduct(String productId);
+  Future<void> deleteProduct(int productId);
 }

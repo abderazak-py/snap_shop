@@ -1,4 +1,3 @@
-import 'package:gotrue/src/types/types.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';

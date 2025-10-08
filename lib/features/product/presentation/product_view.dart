@@ -4,6 +4,7 @@ import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
 import 'package:snap_shop/core/utils/styles.dart';
+import 'package:snap_shop/features/cart/domain/usecases/add_to_cart_usecase.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
 
@@ -13,6 +14,7 @@ class ProductView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final getProductsUseCase = sl<GetProductsUseCase>();
+    final addToCartUsecase = sl<AddToCartUsecase>();
 
     return Scaffold(
       appBar: AppBar(
@@ -24,6 +26,12 @@ class ProductView extends StatelessWidget {
               GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
             },
             icon: Icon(Icons.logout),
+          ),
+          IconButton(
+            onPressed: () {
+              GoRouter.of(context).push(AppRouter.kCartView);
+            },
+            icon: Icon(Icons.shopping_bag),
           ),
         ],
       ),
@@ -55,6 +63,12 @@ class ProductView extends StatelessWidget {
                   trailing: Text(
                     '\$${product.price.toStringAsFixed(2)}',
                     style: Styles.titleText16,
+                  ),
+                  leading: IconButton(
+                    onPressed: () {
+                      addToCartUsecase.execute(product.id);
+                    },
+                    icon: Icon(Icons.shopping_bag_rounded),
                   ),
                 );
               },

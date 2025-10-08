@@ -25,7 +25,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<ProductEntity?> getProductById(String productId) async {
+  Future<ProductEntity?> getProductById(int productId) async {
     final productModel = await remoteDataSource.getProductById(productId);
     if (productModel == null) return null;
     return ProductEntity(
@@ -76,8 +76,6 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<void> addProduct(ProductEntity product) async {
-    // Convert entity back to model for data layer
-    // Note: You may need to create a ProductModel from entity or adjust as needed
     await remoteDataSource.addProduct(product as dynamic);
   }
 
@@ -87,7 +85,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<void> deleteProduct(String productId) async {
+  Future<void> deleteProduct(int productId) async {
     await remoteDataSource.deleteProduct(productId);
   }
 }

@@ -19,7 +19,7 @@ class ProductRemoteDataSource {
   }
 
   /// Fetch a single product by ID
-  Future<ProductModel?> getProductById(String productId) async {
+  Future<ProductModel?> getProductById(int productId) async {
     try {
       final response = await supabaseService
           .from('products')
@@ -92,7 +92,7 @@ class ProductRemoteDataSource {
   }
 
   /// Delete a product (admin feature)
-  Future<void> deleteProduct(String productId) async {
+  Future<void> deleteProduct(int productId) async {
     try {
       await supabaseService.from('products').delete().eq('id', productId);
     } catch (e) {
