@@ -6,6 +6,8 @@ class CartEntity extends Equatable {
   final int productId;
   final String userId;
   final int quantity;
+  final String productName;
+  final double productPrice;
 
   const CartEntity({
     required this.id,
@@ -13,8 +15,18 @@ class CartEntity extends Equatable {
     required this.productId,
     required this.userId,
     required this.quantity,
+    required this.productName,
+    required this.productPrice,
   });
 
   @override
-  List<Object?> get props => [id, addedAt, productId, userId, quantity];
+  List<Object?> get props => [
+    id,
+    addedAt,
+    productId,
+    userId,
+    quantity,
+    productName,
+    productPrice,
+  ];
 }

@@ -51,7 +51,9 @@ class CartRemoteDataSource {
       }
       final response = await supabaseService
           .from('cart')
-          .select()
+          .select(
+            'id, quantity, user_id, added_at, product_id, products(name, price)',
+          )
           .eq('user_id', userId);
       return (response as List).map((cart) => CartModel.fromMap(cart)).toList();
     } catch (e) {

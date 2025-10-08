@@ -35,7 +35,10 @@ class CartView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final product = products[index];
                 return ListTile(
-                  title: Text('id=${product.id}', style: Styles.titleText16),
+                  title: Text(
+                    'id=${product.id}, name= ${product.productName}, price=${product.productPrice}',
+                    style: Styles.titleText16,
+                  ),
                   subtitle: Text('quantity is ${product.quantity}'),
                 );
               },

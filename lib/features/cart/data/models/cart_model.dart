@@ -6,6 +6,8 @@ class CartModel extends Equatable {
   final int productId;
   final String userId;
   final int quantity;
+  final String productName;
+  final double productPrice;
 
   const CartModel({
     required this.id,
@@ -13,15 +15,20 @@ class CartModel extends Equatable {
     required this.productId,
     required this.userId,
     required this.quantity,
+    required this.productName,
+    required this.productPrice,
   });
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
+    final product = map['products'] ?? {};
     return CartModel(
-      id: map['id'] as int,
-      addedAt: DateTime.parse(map['added_at'] as String),
-      productId: map['product_id'] as int,
-      userId: map['user_id'] as String,
-      quantity: map['quantity'] as int,
+      id: map['id'],
+      productId: map['product_id'],
+      quantity: map['quantity'],
+      userId: map['user_id'],
+      addedAt: DateTime.parse(map['added_at']),
+      productName: product['name'] ?? '',
+      productPrice: (product['price'] as num?)?.toDouble() ?? 0.0,
     );
   }
   Map<String, dynamic> toMap() {
@@ -35,5 +42,12 @@ class CartModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, productId, userId, quantity];
+  List<Object?> get props => [
+    id,
+    productId,
+    userId,
+    quantity,
+    productName,
+    productPrice,
+  ];
 }

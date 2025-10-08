@@ -22,6 +22,8 @@ class CartRepoImpl extends CartRepository {
             productId: model.productId,
             userId: model.userId,
             quantity: model.quantity,
+            productName: model.productName,
+            productPrice: model.productPrice,
           ),
         )
         .toList();

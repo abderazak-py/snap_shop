@@ -27,8 +27,8 @@ class LoginViewBody extends StatefulWidget {
 }
 
 class _LoginViewBodyState extends State<LoginViewBody> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(text: 'a@gmail.com');
+  final passwordController = TextEditingController(text: '000000');
 
   @override
   void dispose() {
