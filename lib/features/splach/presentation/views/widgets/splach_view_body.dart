@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
+import 'package:snap_shop/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:snap_shop/features/auth/domain/usecases/is_user_signed_in_usecase.dart';
 import 'package:snap_shop/features/splach/presentation/views/widgets/sliding_text.dart';
 
 class SplachViewBody extends StatefulWidget {
@@ -63,9 +66,15 @@ class _SplachViewBodyState extends State<SplachViewBody>
   }
 
   void navigateToHome() {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
+      final isUserSignedInUsecase = sl<IsUserSignedInUsecase>();
+      final bool isUserSignedIn = await isUserSignedInUsecase.execute();
       if (mounted) {
-        GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+        if (isUserSignedIn) {
+          GoRouter.of(context).pushReplacement(AppRouter.kProductView);
+        } else {
+          GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+        }
       }
     });
   }

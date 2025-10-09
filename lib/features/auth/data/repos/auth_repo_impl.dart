@@ -51,6 +51,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<bool> isUserSignedIn() async {
+    final isLogged = await remoteDataSource.isUserSignedIn();
+    return isLogged;
+  }
+
+  @override
   Future<void> signOut() async {
     await remoteDataSource.signOut();
   }

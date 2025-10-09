@@ -73,6 +73,12 @@ class AuthRemoteDataSource {
     }
   }
 
+  // is user signed in
+  Future<bool> isUserSignedIn() async {
+    final session = supabaseService.auth.currentSession;
+    return session != null;
+  }
+
   /// Sign out user
   Future<void> signOut() async {
     try {

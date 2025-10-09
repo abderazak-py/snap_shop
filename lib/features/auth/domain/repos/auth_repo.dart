@@ -9,5 +9,7 @@ abstract class AuthRepository {
 
   Future<UserEntity?> getCurrentUser();
 
+  Future<bool> isUserSignedIn();
+
   Future<void> signOut();
 }

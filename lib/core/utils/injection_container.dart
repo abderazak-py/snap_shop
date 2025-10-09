@@ -1,0 +1,124 @@
+import 'package:get_it/get_it.dart';
+import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/supabase_service.dart';
+import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:snap_shop/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
+import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:snap_shop/features/auth/domain/usecases/is_user_signed_in_usecase.dart';
+import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
+import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
+import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
+import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snap_shop/features/cart/data/datasources/cart_remote_data_source.dart';
+import 'package:snap_shop/features/cart/data/repos/cart_repo_impl.dart';
+import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
+import 'package:snap_shop/features/cart/domain/usecases/add_to_cart_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
+import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:snap_shop/features/product/data/repos/product_repository_impl.dart';
+import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
+import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
+import 'package:snap_shop/features/product/domain/usecases/search_products_usecase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+final sl = GetIt.instance;
+
+Future<void> init() async {
+  // Initialize Supabase Core
+  await Supabase.initialize(
+    url: SupaBaseConstants.supabaseUrl,
+    anonKey: SupaBaseConstants.supabaseAnonKey,
+  );
+
+  // ||=====================||CORE||=====================||
+
+  sl.registerLazySingleton<ISupabaseService>(
+    () => SupabaseService(Supabase.instance.client),
+  );
+
+  // ||=====================||AUTH||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(sl<AuthRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<SignInWithGoogleNativeUseCase>(
+    () => SignInWithGoogleNativeUseCase(sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<RegisterUseCase>(
+    () => RegisterUseCase(sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<GetCurrentUserUseCase>(
+    () => GetCurrentUserUseCase(sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<SignOutUseCase>(
+    () => SignOutUseCase(sl<AuthRepository>()),
+  );
+  sl.registerLazySingleton<IsUserSignedInUsecase>(
+    () => IsUserSignedInUsecase(sl<AuthRepository>()),
+  );
+  // Cubit/Bloc
+  sl.registerFactory<AuthCubit>(
+    () => AuthCubit(
+      loginUseCase: sl<LoginUseCase>(),
+      registerUseCase: sl<RegisterUseCase>(),
+      signInWithGoogleNativeUseCase: sl<SignInWithGoogleNativeUseCase>(),
+      signOutUseCase: sl<SignOutUseCase>(),
+    ),
+  );
+
+  // ||=====================||PRODUCTS||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<ProductRemoteDataSource>(
+    () => ProductRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(sl<ProductRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetProductsUseCase>(
+    () => GetProductsUseCase(sl<ProductRepository>()),
+  );
+  sl.registerLazySingleton<SearchProductsUsecase>(
+    () => SearchProductsUsecase(sl<ProductRepository>()),
+  );
+
+  // ||=====================||CART||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<CartRemoteDataSource>(
+    () => CartRemoteDataSource(sl<ISupabaseService>()),
+  );
+  // Repositories
+  sl.registerLazySingleton<CartRepository>(
+    () => CartRepoImpl(sl<CartRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetCartItemsUsecase>(
+    () => GetCartItemsUsecase(sl<CartRepository>()),
+  );
+  sl.registerLazySingleton<AddToCartUsecase>(
+    () => AddToCartUsecase(sl<CartRepository>()),
+  );
+  sl.registerLazySingleton<RemoveFromCartUsecase>(
+    () => RemoveFromCartUsecase(sl<CartRepository>()),
+  );
+}
