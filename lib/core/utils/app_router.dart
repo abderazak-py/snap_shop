@@ -2,7 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:snap_shop/features/auth/presentation/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/cart_view.dart';
+import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import 'package:snap_shop/features/product/presentation/product_details_view.dart';
 import 'package:snap_shop/features/product/presentation/product_view.dart';
+import 'package:snap_shop/features/product/presentation/search_products_view.dart';
 import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
@@ -10,6 +13,8 @@ abstract class AppRouter {
   static const kLoginView = '/login';
   static const kRegisterView = '/register';
   static const kCartView = '/cart';
+  static const kProductDetailsView = '/product_details';
+  static const kSearchProductsView = '/search_products';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -23,6 +28,15 @@ abstract class AppRouter {
       GoRoute(
         path: '/product',
         builder: (context, state) => const ProductView(),
+      ),
+      GoRoute(
+        path: '/product_details',
+        builder: (context, state) =>
+            ProductDetailsView(product: state.extra as ProductEntity),
+      ),
+      GoRoute(
+        path: '/search_products',
+        builder: (context, state) => const SearchProductsView(),
       ),
     ],
   );

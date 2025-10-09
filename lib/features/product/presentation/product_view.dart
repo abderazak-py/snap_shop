@@ -33,6 +33,12 @@ class ProductView extends StatelessWidget {
             },
             icon: Icon(Icons.shopping_bag),
           ),
+          IconButton(
+            onPressed: () {
+              GoRouter.of(context).push(AppRouter.kSearchProductsView);
+            },
+            icon: Icon(Icons.search),
+          ),
         ],
       ),
       body: FutureBuilder<List<ProductEntity>>(
@@ -54,10 +60,16 @@ class ProductView extends StatelessWidget {
           } else {
             final products = snapshot.data!;
             return ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
                 return ListTile(
+                  onTap: () {
+                    GoRouter.of(
+                      context,
+                    ).push(AppRouter.kProductDetailsView, extra: product);
+                  },
                   title: Text(product.name, style: Styles.titleText16),
                   subtitle: Text(product.description),
                   trailing: Text(
