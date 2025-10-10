@@ -7,6 +7,7 @@ class ProductModel extends Equatable {
   final String description;
   final String category;
   final double price;
+  final List<String?> images;
 
   const ProductModel({
     required this.id,
@@ -15,6 +16,7 @@ class ProductModel extends Equatable {
     required this.description,
     required this.category,
     required this.price,
+    required this.images,
   });
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
@@ -25,6 +27,7 @@ class ProductModel extends Equatable {
       description: map['description'] as String,
       price: (map['price'] as num).toDouble(),
       category: map['category'] as String,
+      images: List<String>.from(map['image'] ?? []),
     );
   }
 

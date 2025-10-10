@@ -7,6 +7,7 @@ class ProductEntity extends Equatable {
   final String description;
   final String category;
   final double price;
+  final List<String?> images;
 
   const ProductEntity({
     required this.id,
@@ -15,6 +16,7 @@ class ProductEntity extends Equatable {
     required this.description,
     required this.category,
     required this.price,
+    required this.images,
   });
 
   @override

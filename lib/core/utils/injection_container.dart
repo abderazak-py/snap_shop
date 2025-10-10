@@ -23,6 +23,7 @@ import 'package:snap_shop/features/product/data/repos/product_repository_impl.da
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
 import 'package:snap_shop/features/product/domain/usecases/search_products_usecase.dart';
+import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
@@ -103,6 +104,14 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<SearchProductsUsecase>(
     () => SearchProductsUsecase(sl<ProductRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<ProductCubit>(
+    () => ProductCubit(
+      getProductsUseCase: sl<GetProductsUseCase>(),
+      searchProductsUsecase: sl<SearchProductsUsecase>(),
+    ),
   );
 
   // ||=====================||CART||=====================||

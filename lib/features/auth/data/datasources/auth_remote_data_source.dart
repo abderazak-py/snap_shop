@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';

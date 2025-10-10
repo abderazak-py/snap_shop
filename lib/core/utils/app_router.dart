@@ -1,12 +1,12 @@
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/features/auth/presentation/confirm_otp_view.dart';
-import 'package:snap_shop/features/auth/presentation/login_view.dart';
-import 'package:snap_shop/features/auth/presentation/register_view.dart';
+import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
+import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
+import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/cart_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/presentation/product_details_view.dart';
-import 'package:snap_shop/features/product/presentation/product_view.dart';
-import 'package:snap_shop/features/product/presentation/search_products_view.dart';
+import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
+import 'package:snap_shop/features/product/presentation/views/product_view.dart';
+import 'package:snap_shop/features/product/presentation/views/search_products_view.dart';
 import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 
 abstract class AppRouter {

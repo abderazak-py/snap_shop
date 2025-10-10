@@ -19,6 +19,7 @@ class ProductRepositoryImpl implements ProductRepository {
             category: model.category,
             price: model.price,
             createdAt: model.createdAt,
+            images: model.images,
           ),
         )
         .toList();
@@ -35,6 +36,7 @@ class ProductRepositoryImpl implements ProductRepository {
       category: productModel.category,
       price: productModel.price,
       createdAt: productModel.createdAt,
+      images: productModel.images,
     );
   }
 
@@ -52,6 +54,7 @@ class ProductRepositoryImpl implements ProductRepository {
             category: model.category,
             price: model.price,
             createdAt: model.createdAt,
+            images: model.images,
           ),
         )
         .toList();
@@ -69,6 +72,7 @@ class ProductRepositoryImpl implements ProductRepository {
             category: model.category,
             price: model.price,
             createdAt: model.createdAt,
+            images: model.images,
           ),
         )
         .toList();
