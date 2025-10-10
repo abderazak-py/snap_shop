@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
@@ -77,6 +78,23 @@ class AuthRemoteDataSource {
   Future<bool> isUserSignedIn() async {
     final session = supabaseService.auth.currentSession;
     return session != null;
+  }
+
+  //verify with otp
+  Future<User> verifyOTP(String otp, String email) async {
+    try {
+      final response = await supabaseService.auth.verifyOTP(
+        type: OtpType.signup,
+        token: otp,
+        email: email,
+      );
+      if (response.session == null || response.user == null) {
+        throw Exception('OTP valid but no session or user created');
+      }
+      return supabaseService.auth.currentUser!;
+    } catch (e) {
+      throw Exception('Resend failed: ${e.toString()}');
+    }
   }
 
   /// Sign out user

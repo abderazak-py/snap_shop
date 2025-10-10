@@ -5,6 +5,8 @@ abstract class AuthRepository {
 
   Future<UserEntity?> signUpWithEmail(String email, String password);
 
+  Future<UserEntity> verifyOTP(String otp, String email);
+
   Future<UserEntity?> signInWithGoogleNative({required String webClientId});
 
   Future<UserEntity?> getCurrentUser();

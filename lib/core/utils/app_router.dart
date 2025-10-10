@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:snap_shop/features/auth/presentation/confirm_otp_view.dart';
 import 'package:snap_shop/features/auth/presentation/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/cart_view.dart';
@@ -15,6 +16,7 @@ abstract class AppRouter {
   static const kCartView = '/cart';
   static const kProductDetailsView = '/product_details';
   static const kSearchProductsView = '/search_products';
+  static const kConfirmOtpView = '/confirm_otp';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -23,6 +25,11 @@ abstract class AppRouter {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterView(),
+      ),
+      GoRoute(
+        path: '/confirm_otp',
+        builder: (context, state) =>
+            ConfirmOtpView(email: state.extra as String),
       ),
       GoRoute(path: '/cart', builder: (context, state) => const CartView()),
       GoRoute(

@@ -60,4 +60,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> signOut() async {
     await remoteDataSource.signOut();
   }
+
+  @override
+  Future<UserEntity> verifyOTP(String otp, String email) async {
+    final user = await remoteDataSource.verifyOTP(otp, email);
+    return UserEntity(id: user.id, email: user.email);
+  }
 }

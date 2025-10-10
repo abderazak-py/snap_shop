@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/private.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:snap_shop/features/auth/data/repos/auth_repo_impl.dart';
@@ -10,6 +10,7 @@ import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:snap_shop/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snap_shop/features/cart/data/datasources/cart_remote_data_source.dart';
 import 'package:snap_shop/features/cart/data/repos/cart_repo_impl.dart';
@@ -70,6 +71,9 @@ Future<void> init() async {
   sl.registerLazySingleton<IsUserSignedInUsecase>(
     () => IsUserSignedInUsecase(sl<AuthRepository>()),
   );
+  sl.registerLazySingleton<VerifyOtpUsecase>(
+    () => VerifyOtpUsecase(sl<AuthRepository>()),
+  );
   // Cubit/Bloc
   sl.registerFactory<AuthCubit>(
     () => AuthCubit(
@@ -77,6 +81,7 @@ Future<void> init() async {
       registerUseCase: sl<RegisterUseCase>(),
       signInWithGoogleNativeUseCase: sl<SignInWithGoogleNativeUseCase>(),
       signOutUseCase: sl<SignOutUseCase>(),
+      verifyOtpUseCase: sl<VerifyOtpUsecase>(),
     ),
   );
 

@@ -5,6 +5,7 @@ import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snap_shop/features/auth/presentation/widgets/register_view_body.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -28,88 +29,9 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<AuthCubit>(),
-      child: Scaffold(
-        appBar: AppBar(title: Text('Register')),
-        body: BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is AuthSuccess) {
-              GoRouter.of(context).pushReplacement(AppRouter.kProductView);
-            } else if (state is AuthFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.error)));
-            }
-          },
-          builder: (context, state) {
-            final isLoading = state is AuthLoading;
-
-            return Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    enabled: !isLoading,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true,
-                    enabled: !isLoading,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            context.read<AuthCubit>().register(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                          },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                    ),
-                    child: isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text('Register', style: Styles.titleText16),
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            GoRouter.of(context).go(AppRouter.kLoginView);
-                          },
-                    child: Text(
-                      'Already have an account? Login',
-                      style: Styles.titleText16,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+      child: RegisterViewBody(
+        emailController: emailController,
+        passwordController: passwordController,
       ),
     );
   }

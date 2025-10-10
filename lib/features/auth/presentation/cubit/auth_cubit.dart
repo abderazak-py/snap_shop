@@ -1,9 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
+
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
-import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
+import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:snap_shop/features/auth/domain/usecases/verify_otp_usecase.dart';
+
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -11,12 +15,14 @@ class AuthCubit extends Cubit<AuthState> {
   final RegisterUseCase registerUseCase;
   final SignInWithGoogleNativeUseCase signInWithGoogleNativeUseCase;
   final SignOutUseCase signOutUseCase;
+  final VerifyOtpUsecase verifyOtpUseCase;
 
   AuthCubit({
     required this.loginUseCase,
     required this.registerUseCase,
     required this.signInWithGoogleNativeUseCase,
     required this.signOutUseCase,
+    required this.verifyOtpUseCase,
   }) : super(AuthInitial());
 
   /// Login with email and password
@@ -66,6 +72,15 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthFailure(error: 'Google sign-in failed: ${e.toString()}'));
+    }
+  }
+
+  Future<void> verifyOtp({required String otp, required String email}) async {
+    try {
+      final user = await verifyOtpUseCase.execute(otp, email);
+      emit(AuthSuccess(user: user));
+    } catch (e) {
+      emit(AuthFailure(error: 'Verigy Otp failed: ${e.toString()}'));
     }
   }
 
