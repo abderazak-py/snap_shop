@@ -16,8 +16,14 @@ import 'package:snap_shop/features/cart/data/datasources/cart_remote_data_source
 import 'package:snap_shop/features/cart/data/repos/cart_repo_impl.dart';
 import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
 import 'package:snap_shop/features/cart/domain/usecases/add_to_cart_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/empty_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
+import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
+import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
+import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
+import 'package:snap_shop/features/payment/domain/usecases/paypal_transactions_usecase.dart';
+import 'package:snap_shop/features/payment/domain/usecases/save_order_usecase.dart';
 import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:snap_shop/features/product/data/repos/product_repository_impl.dart';
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
@@ -134,5 +140,28 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<RemoveFromCartUsecase>(
     () => RemoveFromCartUsecase(sl<CartRepository>()),
+  );
+  sl.registerLazySingleton<EmptyCartUsecase>(
+    () => EmptyCartUsecase(sl<CartRepository>()),
+  );
+
+  // ||=====================||PAYMENT||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<PaymentRemoteDataSource>(
+    () => PaymentRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<PaymentRepository>(
+    () => PaymentRepositoryImpl(sl<PaymentRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<PaypalTransactionsUsecase>(
+    () => PaypalTransactionsUsecase(sl<PaymentRepository>()),
+  );
+  sl.registerLazySingleton<SaveOrderUsecase>(
+    () => SaveOrderUsecase(sl<PaymentRepository>()),
   );
 }

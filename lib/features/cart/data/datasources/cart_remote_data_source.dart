@@ -15,7 +15,7 @@ class CartRemoteDataSource {
           .from('cart')
           .select()
           .eq('product_id', productId)
-          .eq('user_id', supabaseService.auth.currentUser!.id);
+          .eq('user_id', supabaseService.auth.currentUser!);
 
       if (result.isNotEmpty) {
         // Product already in cart, update quantity
@@ -58,6 +58,18 @@ class CartRemoteDataSource {
       return (response as List).map((cart) => CartModel.fromMap(cart)).toList();
     } catch (e) {
       throw Exception('Failed to get cart items: ${e.toString()}');
+    }
+  }
+
+  Future<void> emptyCart() async {
+    try {
+      String? userId = supabaseService.auth.currentUser?.id;
+      if (userId == null) {
+        throw Exception('User not logged in');
+      }
+      await supabaseService.from('cart').delete().eq('user_id', userId);
+    } catch (e) {
+      throw Exception('Failed to empty cart: ${e.toString()}');
     }
   }
 }

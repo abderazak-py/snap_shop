@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
+import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/domain/usecases/is_user_signed_in_usecase.dart';
 import 'package:snap_shop/features/splach/presentation/views/widgets/sliding_text.dart';
 
@@ -35,12 +36,32 @@ class _SplachViewBodyState extends State<SplachViewBody>
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SlidingText(
-          slidingAnimation: slidingAnimation,
-          fadeAnimation: fadeAnimation,
+        Spacer(flex: 6),
+        Text(
+          'Snap Shop',
+          style: Styles.titleText40.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+          ),
         ),
+        SizedBox(height: 10),
+        Center(
+          child: SlidingText(
+            slidingAnimation: slidingAnimation,
+            fadeAnimation: fadeAnimation,
+          ),
+        ),
+        Spacer(flex: 10),
+        Text(
+          'Version 0.1.0 alpha',
+          style: Styles.titleText14.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w300,
+          ),
+        ),
+        Spacer(flex: 1),
       ],
     );
   }
@@ -72,7 +93,7 @@ class _SplachViewBodyState extends State<SplachViewBody>
         if (isUserSignedIn) {
           GoRouter.of(context).pushReplacement(AppRouter.kProductView);
         } else {
-          GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+          GoRouter.of(context).pushReplacement(AppRouter.kAuthView);
         }
       }
     });

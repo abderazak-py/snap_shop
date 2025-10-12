@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/features/splach/presentation/views/widgets/splach_view_body.dart';
 
 class SplashView extends StatelessWidget {
@@ -6,6 +7,9 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SplachViewBody());
+    return const Scaffold(
+      backgroundColor: AppColors.kPrimaryColor,
+      body: SplachViewBody(),
+    );
   }
 }

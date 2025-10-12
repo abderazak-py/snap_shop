@@ -20,10 +20,13 @@ class SlidingText extends StatelessWidget {
           position: slidingAnimation,
           child: FadeTransition(
             opacity: fadeAnimation,
-            child: const Text(
-              'Snap Shop',
+            child: Text(
+              'Your Perfect Buy, Just a Snap Away',
               textAlign: TextAlign.center,
-              style: Styles.titleText30,
+              style: Styles.titleText18.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
         );

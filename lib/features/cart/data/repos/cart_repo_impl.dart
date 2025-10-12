@@ -33,4 +33,9 @@ class CartRepoImpl extends CartRepository {
   Future<void> removeFromCart(int id) async {
     await remoteDataSource.removeFromCart(id);
   }
+
+  @override
+  Future<void> emptyCart() async {
+    await remoteDataSource.emptyCart();
+  }
 }

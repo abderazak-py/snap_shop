@@ -1,8 +1,10 @@
 import 'package:go_router/go_router.dart';
+import 'package:snap_shop/features/auth/presentation/views/auth_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/cart_view.dart';
+import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
@@ -10,6 +12,8 @@ import 'package:snap_shop/features/product/presentation/views/search_products_vi
 import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
+  static const kSplashView = '/';
+  static const kAuthView = '/auth_view';
   static const kProductView = '/product';
   static const kLoginView = '/login';
   static const kRegisterView = '/register';
@@ -17,10 +21,15 @@ abstract class AppRouter {
   static const kProductDetailsView = '/product_details';
   static const kSearchProductsView = '/search_products';
   static const kConfirmOtpView = '/confirm_otp';
+  static const kPaymentView = '/payment';
 
   static final GoRouter router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(
+        path: '/auth_view',
+        builder: (context, state) => const AuthView(),
+      ),
       GoRoute(path: '/login', builder: (context, state) => const LoginView()),
       GoRoute(
         path: '/register',
@@ -44,6 +53,10 @@ abstract class AppRouter {
       GoRoute(
         path: '/search_products',
         builder: (context, state) => const SearchProductsView(),
+      ),
+      GoRoute(
+        path: '/payment',
+        builder: (context, state) => const PaymentView(),
       ),
     ],
   );

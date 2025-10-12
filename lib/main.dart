@@ -7,6 +7,7 @@ void main() async {
   await di.init();
   runApp(const SnapShop());
 }
+//TODO: ADD skeletonizer Loading, Add Paypal  Payment
 
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});

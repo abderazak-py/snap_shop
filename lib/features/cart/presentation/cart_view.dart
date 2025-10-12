@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
@@ -30,18 +32,30 @@ class CartView extends StatelessWidget {
             );
           } else {
             final products = snapshot.data!;
-            return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return ListTile(
-                  title: Text(
-                    'id=${product.id}, name= ${product.productName}, price=${product.productPrice}',
-                    style: Styles.titleText16,
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return ListTile(
+                        title: Text(
+                          'id=${product.id}, name= ${product.productName}, price=${product.productPrice}',
+                          style: Styles.titleText16,
+                        ),
+                        subtitle: Text('quantity is ${product.quantity}'),
+                      );
+                    },
                   ),
-                  subtitle: Text('quantity is ${product.quantity}'),
-                );
-              },
+                ),
+                TextButton(
+                  onPressed: () {
+                    GoRouter.of(context).push(AppRouter.kPaymentView);
+                  },
+                  child: Text('Order and Pay'),
+                ),
+              ],
             );
           }
         },
