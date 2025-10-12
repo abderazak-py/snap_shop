@@ -4,14 +4,32 @@ import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/login_view_body.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final emailController = TextEditingController(); //text: 'a@gmail.com');
+  final passwordController = TextEditingController(); //text: '000000');
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<AuthCubit>(),
-      child: LoginViewBody(),
+      child: LoginViewBody(
+        emailController: emailController,
+        passwordController: passwordController,
+      ),
     );
   }
 }

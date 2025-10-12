@@ -14,11 +14,13 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
@@ -29,6 +31,7 @@ class _RegisterViewState extends State<RegisterView> {
       child: RegisterViewBody(
         emailController: emailController,
         passwordController: passwordController,
+        nameController: nameController,
       ),
     );
   }

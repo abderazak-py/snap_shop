@@ -12,3 +12,12 @@ class AppImages {
   static const String kitchen = 'assets/images/kitchen.webp';
   static const String tech = 'assets/images/tech.webp';
 }
+
+class AppIcons {
+  static const String google = 'assets/icons/google.svg';
+  static const String eye = 'assets/icons/eye.svg';
+  static const String eyeOff = 'assets/icons/eye-off.svg';
+  static const String mail = 'assets/icons/mail.svg';
+  static const String lock = 'assets/icons/lock.svg';
+  static const String name = 'assets/icons/name.svg';
+}

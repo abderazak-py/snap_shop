@@ -20,7 +20,7 @@ class CustomBigButton extends StatelessWidget {
         backgroundColor: AppColors.kPrimaryColor,
         foregroundColor: AppColors.kSecondaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-        fixedSize: Size(width - 50, 60),
+        fixedSize: Size(width - 50, 70),
       ),
       child: Text(
         title,

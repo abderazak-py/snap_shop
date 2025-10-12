@@ -15,12 +15,12 @@ abstract class Styles {
     color: AppColors.kTextColor,
   );
   static TextStyle titleText24 = GoogleFonts.poppins(
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
   static TextStyle titleText22 = GoogleFonts.poppins(
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
