@@ -24,7 +24,7 @@ class LoginViewBody extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
+          if (state is AuthSuccess || state is AuthSuccessConfirmed) {
             GoRouter.of(context).go(
               AppRouter.kProductView,
             ); //check here if there is a navigation problem

@@ -25,9 +25,7 @@ class ProductRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
-    } catch (e, stack) {
-      print('❌ Error fetching products: $e');
-      print(stack);
+    } catch (e) {
       throw Exception('Failed to fetch products: ${e.toString()}');
     }
   }

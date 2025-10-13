@@ -24,7 +24,10 @@ class CustomBigButton extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: Styles.titleText16.copyWith(color: Colors.white),
+        style: Styles.titleText16.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

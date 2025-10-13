@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
-
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
@@ -56,17 +54,14 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// Sign in with Google (native)
-  Future<void> signInWithGoogle({
-    required String webClientId,
-    String? iosClientId,
-  }) async {
+  Future<void> signInWithGoogle({required String webClientId}) async {
     emit(AuthLoading());
     try {
       final user = await signInWithGoogleNativeUseCase.execute(
         webClientId: webClientId,
       );
       if (user != null) {
-        emit(AuthSuccess(user: user));
+        emit(AuthSuccessConfirmed(user: user));
       } else {
         emit(AuthFailure(error: 'Google sign-in was cancelled'));
       }
@@ -76,6 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> verifyOtp({required String otp, required String email}) async {
+    emit(AuthLoading());
     try {
       final user = await verifyOtpUseCase.execute(otp, email);
       emit(AuthSuccess(user: user));

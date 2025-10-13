@@ -12,6 +12,12 @@ class AuthSuccess extends AuthState {
   AuthSuccess({required this.user});
 }
 
+class AuthSuccessConfirmed extends AuthState {
+  final UserEntity user;
+
+  AuthSuccessConfirmed({required this.user});
+}
+
 class AuthFailure extends AuthState {
   final String error;
 

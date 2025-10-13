@@ -31,6 +31,8 @@ class RegisterViewBody extends StatelessWidget {
             GoRouter.of(
               context,
             ).go(AppRouter.kConfirmOtpView, extra: emailController.text);
+          } else if (state is AuthSuccessConfirmed) {
+            GoRouter.of(context).go(AppRouter.kProductView);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(
               context,

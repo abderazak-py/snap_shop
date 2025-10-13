@@ -9,42 +9,47 @@ abstract class Styles {
     color: AppColors.kTextColor,
   );
 
-  static TextStyle titleText30 = GoogleFonts.poppins(
+  static TextStyle titleText30 = GoogleFonts.montserrat(
     fontSize: 30,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText24 = GoogleFonts.poppins(
+  static TextStyle titleText26 = GoogleFonts.montserrat(
+    fontSize: 26,
+    fontWeight: FontWeight.normal,
+    color: AppColors.kTextColor,
+  );
+  static TextStyle titleText24 = GoogleFonts.montserrat(
     fontSize: 24,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText22 = GoogleFonts.poppins(
+  static TextStyle titleText22 = GoogleFonts.montserrat(
     fontSize: 22,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText20 = GoogleFonts.poppins(
+  static TextStyle titleText20 = GoogleFonts.montserrat(
     fontSize: 20,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText18 = GoogleFonts.poppins(
+  static TextStyle titleText18 = GoogleFonts.montserrat(
     fontSize: 18,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText16 = GoogleFonts.poppins(
+  static TextStyle titleText16 = GoogleFonts.montserrat(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText14 = GoogleFonts.poppins(
+  static TextStyle titleText14 = GoogleFonts.montserrat(
     fontSize: 14,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );
-  static TextStyle titleText12 = GoogleFonts.poppins(
+  static TextStyle titleText12 = GoogleFonts.montserrat(
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
