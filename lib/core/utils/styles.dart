@@ -5,7 +5,7 @@ import 'package:snap_shop/core/utils/constants.dart';
 abstract class Styles {
   static TextStyle titleText40 = GoogleFonts.poppins(
     fontSize: 40,
-    fontWeight: FontWeight.normal,
+    fontWeight: FontWeight.w900,
     color: AppColors.kTextColor,
   );
 
@@ -51,6 +51,11 @@ abstract class Styles {
   );
   static TextStyle titleText12 = GoogleFonts.montserrat(
     fontSize: 12,
+    fontWeight: FontWeight.normal,
+    color: AppColors.kTextColor,
+  );
+  static TextStyle titleText10 = GoogleFonts.montserrat(
+    fontSize: 10,
     fontWeight: FontWeight.normal,
     color: AppColors.kTextColor,
   );

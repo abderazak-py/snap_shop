@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 
-class SlidingText extends StatelessWidget {
-  const SlidingText({
-    super.key,
-    required this.slidingAnimation,
-    required this.fadeAnimation,
-  });
+class SlidingText extends StatefulWidget {
+  const SlidingText({super.key});
+  @override
+  State<SlidingText> createState() => _SlidingTextState();
+}
 
-  final Animation<Offset> slidingAnimation;
-  final Animation<double> fadeAnimation;
+class _SlidingTextState extends State<SlidingText>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<Offset> slidingAnimation;
+  late Animation<double> fadeAnimation;
+  @override
+  void initState() {
+    super.initState();
+    initSlidingAnimation();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,5 +45,24 @@ class SlidingText extends StatelessWidget {
         );
       },
     );
+  }
+
+  void initSlidingAnimation() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    slidingAnimation = Tween<Offset>(
+      begin: const Offset(0, 2),
+      end: Offset.zero,
+    ).animate(animationController);
+
+    fadeAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(animationController);
+
+    animationController.forward();
   }
 }

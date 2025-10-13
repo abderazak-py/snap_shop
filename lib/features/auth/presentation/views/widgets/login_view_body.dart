@@ -26,7 +26,7 @@ class LoginViewBody extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthSuccess || state is AuthSuccessConfirmed) {
             GoRouter.of(context).go(
-              AppRouter.kProductView,
+              AppRouter.kHomeView,
             ); //check here if there is a navigation problem
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(

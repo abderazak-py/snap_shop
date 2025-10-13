@@ -13,23 +13,11 @@ class SplachViewBody extends StatefulWidget {
   State<SplachViewBody> createState() => _SplachViewBodyState();
 }
 
-class _SplachViewBodyState extends State<SplachViewBody>
-    with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation<Offset> slidingAnimation;
-  late Animation<double> fadeAnimation;
-
+class _SplachViewBodyState extends State<SplachViewBody> {
   @override
   void initState() {
     super.initState();
-    initSlidingAnimation();
     navigateToHome();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    animationController.dispose();
   }
 
   @override
@@ -47,12 +35,7 @@ class _SplachViewBodyState extends State<SplachViewBody>
           ),
         ),
         SizedBox(height: 10),
-        Center(
-          child: SlidingText(
-            slidingAnimation: slidingAnimation,
-            fadeAnimation: fadeAnimation,
-          ),
-        ),
+        Center(child: SlidingText()),
         Spacer(flex: 10),
         Text(
           'Version 0.1.0 alpha',
@@ -64,25 +47,6 @@ class _SplachViewBodyState extends State<SplachViewBody>
         Spacer(flex: 1),
       ],
     );
-  }
-
-  void initSlidingAnimation() {
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-
-    slidingAnimation = Tween<Offset>(
-      begin: const Offset(0, 2),
-      end: Offset.zero,
-    ).animate(animationController);
-
-    fadeAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(animationController);
-
-    animationController.forward();
   }
 
   void navigateToHome() {
