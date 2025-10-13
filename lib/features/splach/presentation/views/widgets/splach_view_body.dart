@@ -91,7 +91,7 @@ class _SplachViewBodyState extends State<SplachViewBody>
       final bool isUserSignedIn = await isUserSignedInUsecase.execute();
       if (mounted) {
         if (isUserSignedIn) {
-          GoRouter.of(context).pushReplacement(AppRouter.kProductView);
+          GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
         } else {
           GoRouter.of(context).pushReplacement(AppRouter.kAuthView);
         }

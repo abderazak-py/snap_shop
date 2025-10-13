@@ -15,7 +15,7 @@ class CartRemoteDataSource {
           .from('cart')
           .select()
           .eq('product_id', productId)
-          .eq('user_id', supabaseService.auth.currentUser!);
+          .eq('user_id', supabaseService.auth.currentUser!.id);
 
       if (result.isNotEmpty) {
         // Product already in cart, update quantity

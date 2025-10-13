@@ -4,6 +4,7 @@ import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart
 import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/cart_view.dart';
+import 'package:snap_shop/features/home/presentation/views/home_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
@@ -14,6 +15,7 @@ import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 abstract class AppRouter {
   static const kSplashView = '/';
   static const kAuthView = '/auth_view';
+  static const kHomeView = '/home';
   static const kProductView = '/product';
   static const kLoginView = '/login';
   static const kRegisterView = '/register';
@@ -40,6 +42,7 @@ abstract class AppRouter {
         builder: (context, state) =>
             ConfirmOtpView(email: state.extra as String),
       ),
+      GoRoute(path: '/home', builder: (context, state) => const HomeView()),
       GoRoute(path: '/cart', builder: (context, state) => const CartView()),
       GoRoute(
         path: '/product',
