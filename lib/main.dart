@@ -7,7 +7,6 @@ void main() async {
   await di.init();
   runApp(const SnapShop());
 }
-//TODO: ADD skeletonizer Loading
 
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});

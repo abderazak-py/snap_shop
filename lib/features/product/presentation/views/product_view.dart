@@ -13,7 +13,6 @@ class ProductView extends StatelessWidget {
         children: [
           SizedBox(height: height * 0.06),
           ProductTopSection(),
-          SizedBox(height: height * 0.02),
           ProductTabView(),
         ],
       ),
