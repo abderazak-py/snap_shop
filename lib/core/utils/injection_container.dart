@@ -15,10 +15,11 @@ import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snap_shop/features/cart/data/datasources/cart_remote_data_source.dart';
 import 'package:snap_shop/features/cart/data/repos/cart_repo_impl.dart';
 import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
-import 'package:snap_shop/features/cart/domain/usecases/add_to_cart_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/empty_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_usecase.dart';
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
@@ -135,8 +136,11 @@ Future<void> init() async {
   sl.registerLazySingleton<GetCartItemsUsecase>(
     () => GetCartItemsUsecase(sl<CartRepository>()),
   );
-  sl.registerLazySingleton<AddToCartUsecase>(
-    () => AddToCartUsecase(sl<CartRepository>()),
+  sl.registerLazySingleton<AddOneToCartUsecase>(
+    () => AddOneToCartUsecase(sl<CartRepository>()),
+  );
+  sl.registerLazySingleton<RemoveOneFromCartUsecase>(
+    () => RemoveOneFromCartUsecase(sl<CartRepository>()),
   );
   sl.registerLazySingleton<RemoveFromCartUsecase>(
     () => RemoveFromCartUsecase(sl<CartRepository>()),

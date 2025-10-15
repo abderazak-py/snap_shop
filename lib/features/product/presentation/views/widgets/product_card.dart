@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/cart/domain/usecases/add_to_cart_usecase.dart';
+import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 
 class ProductCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isLoading = Skeletonizer.maybeOf(context)?.enabled ?? false;
-    AddToCartUsecase addToCartUsecase = sl<AddToCartUsecase>();
+    AddOneToCartUsecase addOneToCartUsecase = sl<AddOneToCartUsecase>();
     return Column(
       children: [
         ClipRRect(
@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
                           customBorder: const CircleBorder(),
                           onTap: () {
                             try {
-                              addToCartUsecase.execute(product.id);
+                              addOneToCartUsecase.execute(product.id);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text('Product added to cart'),

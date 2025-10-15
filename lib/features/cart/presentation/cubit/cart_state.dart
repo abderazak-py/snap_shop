@@ -14,6 +14,9 @@ final class CartLoading extends CartState {}
 final class CartSuccess extends CartState {
   const CartSuccess(this.cart);
   final List<CartEntity> cart;
+
+  @override
+  List<Object> get props => [cart];
 }
 
 final class CartFailure extends CartState {

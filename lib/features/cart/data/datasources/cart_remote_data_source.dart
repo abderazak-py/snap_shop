@@ -8,7 +8,7 @@ class CartRemoteDataSource {
 
   CartRemoteDataSource(this.supabaseService);
 
-  Future<Either<Failure, void>> addToCart(int productId) async {
+  Future<Either<Failure, void>> addOneToCart(int productId) async {
     try {
       if (supabaseService.auth.currentUser == null) {
         throw Exception('User not logged in');
@@ -38,6 +38,36 @@ class CartRemoteDataSource {
     return const Right(null);
   }
 
+  Future<Either<Failure, void>> removeOneFromCart(int productId) async {
+    try {
+      if (supabaseService.auth.currentUser == null) {
+        throw Exception('User not logged in');
+      }
+      final result = await supabaseService
+          .from('cart')
+          .select()
+          .eq('product_id', productId)
+          .eq('user_id', supabaseService.auth.currentUser!.id);
+
+      if (result.isNotEmpty) {
+        // Product already in cart, update quantity
+        final currentQuantity = result[0]['quantity'] as int;
+        final cartId = result[0]['id'];
+        if (currentQuantity <= 1) {
+          await supabaseService.from('cart').delete().eq('id', cartId);
+        } else {
+          await supabaseService
+              .from('cart')
+              .update({'quantity': result[0]['quantity'] - 1})
+              .eq('id', result[0]['id']);
+        }
+      }
+    } catch (e) {
+      return Left(Failure('Failed to add to cart: ${e.toString()}'));
+    }
+    return const Right(null);
+  }
+
   Future<Either<Failure, void>> removeFromCart(int id) async {
     try {
       await supabaseService.from('cart').delete().eq('id', id);
@@ -56,9 +86,11 @@ class CartRemoteDataSource {
       final response = await supabaseService
           .from('cart')
           .select(
-            'id, quantity, user_id, added_at, product_id, products(name, price)',
+            'id, quantity, user_id, added_at, product_id, products(name, price, image!inner(image_url, position))',
           )
-          .eq('user_id', userId);
+          .eq('user_id', userId)
+          .eq('products.image.position', 1);
+
       final result = (response as List)
           .map((cart) => CartModel.fromMap(cart))
           .toList();

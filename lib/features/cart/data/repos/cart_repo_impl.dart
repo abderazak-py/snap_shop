@@ -9,8 +9,14 @@ class CartRepoImpl extends CartRepository {
   CartRepoImpl(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, void>> addToCart(int productId) async {
-    final response = await remoteDataSource.addToCart(productId);
+  Future<Either<Failure, void>> addOneToCart(int productId) async {
+    final response = await remoteDataSource.addOneToCart(productId);
+    return response;
+  }
+
+  @override
+  Future<Either<Failure, void>> removeOneFromCart(int productId) async {
+    final response = await remoteDataSource.removeOneFromCart(productId);
     return response;
   }
 
@@ -30,6 +36,7 @@ class CartRepoImpl extends CartRepository {
                 quantity: model.quantity,
                 productName: model.productName,
                 productPrice: model.productPrice,
+                productImage: model.productImage,
               ),
             )
             .toList(),

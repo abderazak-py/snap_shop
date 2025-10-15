@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_state.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:snap_shop/features/profile/presentation/views/profile_view.dart';
 
 // Cubit class managing an int index state
 class NavCubit extends Cubit<int> {
@@ -31,7 +28,6 @@ class HomeView extends StatelessWidget {
       create: (context) => HomeCubit(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          final signOutUseCase = sl<SignOutUseCase>();
           return Scaffold(
             body: IndexedStack(
               index: state.currentIndex,
@@ -39,15 +35,7 @@ class HomeView extends StatelessWidget {
                 ProductView(),
                 CartView(),
                 Center(child: Text('Favourite')), // Favourite
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      GoRouter.of(context).push(AppRouter.kAuthView);
-                      signOutUseCase.execute();
-                    },
-                    child: Text('Logout'),
-                  ),
-                ), // Profile
+                ProfileView(), // Profile
               ],
             ),
             bottomNavigationBar: BottomNavigationBar(

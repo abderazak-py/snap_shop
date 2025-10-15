@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
+import 'widgets/cart_card.dart';
 import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
 
 class CartView extends StatelessWidget {
@@ -28,7 +27,13 @@ class CartView extends StatelessWidget {
                       itemCount: state.cart.length,
                       itemBuilder: (context, index) {
                         final product = state.cart[index];
-                        return CartCard(product: product);
+                        return Column(
+                          children: [
+                            CartCard(product: product),
+                            if (index != state.cart.length - 1)
+                              Divider(endIndent: 15, indent: 15),
+                          ],
+                        );
                       },
                     ),
                   ),
@@ -49,30 +54,6 @@ class CartView extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class CartCard extends StatelessWidget {
-  const CartCard({super.key, required this.product});
-
-  final CartEntity product;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(value: true, onChanged: (b) {}),
-        Expanded(
-          child: ListTile(
-            title: Text(
-              'id=${product.id}, name=${product.productName}, price=${product.productPrice}',
-              style: Styles.titleText16,
-            ),
-            subtitle: Text('quantity: ${product.quantity}'),
-          ),
-        ),
-      ],
     );
   }
 }

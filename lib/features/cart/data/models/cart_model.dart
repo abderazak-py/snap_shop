@@ -8,6 +8,7 @@ class CartModel extends Equatable {
   final int quantity;
   final String productName;
   final double productPrice;
+  final String productImage;
 
   const CartModel({
     required this.id,
@@ -17,10 +18,13 @@ class CartModel extends Equatable {
     required this.quantity,
     required this.productName,
     required this.productPrice,
+    required this.productImage,
   });
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     final product = map['products'] ?? {};
+    final imgs = (product['image'] as List?) ?? const [];
+    final first = imgs.isNotEmpty ? imgs.first as Map<String, dynamic> : null;
     return CartModel(
       id: map['id'],
       productId: map['product_id'],
@@ -29,6 +33,7 @@ class CartModel extends Equatable {
       addedAt: DateTime.parse(map['added_at']),
       productName: product['name'] ?? '',
       productPrice: (product['price'] as num?)?.toDouble() ?? 0.0,
+      productImage: first?['image_url']?.toString() ?? '',
     );
   }
   Map<String, dynamic> toMap() {
@@ -49,5 +54,6 @@ class CartModel extends Equatable {
     quantity,
     productName,
     productPrice,
+    productImage,
   ];
 }
