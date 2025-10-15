@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
@@ -31,6 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       webClientId: webClientId,
     );
     if (user == null) return null;
+    debugPrint('user Metadata ============>${user.userMetadata}');
     return _mapUserToEntity(user);
   }
 
@@ -38,7 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
     return UserEntity(
       id: user.id,
       email: user.email ?? '',
-      name: user.userMetadata?['full_name'] as String?,
+      name: user.userMetadata?['name'] as String?,
       avatarUrl: user.userMetadata?['avatar_url'] as String?,
     );
   }
@@ -47,7 +49,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserEntity?> getCurrentUser() async {
     final user = await remoteDataSource.getCurrentUser();
     if (user == null) return null;
-    return UserEntity(id: user.id, email: user.email);
+    return UserEntity(
+      id: user.id,
+      email: user.email,
+      name: user.userMetadata?['name'],
+      avatarUrl: user.userMetadata?['avatar_url'],
+    );
   }
 
   @override

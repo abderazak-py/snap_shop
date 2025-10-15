@@ -1,8 +1,10 @@
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
 
 abstract class CartRepository {
-  Future<void> addToCart(int productId);
-  Future<void> removeFromCart(int id);
-  Future<List<CartEntity>> getCartItems();
-  Future<void> emptyCart();
+  Future<Either<Failure, void>> addToCart(int productId);
+  Future<Either<Failure, void>> removeFromCart(int id);
+  Future<Either<Failure, List<CartEntity>>> getCartItems();
+  Future<Either<Failure, void>> emptyCart();
 }

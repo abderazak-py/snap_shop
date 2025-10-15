@@ -3,7 +3,7 @@ import 'package:snap_shop/features/auth/presentation/views/auth_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
-import 'package:snap_shop/features/cart/presentation/cart_view.dart';
+import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
 import 'package:snap_shop/features/home/presentation/views/home_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';

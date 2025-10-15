@@ -8,6 +8,7 @@ void main() async {
   runApp(const SnapShop());
 }
 
+//TODO handle exceptions with EITHER and add Failure class
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});
   @override

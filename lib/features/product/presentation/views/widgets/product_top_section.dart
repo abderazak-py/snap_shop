@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
+import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
 
 class ProductTopSection extends StatelessWidget {
   const ProductTopSection({super.key});
@@ -10,17 +13,45 @@ class ProductTopSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final getCurrentUserUseCase = sl<GetCurrentUserUseCase>();
     return Row(
       children: [
         SizedBox(width: width * 0.05),
-        CircleAvatar(radius: 20),
+        FutureBuilder(
+          future: getCurrentUserUseCase.execute(),
+          builder: (context, snapshot) {
+            final user = snapshot.data!;
+            debugPrint(
+              'IMage avatar ======================|>${user.avatarUrl} user info ${user.toString()}',
+            );
+            return SizedBox(
+              width: width * 0.11,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(50),
+                child: CachedNetworkImage(imageUrl: user.avatarUrl ?? ''),
+              ),
+            );
+          },
+        ),
         SizedBox(width: width * 0.03),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Hi, Abderazak',
-              style: Styles.titleText16.copyWith(fontWeight: FontWeight.w900),
+            FutureBuilder(
+              future: getCurrentUserUseCase.execute(),
+              builder: (context, snapshot) {
+                final user = snapshot.data!;
+                return SizedBox(
+                  width: width * 0.5,
+                  child: Text(
+                    'Hi, ${user.name?.split(' ').first ?? 'Snapper'}',
+                    overflow: TextOverflow.ellipsis,
+                    style: Styles.titleText16.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                );
+              },
             ),
             Text(
               'Let\'s go shopping',

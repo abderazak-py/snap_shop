@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/cart/data/models/cart_model.dart';
 
@@ -6,7 +8,7 @@ class CartRemoteDataSource {
 
   CartRemoteDataSource(this.supabaseService);
 
-  Future<void> addToCart(int productId) async {
+  Future<Either<Failure, void>> addToCart(int productId) async {
     try {
       if (supabaseService.auth.currentUser == null) {
         throw Exception('User not logged in');
@@ -31,19 +33,21 @@ class CartRemoteDataSource {
         });
       }
     } catch (e) {
-      throw Exception('Failed to add to cart: ${e.toString()}');
+      return Left(Failure('Failed to add to cart: ${e.toString()}'));
     }
+    return const Right(null);
   }
 
-  Future<void> removeFromCart(int id) async {
+  Future<Either<Failure, void>> removeFromCart(int id) async {
     try {
       await supabaseService.from('cart').delete().eq('id', id);
     } catch (e) {
-      throw Exception('Failed to remove from cart: ${e.toString()}');
+      return Left(Failure('Failed to remove from cart: ${e.toString()}'));
     }
+    return const Right(null);
   }
 
-  Future<List<CartModel>> getCartItems() async {
+  Future<Either<Failure, List<CartModel>>> getCartItems() async {
     try {
       String? userId = supabaseService.auth.currentUser?.id;
       if (userId == null) {
@@ -55,21 +59,25 @@ class CartRemoteDataSource {
             'id, quantity, user_id, added_at, product_id, products(name, price)',
           )
           .eq('user_id', userId);
-      return (response as List).map((cart) => CartModel.fromMap(cart)).toList();
+      final result = (response as List)
+          .map((cart) => CartModel.fromMap(cart))
+          .toList();
+      return Right(result);
     } catch (e) {
-      throw Exception('Failed to get cart items: ${e.toString()}');
+      return Left(Failure('Failed to get cart items: ${e.toString()}'));
     }
   }
 
-  Future<void> emptyCart() async {
+  Future<Either<Failure, void>> emptyCart() async {
     try {
       String? userId = supabaseService.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not logged in');
+        return Left(Failure('User not logged in'));
       }
       await supabaseService.from('cart').delete().eq('user_id', userId);
     } catch (e) {
-      throw Exception('Failed to empty cart: ${e.toString()}');
+      return Left(Failure('Failed to empty cart: ${e.toString()}'));
     }
+    return const Right(null);
   }
 }

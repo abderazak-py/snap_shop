@@ -7,7 +7,9 @@ class PaymentRemoteDataSource {
   PaymentRemoteDataSource(this.supabaseService);
   final getCartItemsUsecase = sl<GetCartItemsUsecase>();
   Future<List<Map<String, dynamic>>> paypalTransactions() async {
-    final cartItems = await getCartItemsUsecase.execute();
+    final res = await getCartItemsUsecase.execute();
+    final cartItems = res.fold((l) => throw Exception(l.message), (r) => r);
+
     if (cartItems.isEmpty) {
       throw Exception('Cart is empty');
     }
@@ -51,8 +53,8 @@ class PaymentRemoteDataSource {
       if (supabaseService.auth.currentUser == null) {
         throw Exception('User not logged in');
       }
-
-      final cartItems = await getCartItemsUsecase.execute();
+      final res = await getCartItemsUsecase.execute();
+      final cartItems = res.fold((l) => throw Exception(l.message), (r) => r);
       if (cartItems.isEmpty) {
         throw Exception('Cart is empty');
       }

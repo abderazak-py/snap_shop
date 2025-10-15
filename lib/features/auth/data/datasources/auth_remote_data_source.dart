@@ -39,11 +39,7 @@ class AuthRemoteDataSource {
     final scopes = ['email', 'profile'];
     final googleSignIn = GoogleSignIn.instance;
     await googleSignIn.initialize(serverClientId: webClientId);
-    final googleUser = await googleSignIn.attemptLightweightAuthentication();
-    // or await googleSignIn.authenticate(); which will return a GoogleSignInAccount or throw an exception
-    if (googleUser == null) {
-      throw AuthException('Failed to sign in with Google.');
-    }
+    final googleUser = await googleSignIn.authenticate();
 
     /// Authorization is required to obtain the access token with the appropriate scopes for Supabase authentication,
     /// while also granting permission to access user information.
@@ -60,7 +56,20 @@ class AuthRemoteDataSource {
       accessToken: authorization.accessToken,
     );
     final user = await getCurrentUser();
-    return user;
+
+    //this to update user metadata with google so the user doesnt need to enter them manually
+    await supabaseService.auth.updateUser(
+      UserAttributes(
+        data: {
+          'name': user?.userMetadata?['name'] ?? '',
+          'avatar_url': user?.userMetadata?['avatar_url'] ?? '',
+        },
+      ),
+    );
+    final response = await supabaseService.auth.getUser();
+    final updatedUser = response.user;
+
+    return updatedUser;
   }
 
   /// Get current user
