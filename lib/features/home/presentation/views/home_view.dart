@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
+import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_state.dart';
+import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snap_shop/features/profile/presentation/views/profile_view.dart';
@@ -29,14 +32,24 @@ class HomeView extends StatelessWidget {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            body: IndexedStack(
-              index: state.currentIndex,
-              children: [
-                ProductView(),
-                CartView(),
-                Center(child: Text('Favourite')), // Favourite
-                ProfileView(), // Profile
+            body: MultiBlocProvider(
+              providers: [
+                BlocProvider<CartCubit>(
+                  create: (_) => sl<CartCubit>()..getCartItems(),
+                ),
+                BlocProvider<ProductCubit>(
+                  create: (_) => sl<ProductCubit>()..getProducts(),
+                ),
               ],
+              child: IndexedStack(
+                index: state.currentIndex,
+                children: [
+                  ProductView(),
+                  CartView(),
+                  Center(child: Text('Favourite')), // Favourite
+                  ProfileView(), // Profile
+                ],
+              ),
             ),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,

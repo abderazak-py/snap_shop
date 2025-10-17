@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
 import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
@@ -10,12 +12,19 @@ import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_use
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartCubit() : super(CartInitial());
+  final GetCartItemsUsecase getCartItemsUsecase;
+  final AddOneToCartUsecase addOneToCartUsecase;
+  final RemoveOneFromCartUsecase removeOneFromCartUsecase;
+  CartCubit({
+    required this.getCartItemsUsecase,
+    required this.addOneToCartUsecase,
+    required this.removeOneFromCartUsecase,
+  }) : super(CartInitial());
 
   void getCartItems() async {
     emit(CartLoading());
     debugPrint('Starting getCartItems');
-    final response = await sl<GetCartItemsUsecase>().execute();
+    final response = await getCartItemsUsecase.execute();
     debugPrint('Starting getCartItems DONE ++++++++++++');
     response.fold(
       (failure) => emit(CartFailure(failure.message)),
@@ -44,8 +53,8 @@ class CartCubit extends Cubit<CartState> {
 
     // Call backend *afterward*
     final response = add
-        ? await sl<AddOneToCartUsecase>().execute(productId)
-        : await sl<RemoveOneFromCartUsecase>().execute(
+        ? await addOneToCartUsecase.execute(productId)
+        : await removeOneFromCartUsecase.execute(
             productId,
           ); //TODO make them update the quantity with the new value
 

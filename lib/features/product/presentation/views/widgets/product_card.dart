@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
+import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 
 class ProductCard extends StatelessWidget {
@@ -48,6 +50,7 @@ class ProductCard extends StatelessWidget {
                           onTap: () {
                             try {
                               addOneToCartUsecase.execute(product.id);
+                              context.read<CartCubit>().getCartItems();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text('Product added to cart'),

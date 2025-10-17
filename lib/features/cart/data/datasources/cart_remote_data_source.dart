@@ -11,7 +11,7 @@ class CartRemoteDataSource {
   Future<Either<Failure, void>> addOneToCart(int productId) async {
     try {
       if (supabaseService.auth.currentUser == null) {
-        throw Exception('User not logged in');
+        Left(Failure('User not logged in'));
       }
       final result = await supabaseService
           .from('cart')
@@ -41,7 +41,7 @@ class CartRemoteDataSource {
   Future<Either<Failure, void>> removeOneFromCart(int productId) async {
     try {
       if (supabaseService.auth.currentUser == null) {
-        throw Exception('User not logged in');
+        Left(Failure('User not logged in'));
       }
       final result = await supabaseService
           .from('cart')
@@ -79,16 +79,16 @@ class CartRemoteDataSource {
 
   Future<Either<Failure, List<CartModel>>> getCartItems() async {
     try {
-      String? userId = supabaseService.auth.currentUser?.id;
-      if (userId == null) {
-        throw Exception('User not logged in');
+      if (supabaseService.auth.currentUser == null) {
+        Left(Failure('User not logged in'));
       }
+
       final response = await supabaseService
           .from('cart')
           .select(
             'id, quantity, user_id, added_at, product_id, products(name, price, image!inner(image_url, position))',
           )
-          .eq('user_id', userId)
+          .eq('user_id', supabaseService.auth.currentUser!.id)
           .eq('products.image.position', 1);
 
       final result = (response as List)
@@ -102,11 +102,13 @@ class CartRemoteDataSource {
 
   Future<Either<Failure, void>> emptyCart() async {
     try {
-      String? userId = supabaseService.auth.currentUser?.id;
-      if (userId == null) {
-        return Left(Failure('User not logged in'));
+      if (supabaseService.auth.currentUser == null) {
+        Left(Failure('User not logged in'));
       }
-      await supabaseService.from('cart').delete().eq('user_id', userId);
+      await supabaseService
+          .from('cart')
+          .delete()
+          .eq('user_id', supabaseService.auth.currentUser!.id);
     } catch (e) {
       return Left(Failure('Failed to empty cart: ${e.toString()}'));
     }

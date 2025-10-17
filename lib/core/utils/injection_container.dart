@@ -20,6 +20,7 @@ import 'package:snap_shop/features/cart/domain/usecases/empty_cart_usecase.dart'
 import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_usecase.dart';
+import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
@@ -147,6 +148,13 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<EmptyCartUsecase>(
     () => EmptyCartUsecase(sl<CartRepository>()),
+  );
+  sl.registerFactory<CartCubit>(
+    () => CartCubit(
+      getCartItemsUsecase: sl<GetCartItemsUsecase>(),
+      addOneToCartUsecase: sl<AddOneToCartUsecase>(),
+      removeOneFromCartUsecase: sl<RemoveOneFromCartUsecase>(),
+    ),
   );
 
   // ||=====================||PAYMENT||=====================||

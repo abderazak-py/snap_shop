@@ -55,13 +55,32 @@ class ProductTabView extends StatelessWidget {
                           ),
                         ),
 
-                        BlocProvider(
-                          create: (context) =>
-                              sl<ProductCubit>()..getProducts(),
-                          child: BlocBuilder<ProductCubit, ProductState>(
-                            builder: (context, state) {
-                              if (state is ProductSuccess) {
-                                return SliverGrid(
+                        BlocBuilder<ProductCubit, ProductState>(
+                          builder: (context, state) {
+                            if (state is ProductSuccess) {
+                              return SliverGrid(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 0.83,
+                                    ),
+                                delegate: SliverChildBuilderDelegate((
+                                  context,
+                                  index,
+                                ) {
+                                  final product = state.products[index];
+                                  return ProductCard(product: product);
+                                }, childCount: state.products.length),
+                              );
+                            } else if (state is ProductFailure) {
+                              return SliverToBoxAdapter(
+                                child: Center(
+                                  child: Text('Filed =${state.error}'),
+                                ),
+                              );
+                            } else {
+                              return Skeletonizer.sliver(
+                                child: SliverGrid(
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
@@ -71,44 +90,21 @@ class ProductTabView extends StatelessWidget {
                                     context,
                                     index,
                                   ) {
-                                    final product = state.products[index];
+                                    final product = ProductEntity(
+                                      id: 0,
+                                      createdAt: DateTime.now(),
+                                      name: 'Wirless Headphone',
+                                      description: '',
+                                      category: '',
+                                      price: 109.99,
+                                      images: ['data:,'],
+                                    );
                                     return ProductCard(product: product);
-                                  }, childCount: state.products.length),
-                                );
-                              } else if (state is ProductFailure) {
-                                return SliverToBoxAdapter(
-                                  child: Center(
-                                    child: Text('Filed =${state.error}'),
-                                  ),
-                                );
-                              } else {
-                                return Skeletonizer.sliver(
-                                  child: SliverGrid(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 0.83,
-                                        ),
-                                    delegate: SliverChildBuilderDelegate((
-                                      context,
-                                      index,
-                                    ) {
-                                      final product = ProductEntity(
-                                        id: 0,
-                                        createdAt: DateTime.now(),
-                                        name: 'Wirless Headphone',
-                                        description: '',
-                                        category: '',
-                                        price: 109.99,
-                                        images: ['data:,'],
-                                      );
-                                      return ProductCard(product: product);
-                                    }, childCount: 6),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                                  }, childCount: 6),
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
                     ),
