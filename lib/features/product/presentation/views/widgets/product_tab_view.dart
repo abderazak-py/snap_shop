@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
+import 'package:snap_shop/features/product/presentation/views/category_view.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/custom_tab_bar.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/product_banner_section.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
@@ -109,7 +109,7 @@ class ProductTabView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Center(child: Text('Category Content')),
+                  CategoryView(),
                 ],
               ),
             ),
