@@ -49,7 +49,7 @@ class ProfileView extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  user?.name?.split(' ').first ?? 'Snapper',
+                  user?.name ?? 'Snapper',
                   style: Styles.titleText24.copyWith(
                     fontWeight: FontWeight.w900,
                   ),

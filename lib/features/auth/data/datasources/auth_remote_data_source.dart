@@ -56,12 +56,13 @@ class AuthRemoteDataSource {
       accessToken: authorization.accessToken,
     );
     final user = await getCurrentUser();
+    final userName = user?.userMetadata?['name'] ?? '';
 
     //this to update user metadata with google so the user doesnt need to enter them manually
     await supabaseService.auth.updateUser(
       UserAttributes(
         data: {
-          'name': user?.userMetadata?['name'] ?? '',
+          'name': userName.split(' ').first,
           'avatar_url': user?.userMetadata?['avatar_url'] ?? '',
         },
       ),

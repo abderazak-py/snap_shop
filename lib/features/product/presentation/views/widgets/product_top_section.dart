@@ -44,7 +44,7 @@ class ProductTopSection extends StatelessWidget {
                 return SizedBox(
                   width: width * 0.5,
                   child: Text(
-                    'Hi, ${user.name?.split(' ').first ?? 'Snapper'}',
+                    'Hi, ${user.name ?? 'Snapper'}',
                     overflow: TextOverflow.ellipsis,
                     style: Styles.titleText16.copyWith(
                       fontWeight: FontWeight.w900,
