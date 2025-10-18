@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
-import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 
 class ProductCard extends StatelessWidget {
@@ -18,7 +16,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isLoading = Skeletonizer.maybeOf(context)?.enabled ?? false;
-    AddOneToCartUsecase addOneToCartUsecase = sl<AddOneToCartUsecase>();
+
     return Column(
       children: [
         ClipRRect(
@@ -47,32 +45,53 @@ class ProductCard extends StatelessWidget {
                         shape: const CircleBorder(),
                         child: InkWell(
                           customBorder: const CircleBorder(),
-                          onTap: () {
-                            try {
-                              addOneToCartUsecase.execute(product.id);
-                              context.read<CartCubit>().getCartItems();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text('Product added to cart'),
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(12),
-                                  backgroundColor: AppColors.kPrimaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
-                            } catch (e) {
-                              debugPrint(e.toString());
-                            }
+                          onTap: () async {
+                            context.read<FavoriteCubit>().toggleFavorite(
+                              product,
+                            );
+                            // try {
+                            //   await context
+                            //       .read<FavoriteCubit>()
+                            //       .addToFavoriteUsecase
+                            //       .execute(product.id);
+                            //   if (context.mounted) {
+                            //     context
+                            //         .read<FavoriteCubit>()
+                            //         .getFavoriteItems();
+                            //   }
+                            // } catch (e) {
+                            //   debugPrint(e.toString());
+                            // }
                           },
-                          child: const Padding(
+                          child: Padding(
                             padding: EdgeInsets.all(6),
-                            child: Icon(
-                              Icons.add_rounded,
-                              color: Colors.white,
-                              size: 15,
+                            child: BlocBuilder<FavoriteCubit, FavoriteState>(
+                              buildWhen: (prev, curr) {
+                                bool has(FavoriteState s) =>
+                                    s is FavoriteSuccess &&
+                                    s.favorite.any(
+                                      (e) => e.productId == product.id,
+                                    );
+                                return has(prev) != has(curr);
+                              },
+                              builder: (context, state) {
+                                final isFavorite =
+                                    state is FavoriteSuccess &&
+                                    state.favorite.any(
+                                      (e) => e.productId == product.id,
+                                    );
+                                return isFavorite
+                                    ? Icon(
+                                        Icons.favorite_rounded,
+                                        color: Colors.red,
+                                        size: 15,
+                                      )
+                                    : Icon(
+                                        Icons.favorite_border_rounded,
+                                        color: Colors.white,
+                                        size: 15,
+                                      );
+                              },
                             ),
                           ),
                         ),

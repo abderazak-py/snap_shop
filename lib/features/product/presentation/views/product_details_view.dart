@@ -26,3 +26,23 @@ class ProductDetailsView extends StatelessWidget {
     );
   }
 }
+//TODO add this inside product detailes view ,and make this section for adding favorite
+
+                            // try {
+                            //   addOneToCartUsecase.execute(product.id);
+                            //   context.read<CartCubit>().getCartItems();
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackBar(
+                            //       content: const Text('Product added to cart'),
+                            //       behavior: SnackBarBehavior.floating,
+                            //       margin: const EdgeInsets.all(12),
+                            //       backgroundColor: AppColors.kPrimaryColor,
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(10),
+                            //       ),
+                            //       duration: const Duration(seconds: 2),
+                            //     ),
+                            //   );
+                            // } catch (e) {
+                            //   debugPrint(e.toString());
+                            // }

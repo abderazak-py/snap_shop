@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
-import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
+import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
+import 'package:snap_shop/features/favorite/presentation/views/favorite_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_state.dart';
 import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
@@ -34,8 +34,8 @@ class HomeView extends StatelessWidget {
           return Scaffold(
             body: MultiBlocProvider(
               providers: [
-                BlocProvider<CartCubit>(
-                  create: (_) => sl<CartCubit>()..getCartItems(),
+                BlocProvider<FavoriteCubit>(
+                  create: (_) => sl<FavoriteCubit>()..getFavoriteItems(),
                 ),
                 BlocProvider<ProductCubit>(
                   create: (_) => sl<ProductCubit>()..getProducts(),
@@ -45,8 +45,8 @@ class HomeView extends StatelessWidget {
                 index: state.currentIndex,
                 children: [
                   ProductView(),
-                  CartView(),
-                  Center(child: Text('Favourite')), // Favourite
+                  FavoriteView(),
+                  Center(child: Text('Ai chat')), // ai chat
                   ProfileView(), // Profile
                 ],
               ),
@@ -64,8 +64,8 @@ class HomeView extends StatelessWidget {
                   label: 'Home',
                 ),
                 const BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_bag_rounded),
-                  label: 'Cart',
+                  icon: Icon(Icons.favorite_border_rounded),
+                  label: 'Favorite',
                 ),
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.chat_rounded),

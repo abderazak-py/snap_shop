@@ -21,6 +21,13 @@ import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.d
 import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_usecase.dart';
 import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:snap_shop/features/favorite/data/datasources/favorite_remote_data_source.dart';
+import 'package:snap_shop/features/favorite/data/repos/favorite_repo_impl.dart';
+import 'package:snap_shop/features/favorite/domain/repos/favorite_repo.dart';
+import 'package:snap_shop/features/favorite/domain/usecases/toggle_favorite_usecase.dart';
+import 'package:snap_shop/features/favorite/domain/usecases/get_favorite_items_usecase.dart';
+import 'package:snap_shop/features/favorite/domain/usecases/remove_from_favorite_usecase.dart';
+import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
@@ -154,6 +161,35 @@ Future<void> init() async {
       getCartItemsUsecase: sl<GetCartItemsUsecase>(),
       addOneToCartUsecase: sl<AddOneToCartUsecase>(),
       removeOneFromCartUsecase: sl<RemoveOneFromCartUsecase>(),
+    ),
+  );
+
+  // ||=====================||FAVORITE||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<FavoriteRemoteDataSource>(
+    () => FavoriteRemoteDataSource(sl<ISupabaseService>()),
+  );
+  // Repositories
+  sl.registerLazySingleton<FavoriteRepository>(
+    () => FavoriteRepoImpl(sl<FavoriteRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetFavoriteItemsUsecase>(
+    () => GetFavoriteItemsUsecase(sl<FavoriteRepository>()),
+  );
+  sl.registerLazySingleton<ToggleFavoriteeUsecase>(
+    () => ToggleFavoriteeUsecase(sl<FavoriteRepository>()),
+  );
+  sl.registerLazySingleton<RemoveFromFavoriteUsecase>(
+    () => RemoveFromFavoriteUsecase(sl<FavoriteRepository>()),
+  );
+
+  sl.registerFactory<FavoriteCubit>(
+    () => FavoriteCubit(
+      addToFavoriteUsecase: sl<ToggleFavoriteeUsecase>(),
+      getFavoriteItemsUsecase: sl<GetFavoriteItemsUsecase>(),
     ),
   );
 

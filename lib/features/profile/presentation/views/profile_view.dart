@@ -28,9 +28,11 @@ class ProfileView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: height * 0.08),
-                const Text(
+                Text(
                   'Profile',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: Styles.titleText26.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
                 Spacer(),
                 SizedBox(
