@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
+import 'package:snap_shop/features/product/presentation/views/widgets/search_app_bar.dart';
 
 class SearchProductsView extends StatefulWidget {
   const SearchProductsView({super.key});
@@ -15,9 +15,6 @@ class SearchProductsView extends StatefulWidget {
 }
 
 class _SearchProductsViewState extends State<SearchProductsView> {
-  String? query;
-  Future<List<ProductEntity>>? searchFuture;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,25 +22,7 @@ class _SearchProductsViewState extends State<SearchProductsView> {
         create: (context) => sl<ProductCubit>(),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 90, left: 16, right: 16),
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Search products...',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    query = value;
-                    // Only perform search if query is not empty
-                    if (query != null && query!.isNotEmpty) {
-                      context.read<ProductCubit>().searchProducts(query!);
-                    }
-                  });
-                },
-              ),
-            ),
+            SearchAppBar(),
             const SizedBox(height: 16),
             Expanded(
               child: BlocBuilder<ProductCubit, ProductState>(

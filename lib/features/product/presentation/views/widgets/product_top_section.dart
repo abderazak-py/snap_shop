@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
@@ -20,15 +21,12 @@ class ProductTopSection extends StatelessWidget {
         FutureBuilder(
           future: getCurrentUserUseCase.execute(),
           builder: (context, snapshot) {
-            final user = snapshot.data!;
-            debugPrint(
-              'IMage avatar ======================|>${user.avatarUrl} user info ${user.toString()}',
-            );
+            final user = snapshot.data;
             return SizedBox(
               width: width * 0.11,
               child: ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(50),
-                child: CachedNetworkImage(imageUrl: user.avatarUrl ?? ''),
+                child: CachedNetworkImage(imageUrl: user?.avatarUrl ?? ''),
               ),
             );
           },
@@ -65,7 +63,23 @@ class ProductTopSection extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).push(AppRouter.kSearchProductsView);
           },
-          icon: Icon(Icons.search_rounded, size: 30),
+          icon: Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              top: 10,
+              right: 10,
+              bottom: 10,
+            ),
+
+            child: SvgPicture.asset(
+              AppIcons.search,
+
+              colorFilter: const ColorFilter.mode(
+                AppColors.kTextColor,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
         ),
         IconButton(
           onPressed: () {},

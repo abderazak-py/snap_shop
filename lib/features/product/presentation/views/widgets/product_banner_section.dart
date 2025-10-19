@@ -9,16 +9,15 @@ class ProductBannerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = PageController();
-    final width = MediaQuery.sizeOf(
-      context,
-    ).width; //crazy implementation of aspect ratio by ABDERAZAK
+    final width = MediaQuery.sizeOf(context).width;
+    final aspectRatio = (9 / 18);
     return SizedBox(
-      height: width * 9 / 21 + 10,
+      height: width * aspectRatio + 10,
       width: width,
       child: Column(
         children: [
           SizedBox(
-            height: width * 9 / 21,
+            height: width * aspectRatio,
             width: width,
             child: PageView(
               controller: controller,

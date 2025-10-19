@@ -9,13 +9,13 @@ void main() async {
 }
 
 //TODO handle exceptions with EITHER and add Failure class
-//TODO add this to sign in with google: user?.name?.split(' ').first ?? 'Snapper'
 
 class SnapShop extends StatelessWidget {
   const SnapShop({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
     );

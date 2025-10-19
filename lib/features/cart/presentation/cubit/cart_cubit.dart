@@ -52,9 +52,7 @@ class CartCubit extends Cubit<CartState> {
     // Call backend *afterward*
     final response = add
         ? await addOneToCartUsecase.execute(productId)
-        : await removeOneFromCartUsecase.execute(
-            productId,
-          ); //TODO make them update the quantity with the new value
+        : await removeOneFromCartUsecase.execute(productId);
 
     response.fold((failure) {
       // if failed, revert the change maybe

@@ -20,4 +20,6 @@ class AppIcons {
   static const String mail = 'assets/icons/mail.svg';
   static const String lock = 'assets/icons/lock.svg';
   static const String name = 'assets/icons/name.svg';
+  static const String search = 'assets/icons/search.svg';
+  static const String filter = 'assets/icons/filter.svg';
 }
