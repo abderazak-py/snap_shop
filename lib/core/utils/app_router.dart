@@ -1,15 +1,18 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/auth/presentation/views/auth_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
+import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/home/presentation/views/home_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
-import 'package:snap_shop/features/product/presentation/views/search_products_view.dart';
+import 'package:snap_shop/features/search/presentation/views/search_products_view.dart';
 import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
@@ -55,7 +58,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: '/search_products',
-        builder: (context, state) => const SearchProductsView(),
+        builder: (context, state) => BlocProvider.value(
+          value: sl<FavoriteCubit>(),
+          child: const SearchProductsView(),
+        ),
       ),
       GoRoute(
         path: '/payment',

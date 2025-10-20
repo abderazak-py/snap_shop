@@ -37,8 +37,12 @@ import 'package:snap_shop/features/product/data/datasources/product_remote_data_
 import 'package:snap_shop/features/product/data/repos/product_repository_impl.dart';
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
-import 'package:snap_shop/features/product/domain/usecases/search_products_usecase.dart';
 import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
+import 'package:snap_shop/features/search/data/datasources/search_remote_data_source.dart';
+import 'package:snap_shop/features/search/data/repos/search_repo_impl.dart';
+import 'package:snap_shop/features/search/domain/repos/search_repo.dart';
+import 'package:snap_shop/features/search/domain/usecases/search_usecase.dart';
+import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
@@ -117,16 +121,32 @@ Future<void> init() async {
   sl.registerLazySingleton<GetProductsUseCase>(
     () => GetProductsUseCase(sl<ProductRepository>()),
   );
-  sl.registerLazySingleton<SearchProductsUsecase>(
-    () => SearchProductsUsecase(sl<ProductRepository>()),
-  );
 
   // Cubit/Bloc
   sl.registerFactory<ProductCubit>(
-    () => ProductCubit(
-      getProductsUseCase: sl<GetProductsUseCase>(),
-      searchProductsUsecase: sl<SearchProductsUsecase>(),
-    ),
+    () => ProductCubit(getProductsUseCase: sl<GetProductsUseCase>()),
+  );
+
+  // ||=====================||PRODUCTS||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<SearchRemoteDataSource>(
+    () => SearchRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<SearchRepository>(
+    () => SearchRepositoryImpl(sl<SearchRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<SearchUsecase>(
+    () => SearchUsecase(sl<SearchRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<SearchCubit>(
+    () => SearchCubit(searchUsecase: sl<SearchUsecase>()),
   );
 
   // ||=====================||CART||=====================||
@@ -182,11 +202,12 @@ Future<void> init() async {
   sl.registerLazySingleton<ToggleFavoriteeUsecase>(
     () => ToggleFavoriteeUsecase(sl<FavoriteRepository>()),
   );
+
   sl.registerLazySingleton<RemoveFromFavoriteUsecase>(
     () => RemoveFromFavoriteUsecase(sl<FavoriteRepository>()),
   );
 
-  sl.registerFactory<FavoriteCubit>(
+  sl.registerLazySingleton<FavoriteCubit>(
     () => FavoriteCubit(
       addToFavoriteUsecase: sl<ToggleFavoriteeUsecase>(),
       getFavoriteItemsUsecase: sl<GetFavoriteItemsUsecase>(),

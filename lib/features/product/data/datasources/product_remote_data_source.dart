@@ -59,21 +59,6 @@ class ProductRemoteDataSource {
     }
   }
 
-  // Search products by name or description
-  Future<List<ProductModel>> searchProducts(String query) async {
-    try {
-      final response = await supabaseService
-          .from('products')
-          .select()
-          .ilike('name', '%$query%');
-      return (response as List)
-          .map((product) => ProductModel.fromMap(product))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to search products: ${e.toString()}');
-    }
-  }
-
   // Add a new product (admin feature)
   Future<ProductModel> addProduct(ProductModel product) async {
     try {

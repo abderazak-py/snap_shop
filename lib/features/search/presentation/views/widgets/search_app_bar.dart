@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/filter_bottom_sheet.dart';
+import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
+import 'package:snap_shop/features/search/presentation/views/widgets/filter_bottom_sheet.dart';
 
 class SearchAppBar extends StatelessWidget {
   const SearchAppBar({super.key});
@@ -59,12 +59,15 @@ class SearchAppBar extends StatelessWidget {
                     bottom: 10,
                   ),
                   child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet<void>(
+                    onTap: () async {
+                      final result = await showModalBottomSheet<RangeValues>(
                         context: context,
                         builder: (_) => FilterBottomSheet(),
                       );
+                      //TODO: handle result
+                      //if(result != null) context.read<ProductCubit>().searchProducts(result.start.toString());
                     },
+
                     child: SvgPicture.asset(
                       AppIcons.filter,
                       colorFilter: const ColorFilter.mode(
@@ -90,7 +93,7 @@ class SearchAppBar extends StatelessWidget {
               ),
               onChanged: (value) {
                 if (value.isNotEmpty) {
-                  context.read<ProductCubit>().searchProducts(value);
+                  context.read<SearchCubit>().search(value);
                 }
               },
             ),

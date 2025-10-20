@@ -61,24 +61,6 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<List<ProductEntity>> searchProducts(String query) async {
-    final productModels = await remoteDataSource.searchProducts(query);
-    return productModels
-        .map(
-          (model) => ProductEntity(
-            id: model.id,
-            name: model.name,
-            description: model.description,
-            category: model.category,
-            price: model.price,
-            createdAt: model.createdAt,
-            images: model.images,
-          ),
-        )
-        .toList();
-  }
-
-  @override
   Future<void> addProduct(ProductEntity product) async {
     await remoteDataSource.addProduct(product as dynamic);
   }

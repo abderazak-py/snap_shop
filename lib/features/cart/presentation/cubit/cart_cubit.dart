@@ -35,7 +35,7 @@ class CartCubit extends Cubit<CartState> {
     final currentState = state as CartSuccess;
     final currentCart = currentState.cart;
 
-    // 🔹 Update UI immediately
+    // Update UI immediately before making the API call
     final updatedCart = currentCart
         .map((item) {
           if (item.productId == productId) {
@@ -49,7 +49,7 @@ class CartCubit extends Cubit<CartState> {
 
     emit(CartSuccess(updatedCart));
 
-    // Call backend *afterward*
+    // Callapi after updating ui
     final response = add
         ? await addOneToCartUsecase.execute(productId)
         : await removeOneFromCartUsecase.execute(productId);

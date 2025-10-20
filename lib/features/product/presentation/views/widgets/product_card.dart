@@ -49,19 +49,6 @@ class ProductCard extends StatelessWidget {
                             context.read<FavoriteCubit>().toggleFavorite(
                               product,
                             );
-                            // try {
-                            //   await context
-                            //       .read<FavoriteCubit>()
-                            //       .addToFavoriteUsecase
-                            //       .execute(product.id);
-                            //   if (context.mounted) {
-                            //     context
-                            //         .read<FavoriteCubit>()
-                            //         .getFavoriteItems();
-                            //   }
-                            // } catch (e) {
-                            //   debugPrint(e.toString());
-                            // }
                           },
                           child: Padding(
                             padding: EdgeInsets.all(6),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/custom_slider_point.dart';
+import 'package:snap_shop/features/search/presentation/views/widgets/custom_slider_point.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({
@@ -123,7 +124,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
           CustomBigButton(
             title: 'Apply',
-            onPressed: () => Navigator.pop(context, _values),
+            onPressed: () => GoRouter.of(context).pop(_values),
           ),
           SizedBox(height: 30),
         ],

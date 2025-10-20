@@ -9,8 +9,6 @@ abstract class ProductRepository {
 
   Future<List<ProductEntity>> getProductsByCategory(String category);
 
-  Future<List<ProductEntity>> searchProducts(String query);
-
   Future<void> addProduct(ProductEntity product);
 
   Future<void> updateProduct(ProductEntity product);
