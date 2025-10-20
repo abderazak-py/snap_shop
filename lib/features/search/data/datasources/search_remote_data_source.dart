@@ -8,30 +8,6 @@ class SearchRemoteDataSource {
 
   SearchRemoteDataSource(this.supabaseService);
 
-  // Fetch all products with their images
-  Future<List<ProductModel>> getProducts() async {
-    try {
-      final response = await supabaseService
-          .from('products')
-          .select(
-            'id, created_at, name, description, price, category, image(image_url, position)',
-          )
-          .order('id', ascending: true);
-
-      return (response as List).map((product) {
-        final imagesRaw = product['image'] as List?;
-        final imageList = (imagesRaw ?? [])
-            .map((img) => img['image_url']?.toString() ?? '')
-            .where((url) => url.isNotEmpty)
-            .toList();
-        // Important: pass as 'image' key to fit your ProductModel.fromMap
-        return ProductModel.fromMap({...product, 'image': imageList});
-      }).toList();
-    } catch (e) {
-      throw Exception('Failed to fetch products: ${e.toString()}');
-    }
-  }
-
   // Search products by name
   Future<Either<Failure, List<ProductModel>>> search(String query) async {
     try {
@@ -51,22 +27,26 @@ class SearchRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
-
+      print('the response is ============>>$response');
       return Right(products);
     } catch (e) {
       return Left(Failure('Failed to search products: ${e.toString()}'));
     }
   }
 
-  // Search products by name, price range, and category
-  Future<Either<Failure, List<ProductModel>>> searchWithFilter({
+  // Search products by name, price range, and categoryS
+  Future<Either<Failure, List<ProductModel>>> searchWithFilters({
     required String query,
     double? minPrice,
     double? maxPrice,
     String? category,
   }) async {
     try {
-      var request = supabaseService.from('products').select();
+      var request = supabaseService
+          .from('products')
+          .select(
+            'id, created_at, name, description, price, category, image(image_url, position)',
+          );
 
       // search by name
       if (query.isNotEmpty) {
@@ -94,6 +74,10 @@ class SearchRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
+      print('the response with filters is ============>>$response');
+      if (response.isEmpty) {
+        return Right([]);
+      }
 
       return Right(products);
     } catch (e) {

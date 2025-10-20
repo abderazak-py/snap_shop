@@ -12,6 +12,7 @@ class SearchAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? query;
     return Padding(
       padding: const EdgeInsets.only(top: 90, left: 15, right: 16),
       child: Row(
@@ -64,8 +65,17 @@ class SearchAppBar extends StatelessWidget {
                         context: context,
                         builder: (_) => FilterBottomSheet(),
                       );
+                      //TODO send query to bottomsheet
                       //TODO: handle result
-                      //if(result != null) context.read<ProductCubit>().searchProducts(result.start.toString());
+                      debugPrint('query is ==========>> $query <<===========');
+                      if (result != null && context.mounted) {
+                        context.read<SearchCubit>().searchWithFilters(
+                          query ?? '',
+                          minPrice: result.start,
+                          maxPrice: result.end,
+                          category: null,
+                        );
+                      }
                     },
 
                     child: SvgPicture.asset(
@@ -93,6 +103,7 @@ class SearchAppBar extends StatelessWidget {
               ),
               onChanged: (value) {
                 if (value.isNotEmpty) {
+                  query = value;
                   context.read<SearchCubit>().search(value);
                 }
               },

@@ -42,6 +42,7 @@ import 'package:snap_shop/features/search/data/datasources/search_remote_data_so
 import 'package:snap_shop/features/search/data/repos/search_repo_impl.dart';
 import 'package:snap_shop/features/search/domain/repos/search_repo.dart';
 import 'package:snap_shop/features/search/domain/usecases/search_usecase.dart';
+import 'package:snap_shop/features/search/domain/usecases/search_with_filters_usecase.dart';
 import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -143,10 +144,16 @@ Future<void> init() async {
   sl.registerLazySingleton<SearchUsecase>(
     () => SearchUsecase(sl<SearchRepository>()),
   );
+  sl.registerLazySingleton<SearchWithFiltersUsecase>(
+    () => SearchWithFiltersUsecase(sl<SearchRepository>()),
+  );
 
   // Cubit/Bloc
   sl.registerFactory<SearchCubit>(
-    () => SearchCubit(searchUsecase: sl<SearchUsecase>()),
+    () => SearchCubit(
+      searchUsecase: sl<SearchUsecase>(),
+      searchWithFiltersUsecase: sl<SearchWithFiltersUsecase>(),
+    ),
   );
 
   // ||=====================||CART||=====================||

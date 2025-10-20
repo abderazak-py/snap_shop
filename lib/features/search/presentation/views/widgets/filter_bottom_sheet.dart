@@ -89,35 +89,33 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
           SizedBox(height: 30),
           SizedBox(
             height: 50,
-            child: Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.all(0),
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(right: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: (index != 0)
-                          ? AppColors.kSecondaryColor
-                          : AppColors.kPrimaryColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'category',
-                        style: Styles.titleText14.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: (index != 0)
-                              ? AppColors.kPrimaryColor
-                              : Colors.white,
-                        ),
+            child: ListView.builder(
+              padding: EdgeInsets.all(0),
+              scrollDirection: Axis.horizontal,
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: EdgeInsets.only(right: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: (index != 0)
+                        ? AppColors.kSecondaryColor
+                        : AppColors.kPrimaryColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'category',
+                      style: Styles.titleText14.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: (index != 0)
+                            ? AppColors.kPrimaryColor
+                            : Colors.white,
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
           SizedBox(height: 40),

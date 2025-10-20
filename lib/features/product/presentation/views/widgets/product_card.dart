@@ -33,7 +33,9 @@ class ProductCard extends StatelessWidget {
                       width: width * 0.43,
                       height: width * 0.43,
                       fit: BoxFit.cover,
-                      imageUrl: product.images.first ?? '',
+                      imageUrl: product.images.isNotEmpty
+                          ? product.images.first ?? ''
+                          : '',
                       errorWidget: (context, url, error) =>
                           const Icon(Icons.error),
                     ),
