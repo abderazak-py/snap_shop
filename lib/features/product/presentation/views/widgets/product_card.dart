@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
@@ -70,15 +71,21 @@ class ProductCard extends StatelessWidget {
                                       (e) => e.productId == product.id,
                                     );
                                 return isFavorite
-                                    ? Icon(
-                                        Icons.favorite_rounded,
-                                        color: Colors.red,
-                                        size: 15,
+                                    ? SvgPicture.asset(
+                                        AppIcons.favoriteFilled,
+                                        width: 18,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.red,
+                                          BlendMode.srcIn,
+                                        ),
                                       )
-                                    : Icon(
-                                        Icons.favorite_border_rounded,
-                                        color: Colors.white,
-                                        size: 15,
+                                    : SvgPicture.asset(
+                                        AppIcons.favorite,
+                                        width: 18,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
                                       );
                               },
                             ),

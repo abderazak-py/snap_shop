@@ -5,7 +5,7 @@ class ProductRemoteDataSource {
   final ISupabaseService supabaseService;
 
   ProductRemoteDataSource(this.supabaseService);
-
+  //TODO add either
   // Fetch all products with their images
   Future<List<ProductModel>> getProducts() async {
     try {

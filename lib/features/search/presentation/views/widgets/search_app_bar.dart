@@ -61,23 +61,24 @@ class SearchAppBar extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      final result = await showModalBottomSheet<RangeValues>(
-                        context: context,
-                        builder: (_) => FilterBottomSheet(),
-                      );
-                      //TODO send query to bottomsheet
-                      //TODO: handle result
-                      debugPrint('query is ==========>> $query <<===========');
+                      final result =
+                          await showModalBottomSheet<Map<String, dynamic>>(
+                            context: context,
+                            builder: (_) => FilterBottomSheet(),
+                          );
                       if (result != null && context.mounted) {
+                        final range = result['range'] as RangeValues;
+                        final category = result['category'] as String?;
                         context.read<SearchCubit>().searchWithFilters(
                           query ?? '',
-                          minPrice: result.start,
-                          maxPrice: result.end,
-                          category: null,
+                          minPrice: range.start,
+                          maxPrice: range.end,
+                          category: (category != null && category != 'All')
+                              ? category
+                              : null,
                         );
                       }
                     },
-
                     child: SvgPicture.asset(
                       AppIcons.filter,
                       colorFilter: const ColorFilter.mode(
@@ -90,7 +91,6 @@ class SearchAppBar extends StatelessWidget {
                 hintStyle: Styles.titleText16.copyWith(
                   color: AppColors.kTextColor2,
                 ),
-
                 fillColor: AppColors.kSecondaryColor,
                 filled: true,
                 border: customOutlineBorder(),

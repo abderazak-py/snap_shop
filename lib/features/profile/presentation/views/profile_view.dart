@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
@@ -62,24 +63,52 @@ class ProfileView extends StatelessWidget {
                 ),
                 Spacer(),
                 CustomWideButton(
-                  icon: Icon(Icons.shopping_bag_outlined, size: 30),
+                  icon: SvgPicture.asset(
+                    height: 30,
+                    AppIcons.cart,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   title: 'Cart',
                   onPressed: () {
                     GoRouter.of(context).push(AppRouter.kCartView);
                   },
                 ),
                 CustomWideButton(
-                  icon: Icon(Icons.discount_outlined, size: 30),
+                  icon: SvgPicture.asset(
+                    height: 30,
+                    AppIcons.orders,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   title: 'Orders',
                   onPressed: () {},
                 ),
                 CustomWideButton(
-                  icon: Icon(Icons.settings_rounded, size: 30),
+                  icon: SvgPicture.asset(
+                    height: 30,
+                    AppIcons.settings,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   title: 'Settings',
                   onPressed: () {},
                 ),
                 CustomWideButton(
-                  icon: Icon(Icons.logout_outlined, size: 30),
+                  icon: SvgPicture.asset(
+                    height: 30,
+                    AppIcons.logout,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.kTextColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   title: 'SignOut',
                   onPressed: () {},
                 ),

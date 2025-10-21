@@ -43,9 +43,7 @@ class SearchProductsView extends StatelessWidget {
                       },
                     );
                   } else if (state is SearchFailure) {
-                    return Center(
-                      child: Text(state.error, style: Styles.titleText16),
-                    );
+                    return ErrorWidget(state.error);
                   } else if (state is SearchLoading) {
                     return Skeletonizer(
                       child: GridView.builder(

@@ -59,16 +59,40 @@ class HomeView extends StatelessWidget {
               onTap: (newIndex) =>
                   context.read<HomeCubit>().changeIndex(newIndex),
               items: [
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.home_rounded),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    AppIcons.home,
+                    colorFilter: ColorFilter.mode(
+                      (state.currentIndex == 0)
+                          ? AppColors.kPrimaryColor
+                          : AppColors.kTextColor2,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   label: 'Home',
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite_border_rounded),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    AppIcons.favorite,
+                    colorFilter: ColorFilter.mode(
+                      (state.currentIndex == 1)
+                          ? AppColors.kPrimaryColor
+                          : AppColors.kTextColor2,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   label: 'Favorite',
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(Icons.chat_rounded),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    AppIcons.chat,
+                    colorFilter: ColorFilter.mode(
+                      (state.currentIndex == 2)
+                          ? AppColors.kPrimaryColor
+                          : AppColors.kTextColor2,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                   label: 'Chat',
                 ),
                 BottomNavigationBarItem(

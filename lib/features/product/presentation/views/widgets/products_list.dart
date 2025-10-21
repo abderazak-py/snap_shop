@@ -24,9 +24,7 @@ class ProductsList extends StatelessWidget {
             }, childCount: state.products.length),
           );
         } else if (state is ProductFailure) {
-          return SliverToBoxAdapter(
-            child: Center(child: Text('Filed =${state.error}')),
-          );
+          return SliverToBoxAdapter(child: ErrorWidget(state.error));
         } else {
           return Skeletonizer.sliver(
             child: SliverGrid(

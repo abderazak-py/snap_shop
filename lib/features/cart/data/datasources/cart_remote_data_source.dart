@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
@@ -32,6 +34,10 @@ class CartRemoteDataSource {
           'quantity': 1,
         });
       }
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to add to cart: ${e.toString()}'));
     }
@@ -62,6 +68,10 @@ class CartRemoteDataSource {
               .eq('id', result[0]['id']);
         }
       }
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to add to cart: ${e.toString()}'));
     }
@@ -71,6 +81,10 @@ class CartRemoteDataSource {
   Future<Either<Failure, void>> removeFromCart(int id) async {
     try {
       await supabaseService.from('cart').delete().eq('id', id);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to remove from cart: ${e.toString()}'));
     }
@@ -95,6 +109,10 @@ class CartRemoteDataSource {
           .map((cart) => CartModel.fromMap(cart))
           .toList();
       return Right(result);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to get cart items: ${e.toString()}'));
     }
@@ -109,6 +127,10 @@ class CartRemoteDataSource {
           .from('cart')
           .delete()
           .eq('user_id', supabaseService.auth.currentUser!.id);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to empty cart: ${e.toString()}'));
     }

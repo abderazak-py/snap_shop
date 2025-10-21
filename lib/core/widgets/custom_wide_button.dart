@@ -9,7 +9,7 @@ class CustomWideButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
   });
-  final Icon icon;
+  final Widget icon;
   final String title;
   final VoidCallback onPressed;
   @override

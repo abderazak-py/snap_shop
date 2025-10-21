@@ -17,6 +17,7 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
+  var _selectedCategory = 0;
   late RangeValues _values;
 
   @override
@@ -27,6 +28,16 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO add categoies to supa base and add a foreign key to products
+    final List<String> categoryList = [
+      'All',
+      'Electronics',
+      'Fashion',
+      'Clothing',
+      'Home',
+      'Books',
+    ];
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -92,25 +103,28 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             child: ListView.builder(
               padding: EdgeInsets.all(0),
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: categoryList.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.only(right: 10),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: (index != 0)
-                        ? AppColors.kSecondaryColor
-                        : AppColors.kPrimaryColor,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'category',
-                      style: Styles.titleText14.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: (index != 0)
-                            ? AppColors.kPrimaryColor
-                            : Colors.white,
+                return GestureDetector(
+                  onTap: () => setState(() => _selectedCategory = index),
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: (index != _selectedCategory)
+                          ? AppColors.kSecondaryColor
+                          : AppColors.kPrimaryColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Center(
+                      child: Text(
+                        categoryList[index],
+                        style: Styles.titleText14.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: (index != _selectedCategory)
+                              ? AppColors.kPrimaryColor
+                              : Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -122,7 +136,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
           CustomBigButton(
             title: 'Apply',
-            onPressed: () => GoRouter.of(context).pop(_values),
+            onPressed: () => GoRouter.of(context).pop({
+              'range': _values,
+              'category': categoryList[_selectedCategory],
+            }),
           ),
           SizedBox(height: 30),
         ],

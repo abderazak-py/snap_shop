@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
@@ -27,8 +29,11 @@ class SearchRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
-      print('the response is ============>>$response');
       return Right(products);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to search products: ${e.toString()}'));
     }
@@ -74,12 +79,15 @@ class SearchRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
-      print('the response with filters is ============>>$response');
       if (response.isEmpty) {
         return Right([]);
       }
 
       return Right(products);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
     } catch (e) {
       return Left(Failure('Failed to search products: ${e.toString()}'));
     }

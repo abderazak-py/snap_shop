@@ -8,7 +8,7 @@ class AuthRemoteDataSource {
   final ISupabaseService supabaseService;
 
   AuthRemoteDataSource(this.supabaseService);
-
+  //TODO add either here and sockerException
   /// Sign in with email and password
   Future<User?> signInWithEmail(String email, String password) async {
     try {
