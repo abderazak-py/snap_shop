@@ -8,13 +8,13 @@ import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/core/widgets/custom_wide_button.dart';
 import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:snap_shop/features/profile/presentation/views/widgets/signout_popup_menue.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //final signOutUseCase = sl<SignOutUseCase>();
     final getCurrentUserUseCase = sl<GetCurrentUserUseCase>();
     return Scaffold(
       body: FutureBuilder(
@@ -98,7 +98,8 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                   title: 'Settings',
-                  onPressed: () {},
+                  onPressed: () =>
+                      GoRouter.of(context).push(AppRouter.kSettingsView),
                 ),
                 CustomWideButton(
                   icon: SvgPicture.asset(
@@ -109,8 +110,15 @@ class ProfileView extends StatelessWidget {
                       BlendMode.srcIn,
                     ),
                   ),
-                  title: 'SignOut',
-                  onPressed: () {},
+                  title: 'Sign Out',
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SignoutPopupMenue();
+                      },
+                    );
+                  },
                 ),
                 SizedBox(height: 50),
               ],

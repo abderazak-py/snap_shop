@@ -31,4 +31,11 @@ class AppIcons {
   static const String settings = 'assets/icons/settings.svg';
   static const String logout = 'assets/icons/logout.svg';
   static const String error = 'assets/icons/error.svg';
+  static const String notification = 'assets/icons/notification.svg';
+  static const String language = 'assets/icons/language.svg';
+  static const String pin = 'assets/icons/pin.svg';
+  static const String shield = 'assets/icons/shield.svg';
+  static const String help = 'assets/icons/help.svg';
+  static const String version = 'assets/icons/version.svg';
+  static const String biometric = 'assets/icons/biometric.svg';
 }

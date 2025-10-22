@@ -13,6 +13,7 @@ import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
 import 'package:snap_shop/features/search/presentation/views/search_products_view.dart';
+import 'package:snap_shop/features/settings/presentation/views/settings_view.dart';
 import 'package:snap_shop/features/splach/presentation/views/splash_view.dart';
 
 abstract class AppRouter {
@@ -27,6 +28,7 @@ abstract class AppRouter {
   static const kSearchProductsView = '/search_products';
   static const kConfirmOtpView = '/confirm_otp';
   static const kPaymentView = '/payment';
+  static const kSettingsView = '/settings';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -66,6 +68,10 @@ abstract class AppRouter {
       GoRoute(
         path: '/payment',
         builder: (context, state) => const PaymentView(),
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsView(),
       ),
     ],
   );
