@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 
@@ -6,7 +8,8 @@ class GetCurrentUserUseCase {
 
   GetCurrentUserUseCase(this.repository);
 
-  Future<UserEntity?> execute() async {
-    return await repository.getCurrentUser();
+  Future<Either<Failure, UserEntity>> execute() async {
+    final response = await repository.getCurrentUser();
+    return response.fold((l) => Left(l), (r) => Right(r));
   }
 }

@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
 
 class SignOutUseCase {
@@ -5,7 +7,8 @@ class SignOutUseCase {
 
   SignOutUseCase(this.repository);
 
-  Future<void> execute() async {
-    await repository.signOut();
+  Future<Either<Failure, void>> execute() async {
+    final response = await repository.signOut();
+    return response.fold((l) => Left(l), (r) => Right(r));
   }
 }

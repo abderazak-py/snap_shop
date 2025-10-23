@@ -7,6 +7,7 @@ import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/core/widgets/custom_wide_button.dart';
+import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:snap_shop/features/profile/presentation/views/widgets/signout_popup_menue.dart';
 
@@ -19,8 +20,10 @@ class ProfileView extends StatelessWidget {
     return Scaffold(
       body: FutureBuilder(
         future: getCurrentUserUseCase.execute(),
-        builder: (context, asyncSnapshot) {
-          final user = asyncSnapshot.data;
+        builder: (context, snapshot) {
+          UserEntity? user;
+          snapshot.data?.fold((l) {}, (r) => user = r);
+
           final width = MediaQuery.of(context).size.width;
           final height = MediaQuery.of(context).size.height;
           return SizedBox(
@@ -110,7 +113,7 @@ class ProfileView extends StatelessWidget {
                       BlendMode.srcIn,
                     ),
                   ),
-                  title: 'Sign Out',
+                  title: 'Log Out',
                   onPressed: () {
                     showDialog(
                       context: context,

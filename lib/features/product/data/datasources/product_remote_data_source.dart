@@ -1,13 +1,17 @@
+import 'dart:io';
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/product/data/models/product_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductRemoteDataSource {
   final ISupabaseService supabaseService;
 
   ProductRemoteDataSource(this.supabaseService);
-  //TODO add either
+
   // Fetch all products with their images
-  Future<List<ProductModel>> getProducts() async {
+  Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
       final response = await supabaseService
           .from('products')
@@ -16,7 +20,7 @@ class ProductRemoteDataSource {
           )
           .order('id', ascending: true);
 
-      return (response as List).map((product) {
+      final products = (response as List).map((product) {
         final imagesRaw = product['image'] as List?;
         final imageList = (imagesRaw ?? [])
             .map((img) => img['image_url']?.toString() ?? '')
@@ -25,75 +29,122 @@ class ProductRemoteDataSource {
         // Important: pass as 'image' key to fit your ProductModel.fromMap
         return ProductModel.fromMap({...product, 'image': imageList});
       }).toList();
+
+      return Right(products);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to fetch products: ${e.toString()}'));
     } catch (e) {
-      throw Exception('Failed to fetch products: ${e.toString()}');
+      return Left(Failure('Failed to fetch products: ${e.toString()}'));
+    }
+  }
+
+  // Fetch products by category
+  Future<Either<Failure, List<ProductModel>>> getProductsByCategory(
+    String category,
+  ) async {
+    try {
+      final response = await supabaseService
+          .from('products')
+          .select()
+          .eq('category', category);
+      final products = (response as List)
+          .map((product) => ProductModel.fromMap(product))
+          .toList();
+      return Right(products);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(
+        Failure('Failed to fetch products by category: ${e.toString()}'),
+      );
+    } catch (e) {
+      return Left(
+        Failure('Failed to fetch products by category: ${e.toString()}'),
+      );
     }
   }
 
   // Fetch a single product by ID
-  Future<ProductModel?> getProductById(int productId) async {
+  Future<Either<Failure, ProductModel>> getProductById(int productId) async {
     try {
       final response = await supabaseService
           .from('products')
           .select()
           .eq('id', productId)
           .single();
-      return ProductModel.fromMap(response);
+      final product = ProductModel.fromMap(response);
+      return Right(product);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to fetch product: ${e.toString()}'));
     } catch (e) {
-      throw Exception('Failed to fetch product: ${e.toString()}');
-    }
-  }
-
-  // Fetch products by category
-  Future<List<ProductModel>> getProductsByCategory(String category) async {
-    try {
-      final response = await supabaseService
-          .from('products')
-          .select()
-          .eq('category', category);
-      return (response as List)
-          .map((product) => ProductModel.fromMap(product))
-          .toList();
-    } catch (e) {
-      throw Exception('Failed to fetch products by category: ${e.toString()}');
+      return Left(Failure('Failed to fetch product: ${e.toString()}'));
     }
   }
 
   // Add a new product (admin feature)
-  Future<ProductModel> addProduct(ProductModel product) async {
+  Future<Either<Failure, void>> addProduct(ProductModel product) async {
     try {
-      final response = await supabaseService
+      await supabaseService
           .from('products')
           .insert(product.toMap())
           .select()
           .single();
-      return ProductModel.fromMap(response);
+      return const Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to add product: ${e.toString()}'));
     } catch (e) {
-      throw Exception('Failed to add product: ${e.toString()}');
+      return Left(Failure('Failed to add product: ${e.toString()}'));
     }
   }
 
   // Update an existing product (admin feature)
-  Future<ProductModel> updateProduct(ProductModel product) async {
+  Future<Either<Failure, void>> updateProduct(ProductModel product) async {
     try {
-      final response = await supabaseService
+      await supabaseService
           .from('products')
           .update(product.toMap())
           .eq('id', product.id)
           .select()
           .single();
-      return ProductModel.fromMap(response);
+      return const Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to update product: ${e.toString()}'));
     } catch (e) {
-      throw Exception('Failed to update product: ${e.toString()}');
+      return Left(Failure('Failed to update product: ${e.toString()}'));
     }
   }
 
   // Delete a product (admin feature)
-  Future<void> deleteProduct(int productId) async {
+  Future<Either<Failure, void>> deleteProduct(int productId) async {
     try {
       await supabaseService.from('products').delete().eq('id', productId);
+      return const Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to delete product: ${e.toString()}'));
     } catch (e) {
-      throw Exception('Failed to delete product: ${e.toString()}');
+      return Left(Failure('Failed to delete product: ${e.toString()}'));
     }
   }
 }

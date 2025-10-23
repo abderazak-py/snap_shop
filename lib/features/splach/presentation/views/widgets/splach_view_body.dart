@@ -52,9 +52,14 @@ class _SplachViewBodyState extends State<SplachViewBody> {
   void navigateToHome() {
     Future.delayed(const Duration(seconds: 2), () async {
       final isUserSignedInUsecase = sl<IsUserSignedInUsecase>();
-      final bool isUserSignedIn = await isUserSignedInUsecase.execute();
+      bool? isUserSignedIn;
+      final response = await isUserSignedInUsecase.execute();
+      response.fold((l) {
+        //TODO make a snckbar here
+        return;
+      }, (b) => isUserSignedIn = b);
       if (mounted) {
-        if (isUserSignedIn) {
+        if (isUserSignedIn ?? false) {
           GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
         } else {
           GoRouter.of(context).pushReplacement(AppRouter.kAuthView);

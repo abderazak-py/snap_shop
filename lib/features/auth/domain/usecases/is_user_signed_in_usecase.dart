@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
 
 class IsUserSignedInUsecase {
@@ -5,7 +7,8 @@ class IsUserSignedInUsecase {
 
   IsUserSignedInUsecase(this.repository);
 
-  Future<bool> execute() async {
-    return await repository.isUserSignedIn();
+  Future<Either<Failure, bool>> execute() async {
+    final response = await repository.isUserSignedIn();
+    return response.fold((l) => Left(l), (r) => Right(r));
   }
 }

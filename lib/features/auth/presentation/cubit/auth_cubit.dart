@@ -26,67 +26,50 @@ class AuthCubit extends Cubit<AuthState> {
   /// Login with email and password
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    try {
-      final user = await loginUseCase.execute(email, password);
-      if (user != null) {
-        emit(AuthSuccess(user: user));
-      } else {
-        emit(AuthFailure(error: 'Invalid email or password'));
-      }
-    } catch (e) {
-      emit(AuthFailure(error: e.toString()));
-    }
+    final response = await loginUseCase.execute(email, password);
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (user) => emit(AuthSuccess(user: user)),
+    );
   }
 
   /// Register with email and password
   Future<void> register(String email, String password) async {
     emit(AuthLoading());
-    try {
-      final user = await registerUseCase.execute(email, password);
-      if (user != null) {
-        emit(AuthSuccess(user: user));
-      } else {
-        emit(AuthFailure(error: 'Registration failed'));
-      }
-    } catch (e) {
-      emit(AuthFailure(error: e.toString()));
-    }
+    final response = await registerUseCase.execute(email, password);
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (user) => emit(AuthSuccess(user: user)),
+    );
   }
 
   /// Sign in with Google (native)
   Future<void> signInWithGoogle({required String webClientId}) async {
     emit(AuthLoading());
-    try {
-      final user = await signInWithGoogleNativeUseCase.execute(
-        webClientId: webClientId,
-      );
-      if (user != null) {
-        emit(AuthSuccessConfirmed(user: user));
-      } else {
-        emit(AuthFailure(error: 'Google sign-in was cancelled'));
-      }
-    } catch (e) {
-      emit(AuthFailure(error: 'Google sign-in failed: ${e.toString()}'));
-    }
+    final response = await signInWithGoogleNativeUseCase.execute(
+      webClientId: webClientId,
+    );
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (user) => emit(AuthSuccess(user: user)),
+    );
   }
 
   Future<void> verifyOtp({required String otp, required String email}) async {
     emit(AuthLoading());
-    try {
-      final user = await verifyOtpUseCase.execute(otp, email);
-      emit(AuthSuccess(user: user));
-    } catch (e) {
-      emit(AuthFailure(error: 'Verigy Otp failed: ${e.toString()}'));
-    }
+    final response = await verifyOtpUseCase.execute(otp, email);
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (user) => emit(AuthSuccess(user: user)),
+    );
   }
 
   /// Sign out
   Future<void> signOut() async {
-    try {
-      await signOutUseCase.execute();
-      emit(AuthInitial());
-    } catch (e) {
-      emit(AuthFailure(error: 'Sign out failed: ${e.toString()}'));
-    }
+    final response = await signOutUseCase.execute();
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (_) => emit(AuthInitial()),
+    );
   }
 }

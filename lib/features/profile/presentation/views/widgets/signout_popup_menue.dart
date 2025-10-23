@@ -31,7 +31,7 @@ class SignoutPopupMenue extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60),
               child: Text(
-                'Are you sure you want to\nsign out?',
+                'Are you sure you want to\nLogout?',
                 textAlign: TextAlign.center,
                 style: Styles.titleText16.copyWith(fontWeight: FontWeight.w900),
               ),
@@ -49,7 +49,7 @@ class SignoutPopupMenue extends StatelessWidget {
             TextButton(
               onPressed: () => signOutUseCase.execute(),
               child: Text(
-                'Sign Out',
+                'Log Out',
                 style: Styles.titleText18.copyWith(
                   fontWeight: FontWeight.w900,
                   color: Colors.red,

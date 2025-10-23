@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:dartz/dartz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -8,34 +11,66 @@ class AuthRemoteDataSource {
   final ISupabaseService supabaseService;
 
   AuthRemoteDataSource(this.supabaseService);
-  //TODO add either here and sockerException
+
   /// Sign in with email and password
-  Future<User?> signInWithEmail(String email, String password) async {
+  Future<Either<Failure, User>> signInWithEmail(
+    String email,
+    String password,
+  ) async {
     try {
       final response = await supabaseService.auth.signInWithPassword(
         email: email,
         password: password,
       );
-      return response.user;
+      if (response.user != null) {
+        return Right(response.user!);
+      } else {
+        return Left(Failure('Invalid email or password'));
+      }
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
     } catch (e) {
-      throw Exception('Sign in failed: ${e.toString()}');
+      return Left(Failure(e.toString()));
     }
   }
 
   /// Sign up with email and password
-  Future<User?> signUpWithEmail(String email, String password) async {
+  Future<Either<Failure, User>> signUpWithEmail(
+    String email,
+    String password,
+  ) async {
     try {
       final response = await supabaseService.auth.signUp(
         email: email,
         password: password,
       );
-      return response.user;
+      if (response.user != null) {
+        return Right(response.user!);
+      } else {
+        return Left(Failure('Invalid email or password'));
+      }
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
     } catch (e) {
-      throw Exception('Sign up failed: ${e.toString()}');
+      return Left(Failure(e.toString()));
     }
   }
 
-  Future<User?> signInWithGoogleNative({required String webClientId}) async {
+  Future<Either<Failure, User>> signInWithGoogleNative({
+    required String webClientId,
+  }) async {
     final scopes = ['email', 'profile'];
     final googleSignIn = GoogleSignIn.instance;
     await googleSignIn.initialize(serverClientId: webClientId);
@@ -48,49 +83,80 @@ class AuthRemoteDataSource {
         await googleUser.authorizationClient.authorizeScopes(scopes);
     final idToken = googleUser.authentication.idToken;
     if (idToken == null) {
-      throw AuthException('No ID Token found.');
+      return Left(Failure('No ID Token found.'));
     }
     await supabaseService.auth.signInWithIdToken(
       provider: OAuthProvider.google,
       idToken: idToken,
       accessToken: authorization.accessToken,
     );
-    final user = await getCurrentUser();
-    final userName = user?.userMetadata?['name'] ?? '';
+    final res = await supabaseService.auth.getUser();
+    final user = res.user;
+    if (user == null) {
+      return Left(Failure('No user found.'));
+    }
+    final userName = user.userMetadata?['name'] ?? '';
 
     //this to update user metadata with google so the user doesnt need to enter them manually
     await supabaseService.auth.updateUser(
       UserAttributes(
         data: {
           'name': userName.split(' ').first,
-          'avatar_url': user?.userMetadata?['avatar_url'] ?? '',
+          'avatar_url': user.userMetadata?['avatar_url'] ?? '',
         },
       ),
     );
     final response = await supabaseService.auth.getUser();
     final updatedUser = response.user;
-
-    return updatedUser;
+    if (updatedUser == null) {
+      return Left(Failure('Fialed to get name and picture'));
+    } else {
+      return Right(updatedUser);
+    }
   }
 
   /// Get current user
-  Future<User?> getCurrentUser() async {
+  Future<Either<Failure, User>> getCurrentUser() async {
     try {
-      final session = supabaseService.auth.currentSession;
-      return session?.user;
+      final response = supabaseService.auth.currentSession;
+      if (response?.user != null) {
+        return Right(response!.user);
+      } else {
+        return Left(Failure('please login first'));
+      }
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
     } catch (e) {
-      throw Exception('Failed to get current user: ${e.toString()}');
+      return Left(Failure(e.toString()));
     }
   }
 
   // is user signed in
-  Future<bool> isUserSignedIn() async {
-    final session = supabaseService.auth.currentSession;
-    return session != null;
+  Future<Either<Failure, bool>> isUserSignedIn() async {
+    try {
+      final session = supabaseService.auth.currentSession;
+      return Right(session != null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
   }
 
   //verify with otp
-  Future<User> verifyOTP(String otp, String email) async {
+  Future<Either<Failure, User>> verifyOTP(String otp, String email) async {
     try {
       final response = await supabaseService.auth.verifyOTP(
         type: OtpType.signup,
@@ -98,20 +164,40 @@ class AuthRemoteDataSource {
         email: email,
       );
       if (response.session == null || response.user == null) {
-        throw Exception('OTP valid but no session or user created');
+        throw Exception('Please login first');
+      } else {
+        return Right(response.user!);
       }
-      return supabaseService.auth.currentUser!;
+      //add this line if there is an error
+      //return supabaseService.auth.currentUser!;
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
     } catch (e) {
-      throw Exception('Resend failed: ${e.toString()}');
+      return Left(Failure(e.toString()));
     }
   }
 
   /// Sign out user
-  Future<void> signOut() async {
+  Future<Either<Failure, void>> signOut() async {
     try {
       await supabaseService.auth.signOut();
+      return const Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
     } catch (e) {
-      throw Exception('Sign out failed: ${e.toString()}');
+      return Left(Failure(e.toString()));
     }
   }
 }

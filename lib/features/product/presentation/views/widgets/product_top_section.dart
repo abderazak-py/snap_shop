@@ -6,6 +6,7 @@ import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
+import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
 
 class ProductTopSection extends StatelessWidget {
@@ -21,7 +22,8 @@ class ProductTopSection extends StatelessWidget {
         FutureBuilder(
           future: getCurrentUserUseCase.execute(),
           builder: (context, snapshot) {
-            final user = snapshot.data;
+            UserEntity? user;
+            snapshot.data?.fold((l) {}, (r) => user = r);
             return SizedBox(
               width: width * 0.11,
               child: ClipRRect(
@@ -38,11 +40,12 @@ class ProductTopSection extends StatelessWidget {
             FutureBuilder(
               future: getCurrentUserUseCase.execute(),
               builder: (context, snapshot) {
-                final user = snapshot.data!;
+                UserEntity? user;
+                snapshot.data?.fold((l) {}, (r) => user = r);
                 return SizedBox(
                   width: width * 0.5,
                   child: Text(
-                    'Hi, ${user.name ?? 'Snapper'}',
+                    'Hi, ${user?.name ?? 'Snapper'}',
                     overflow: TextOverflow.ellipsis,
                     style: Styles.titleText16.copyWith(
                       fontWeight: FontWeight.w900,
