@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
+import 'package:snap_shop/features/product/data/models/banner_model.dart';
 import 'package:snap_shop/features/product/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -39,6 +40,30 @@ class ProductRemoteDataSource {
       return Left(Failure('Failed to fetch products: ${e.toString()}'));
     } catch (e) {
       return Left(Failure('Failed to fetch products: ${e.toString()}'));
+    }
+  }
+
+  //fetch banner list
+  Future<Either<Failure, List<BannerModel>>> getBanners() async {
+    try {
+      final response = await supabaseService
+          .from('banner')
+          .select()
+          .order('created_at', ascending: false);
+
+      final banners = response
+          .map((banner) => BannerModel.fromMap(banner))
+          .toList();
+
+      return Right(banners);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to fetch banners: ${e.toString()}'));
+    } catch (e) {
+      return Left(Failure('Failed to fetch banners: ${e.toString()}'));
     }
   }
 

@@ -31,8 +31,12 @@ class ProductTopSection extends StatelessWidget {
                 child: (user?.avatarUrl?.isNotEmpty ?? false)
                     ? CachedNetworkImage(imageUrl: user!.avatarUrl!)
                     : const CircleAvatar(
-                        radius: 40, // diameter = 80
+                        radius: 40,
                         backgroundColor: AppColors.kPrimaryColor,
+                        child: Icon(
+                          Icons.person_outline_rounded,
+                          color: Colors.white,
+                        ),
                       ),
               ),
             );
@@ -50,7 +54,7 @@ class ProductTopSection extends StatelessWidget {
                 return SizedBox(
                   width: width * 0.5,
                   child: Text(
-                    'Hi, ${user?.name ?? 'Snapper'}',
+                    'Hi, ${(user?.name?.isEmpty ?? true) ? 'Snapper' : user?.name}',
                     overflow: TextOverflow.ellipsis,
                     style: Styles.titleText16.copyWith(
                       fontWeight: FontWeight.w900,

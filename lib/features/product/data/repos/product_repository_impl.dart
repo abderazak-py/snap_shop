@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:snap_shop/features/product/data/models/banner_model.dart';
 import 'package:snap_shop/features/product/data/models/product_model.dart';
+import 'package:snap_shop/features/product/domain/entities/banner_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
 
@@ -17,6 +19,16 @@ class ProductRepositoryImpl implements ProductRepository {
       (failure) => Left(failure),
       (products) =>
           Right(products.map((model) => _mapProductToEntity(model)).toList()),
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<BannerEntity>>> getBanners() async {
+    final response = await remoteDataSource.getBanners();
+    return response.fold(
+      (failure) => Left(failure),
+      (products) =>
+          Right(products.map((model) => _mapBannerToEntity(model)).toList()),
     );
   }
 
@@ -68,6 +80,14 @@ class ProductRepositoryImpl implements ProductRepository {
       price: model.price,
       createdAt: model.createdAt,
       images: model.images,
+    );
+  }
+
+  BannerEntity _mapBannerToEntity(BannerModel model) {
+    return BannerEntity(
+      id: model.id,
+      image: model.image,
+      createdAt: model.createdAt,
     );
   }
 }
