@@ -28,9 +28,13 @@ class RegisterViewBody extends StatelessWidget {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
+            context.read<AuthCubit>().startOtpTimer();
             GoRouter.of(
               context,
             ).go(AppRouter.kConfirmOtpView, extra: emailController.text);
+            emailController.clear();
+            passwordController.clear();
+            nameController.clear();
           } else if (state is AuthSuccessConfirmed) {
             GoRouter.of(context).go(AppRouter.kHomeView);
           } else if (state is AuthFailure) {
@@ -43,47 +47,51 @@ class RegisterViewBody extends StatelessWidget {
           final isLoading = state is AuthLoading;
 
           return Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: height * 0.07),
-                Text(
-                  'Login Account',
-                  style: Styles.titleText24.copyWith(
-                    fontWeight: FontWeight.w900,
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: height * 0.1),
+                  Text(
+                    'Login Account',
+                    style: Styles.titleText24.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8),
+                  SizedBox(height: 8),
 
-                Text(
-                  'Please login with registred account',
-                  style: Styles.titleText14.copyWith(
-                    color: AppColors.kTextColor2,
+                  Text(
+                    'Please login with registred account',
+                    style: Styles.titleText14.copyWith(
+                      color: AppColors.kTextColor2,
+                    ),
                   ),
-                ),
-                SizedBox(height: height * 0.04),
-                RegisterInputSection(
-                  nameController: nameController,
-                  isLoading: isLoading,
-                  emailController: emailController,
-                  passwordController: passwordController,
-                ),
-                const SizedBox(height: 70),
-                CustomBigButton(
-                  title: 'Register',
-                  onPressed: isLoading
-                      ? () {}
-                      : () {
-                          context.read<AuthCubit>().register(
-                            emailController.text,
-                            passwordController.text,
-                          );
-                        },
-                ),
-                const SizedBox(height: 20),
-                GoogleButton(isLoading: isLoading),
-              ],
+                  SizedBox(height: height * 0.04),
+                  RegisterInputSection(
+                    nameController: nameController,
+                    isLoading: isLoading,
+                    emailController: emailController,
+                    passwordController: passwordController,
+                  ),
+                  const SizedBox(height: 70),
+                  Center(
+                    child: CustomBigButton(
+                      title: 'Register',
+                      onPressed: isLoading
+                          ? () {}
+                          : () {
+                              context.read<AuthCubit>().register(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                            },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Center(child: GoogleButton(isLoading: isLoading)),
+                ],
+              ),
             ),
           );
         },

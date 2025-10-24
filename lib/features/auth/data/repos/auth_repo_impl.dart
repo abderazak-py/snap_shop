@@ -84,6 +84,12 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
+  @override
+  Future<Either<Failure, void>> resendOTP(String email) async {
+    final response = await remoteDataSource.resendOTP(email);
+    return response.fold((failure) => Left(failure), (_) => Right(null));
+  }
+
   UserEntity _mapUserToEntity(User user) {
     return UserEntity(
       id: user.id,

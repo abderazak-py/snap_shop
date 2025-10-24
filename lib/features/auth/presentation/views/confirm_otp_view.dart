@@ -37,7 +37,6 @@ class _ConfirmOtpViewState extends State<ConfirmOtpView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              //TODO check if this works
               showModalBottomSheet(
                 constraints: BoxConstraints.expand(),
                 context: context,

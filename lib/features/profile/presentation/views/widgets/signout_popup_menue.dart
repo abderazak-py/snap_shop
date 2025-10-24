@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
@@ -47,7 +48,10 @@ class SignoutPopupMenue extends StatelessWidget {
             ),
             SizedBox(height: 5),
             TextButton(
-              onPressed: () => signOutUseCase.execute(),
+              onPressed: () {
+                signOutUseCase.execute();
+                GoRouter.of(context).pushReplacement(AppRouter.kAuthView);
+              },
               child: Text(
                 'Log Out',
                 style: Styles.titleText18.copyWith(

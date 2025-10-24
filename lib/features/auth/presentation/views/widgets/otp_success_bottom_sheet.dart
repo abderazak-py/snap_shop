@@ -50,7 +50,7 @@ class OtpSuccessBottomSheet extends StatelessWidget {
         CustomBigButton(
           title: 'Go to Homepage',
           onPressed: () {
-            GoRouter.of(context).go(AppRouter.kProductView);
+            GoRouter.of(context).go(AppRouter.kHomeView);
           },
         ),
         SizedBox(height: 50),

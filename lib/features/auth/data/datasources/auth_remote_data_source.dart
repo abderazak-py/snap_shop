@@ -12,7 +12,7 @@ class AuthRemoteDataSource {
 
   AuthRemoteDataSource(this.supabaseService);
 
-  /// Sign in with email and password
+  //==============|| Sign up with email and password ||====
   Future<Either<Failure, User>> signInWithEmail(
     String email,
     String password,
@@ -40,7 +40,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Sign up with email and password
+  //==============|| Sign up with email and password ||====
   Future<Either<Failure, User>> signUpWithEmail(
     String email,
     String password,
@@ -68,6 +68,7 @@ class AuthRemoteDataSource {
     }
   }
 
+  //==============|| Sign up with google ||================
   Future<Either<Failure, User>> signInWithGoogleNative({
     required String webClientId,
   }) async {
@@ -115,7 +116,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Get current user
+  //==============|| Get current user ||===================
   Future<Either<Failure, User>> getCurrentUser() async {
     try {
       final response = supabaseService.auth.currentSession;
@@ -137,7 +138,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  // is user signed in
+  //==============|| is user signed in ||==================
   Future<Either<Failure, bool>> isUserSignedIn() async {
     try {
       final session = supabaseService.auth.currentSession;
@@ -155,12 +156,12 @@ class AuthRemoteDataSource {
     }
   }
 
-  //verify with otp
+  //==============|| verify with otp ||====================
   Future<Either<Failure, User>> verifyOTP(String otp, String email) async {
     try {
       final response = await supabaseService.auth.verifyOTP(
         type: OtpType.signup,
-        token: otp,
+        token: otp, //====|| Sign up with email and password ||====
         email: email,
       );
       if (response.session == null || response.user == null) {
@@ -183,7 +184,28 @@ class AuthRemoteDataSource {
     }
   }
 
-  /// Sign out user
+  //==============|| resend otp ||=========================
+  Future<Either<Failure, void>> resendOTP(String email) async {
+    try {
+      if (supabaseService.auth.currentUser?.emailConfirmedAt != null) {
+        return const Right(null);
+      }
+      await supabaseService.auth.resend(type: OtpType.signup, email: email);
+      return Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  //==============|| Sign out user ||======================
   Future<Either<Failure, void>> signOut() async {
     try {
       await supabaseService.auth.signOut();

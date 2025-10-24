@@ -23,3 +23,13 @@ class AuthFailure extends AuthState {
 
   AuthFailure({required this.error});
 }
+
+class OtpTimerChanged extends AuthState {
+  final int secondsRemaining;
+  final bool showSendButton;
+
+  OtpTimerChanged({
+    required this.secondsRemaining,
+    required this.showSendButton,
+  });
+}

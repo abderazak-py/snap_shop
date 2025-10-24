@@ -27,8 +27,16 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
+        BlocProvider<FavoriteCubit>(
+          create: (_) => sl<FavoriteCubit>()..getFavoriteItems(),
+        ),
+        BlocProvider<ProductCubit>(
+          create: (_) => sl<ProductCubit>()..getProducts(),
+        ),
+      ],
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(

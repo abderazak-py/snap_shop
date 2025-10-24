@@ -28,7 +28,12 @@ class ProductTopSection extends StatelessWidget {
               width: width * 0.11,
               child: ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(50),
-                child: CachedNetworkImage(imageUrl: user?.avatarUrl ?? ''),
+                child: (user?.avatarUrl?.isNotEmpty ?? false)
+                    ? CachedNetworkImage(imageUrl: user!.avatarUrl!)
+                    : const CircleAvatar(
+                        radius: 40, // diameter = 80
+                        backgroundColor: AppColors.kPrimaryColor,
+                      ),
               ),
             );
           },

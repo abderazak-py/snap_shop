@@ -4,6 +4,7 @@ import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import 'package:snap_shop/features/auth/presentation/views/widgets/resend_button.dart';
 
 class OtpButtonsSection extends StatelessWidget {
   const OtpButtonsSection({
@@ -43,18 +44,7 @@ class OtpButtonsSection extends StatelessWidget {
                 fontWeight: FontWeight.w900,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                //TODO: add functionality to resend otp
-              },
-              child: Text(
-                'Resend',
-                style: Styles.titleText16.copyWith(
-                  color: AppColors.kPrimaryColor,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
+            ResendButton(email: email),
           ],
         ),
       ],

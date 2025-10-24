@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
+import 'package:snap_shop/features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/verify_otp_usecase.dart';
@@ -14,6 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
   final SignInWithGoogleNativeUseCase signInWithGoogleNativeUseCase;
   final SignOutUseCase signOutUseCase;
   final VerifyOtpUsecase verifyOtpUseCase;
+  final ResendOtpUsecase resendOtpUsecase;
 
   AuthCubit({
     required this.loginUseCase,
@@ -21,6 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.signInWithGoogleNativeUseCase,
     required this.signOutUseCase,
     required this.verifyOtpUseCase,
+    required this.resendOtpUsecase,
   }) : super(AuthInitial());
 
   /// Login with email and password
@@ -62,6 +67,42 @@ class AuthCubit extends Cubit<AuthState> {
       (f) => emit(AuthFailure(error: f.message)),
       (user) => emit(AuthSuccess(user: user)),
     );
+  }
+
+  Future<void> resendOTP({required String email}) async {
+    final response = await resendOtpUsecase.execute(email);
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (_) => startOtpTimer(),
+    );
+  }
+
+  Timer? _otpTimer;
+
+  void startOtpTimer() {
+    _otpTimer?.cancel();
+
+    int seconds = 60;
+    emit(OtpTimerChanged(secondsRemaining: seconds, showSendButton: false));
+
+    _otpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      seconds -= 1;
+
+      if (seconds <= 0) {
+        emit(OtpTimerChanged(secondsRemaining: 0, showSendButton: true));
+        timer.cancel();
+        _otpTimer = null;
+        return;
+      }
+
+      emit(OtpTimerChanged(secondsRemaining: seconds, showSendButton: false));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _otpTimer?.cancel();
+    return super.close();
   }
 
   /// Sign out

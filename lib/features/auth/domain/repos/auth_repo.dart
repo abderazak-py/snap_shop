@@ -15,6 +15,8 @@ abstract class AuthRepository {
 
   Future<Either<Failure, UserEntity>> verifyOTP(String otp, String email);
 
+  Future<Either<Failure, void>> resendOTP(String email);
+
   Future<Either<Failure, UserEntity>> signInWithGoogleNative({
     required String webClientId,
   });
