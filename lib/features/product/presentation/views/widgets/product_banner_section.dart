@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_banners_usecase.dart';
-import 'package:snap_shop/features/product/presentation/cubit/banner_cubit.dart';
+import 'package:snap_shop/features/product/presentation/cubit/banner/banner_cubit.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/banner_loading.dart';
 
 class ProductBannerSection extends StatelessWidget {

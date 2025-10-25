@@ -32,7 +32,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       userId: '',
       productName: product.name,
       productPrice: product.price,
-      productImage: product.images.first ?? '',
+      productImage: product.images.first.imageUrl,
     );
     if (state is! FavoriteSuccess) return;
 

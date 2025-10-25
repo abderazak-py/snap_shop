@@ -39,8 +39,9 @@ class SearchRemoteDataSource {
     }
   }
 
-  // Search products by name, price range, and categoryS
+  // Search products by name, price range, and categories
   Future<Either<Failure, List<ProductModel>>> searchWithFilters({
+    //TODO update this
     required String query,
     double? minPrice,
     double? maxPrice,

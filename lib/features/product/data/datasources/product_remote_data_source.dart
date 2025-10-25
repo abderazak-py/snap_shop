@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/product/data/models/banner_model.dart';
+import 'package:snap_shop/features/product/data/models/category_model.dart';
 import 'package:snap_shop/features/product/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -16,19 +17,20 @@ class ProductRemoteDataSource {
     try {
       final response = await supabaseService
           .from('products')
-          .select(
-            'id, created_at, name, description, price, category, image(image_url, position)',
-          )
+          .select('''
+          id, 
+          created_at, 
+          name, 
+          description, 
+          price, 
+          category_id,
+          category(id, name, image),
+          image(image_url, position)
+          ''')
           .order('id', ascending: true);
 
       final products = (response as List).map((product) {
-        final imagesRaw = product['image'] as List?;
-        final imageList = (imagesRaw ?? [])
-            .map((img) => img['image_url']?.toString() ?? '')
-            .where((url) => url.isNotEmpty)
-            .toList();
-        // Important: pass as 'image' key to fit your ProductModel.fromMap
-        return ProductModel.fromMap({...product, 'image': imageList});
+        return ProductModel.fromMap(product);
       }).toList();
 
       return Right(products);
@@ -69,16 +71,28 @@ class ProductRemoteDataSource {
 
   // Fetch products by category
   Future<Either<Failure, List<ProductModel>>> getProductsByCategory(
-    String category,
+    int categoryId,
   ) async {
     try {
       final response = await supabaseService
           .from('products')
-          .select()
-          .eq('category', category);
+          .select('''
+          id, 
+          created_at, 
+          name, 
+          description, 
+          price, 
+          category_id,
+          category(id, name, image),
+          image(image_url, position)
+          ''')
+          .eq('category_id', categoryId)
+          .order('id', ascending: true);
+
       final products = (response as List)
           .map((product) => ProductModel.fromMap(product))
           .toList();
+
       return Right(products);
     } on SocketException {
       return Left(
@@ -86,12 +100,45 @@ class ProductRemoteDataSource {
       );
     } on PostgrestException catch (e) {
       return Left(
-        Failure('Failed to fetch products by category: ${e.toString()}'),
+        Failure('Failed to fetch products by category: ${e.message}'),
       );
     } catch (e) {
       return Left(
         Failure('Failed to fetch products by category: ${e.toString()}'),
       );
+    }
+  }
+
+  // Fetch all categories with image URLs from bucket
+  Future<Either<Failure, List<CategoryModel>>> getCategories() async {
+    try {
+      final response = await supabaseService
+          .from('category')
+          .select('id, name, image')
+          .order('id', ascending: true);
+
+      final categories = (response as List).map((category) {
+        // Get the bucket path from database
+        final imagePath = category['image'] as String;
+
+        // Get public URL from Supabase Storage
+        final imageUrl = supabaseService.client.storage
+            .from('categories')
+            .getPublicUrl(imagePath);
+
+        // Update the image field with the full URL
+        return CategoryModel.fromMap({...category, 'image': imageUrl});
+      }).toList();
+
+      return Right(categories);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to fetch categories: ${e.message}'));
+    } catch (e) {
+      return Left(Failure('Failed to fetch categories: ${e.toString()}'));
     }
   }
 

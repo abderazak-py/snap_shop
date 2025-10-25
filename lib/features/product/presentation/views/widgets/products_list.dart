@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
+import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
+import 'package:snap_shop/features/product/presentation/cubit/product/product_cubit.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
 
 class ProductsList extends StatelessWidget {
@@ -38,9 +40,14 @@ class ProductsList extends StatelessWidget {
                   createdAt: DateTime.now(),
                   name: 'Wirless Headphone',
                   description: '',
-                  category: '',
+                  category: CategoryEntity(
+                    id: 0,
+                    name: 'category',
+                    image: 'data:,',
+                  ),
                   price: 109.99,
-                  images: ['data:,'],
+                  images: [ImageEntity(imageUrl: 'data:,', position: 1)],
+                  categoryId: 0,
                 );
                 return ProductCard(product: product);
               }, childCount: 6),

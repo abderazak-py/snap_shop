@@ -7,7 +7,7 @@ import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.da
 import 'package:snap_shop/features/favorite/presentation/views/favorite_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_state.dart';
-import 'package:snap_shop/features/product/presentation/cubit/product_cubit.dart';
+import 'package:snap_shop/features/product/presentation/cubit/product/product_cubit.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snap_shop/features/profile/presentation/views/profile_view.dart';

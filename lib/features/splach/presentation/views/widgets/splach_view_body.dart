@@ -55,7 +55,9 @@ class _SplachViewBodyState extends State<SplachViewBody> {
       bool? isUserSignedIn;
       final response = await isUserSignedInUsecase.execute();
       response.fold((l) {
-        //TODO make a snckbar here
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.message), backgroundColor: Colors.red),
+        );
         return;
       }, (b) => isUserSignedIn = b);
       if (mounted) {

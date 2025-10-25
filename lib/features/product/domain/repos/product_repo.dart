@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/product/domain/entities/banner_entity.dart';
+import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 
 abstract class ProductRepository {
@@ -9,8 +10,10 @@ abstract class ProductRepository {
 
   Future<Either<Failure, List<BannerEntity>>> getBanners();
 
+  Future<Either<Failure, List<CategoryEntity>>> getCategories();
+
   Future<Either<Failure, List<ProductEntity>>> getProductsByCategory(
-    String category,
+    int category,
   );
 
   //admin repository

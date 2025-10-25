@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
+import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
+import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
 
@@ -52,9 +54,19 @@ class FavoriteView extends StatelessWidget {
                               createdAt: product.addedAt,
                               name: product.productName,
                               description: '',
-                              category: '',
+                              category: CategoryEntity(
+                                id: 0,
+                                name: '',
+                                image: '',
+                              ),
                               price: product.productPrice,
-                              images: [product.productImage],
+                              images: [
+                                ImageEntity(
+                                  imageUrl: product.productImage,
+                                  position: 1,
+                                ),
+                              ],
+                              categoryId: 0,
                             ),
                           ),
                         ],

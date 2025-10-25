@@ -67,17 +67,16 @@ class ProductDetailsView extends StatelessWidget {
                 controller: controller,
                 children: [
                   for (var image in product.images)
-                    if (image != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(16),
-                          child: CachedNetworkImage(
-                            imageUrl: image,
-                            fit: BoxFit.cover,
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: ClipRRect(
+                        borderRadius: BorderRadiusGeometry.circular(16),
+                        child: CachedNetworkImage(
+                          imageUrl: image.imageUrl,
+                          fit: BoxFit.cover,
                         ),
                       ),
+                    ),
                 ],
               ),
             ),
@@ -105,7 +104,7 @@ class ProductDetailsView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Text(
-                product.category,
+                product.category.name,
                 style: Styles.titleText16.copyWith(
                   color: AppColors.kTextColor2,
                 ),
