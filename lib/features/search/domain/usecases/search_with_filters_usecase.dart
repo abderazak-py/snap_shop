@@ -12,13 +12,13 @@ class SearchWithFiltersUsecase {
     String query,
     double? minPrice,
     double? maxPrice,
-    String? category,
+    int? categoryId,
   ) async {
     final response = await repository.searchWithFilters(
       query,
       minPrice,
       maxPrice,
-      category,
+      categoryId,
     );
     return response.fold((l) => Left(l), (r) => Right(r));
   }

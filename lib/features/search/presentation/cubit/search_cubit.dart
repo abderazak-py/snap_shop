@@ -29,14 +29,14 @@ class SearchCubit extends Cubit<SearchState> {
     String query, {
     double? minPrice,
     double? maxPrice,
-    String? category,
+    int? categoryId,
   }) async {
     emit(SearchLoading());
     final response = await searchWithFiltersUsecase.execute(
       query,
       minPrice,
       maxPrice,
-      category,
+      categoryId,
     );
     response.fold(
       (failure) => emit(SearchFailure(error: failure.message)),

@@ -22,13 +22,13 @@ class SearchRepositoryImpl extends SearchRepository {
     String query,
     double? minPrice,
     double? maxPrice,
-    String? category,
+    int? categoryId,
   ) async {
     final response = await remoteDataSource.searchWithFilters(
       query: query,
       minPrice: minPrice,
       maxPrice: maxPrice,
-      category: category,
+      categoryId: categoryId,
     );
     return response.fold(
       (l) => Left(l),

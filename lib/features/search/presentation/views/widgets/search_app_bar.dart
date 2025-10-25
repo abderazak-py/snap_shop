@@ -68,14 +68,12 @@ class SearchAppBar extends StatelessWidget {
                           );
                       if (result != null && context.mounted) {
                         final range = result['range'] as RangeValues;
-                        final category = result['category'] as String?;
+                        final categoryId = result['category'] as int?;
                         context.read<SearchCubit>().searchWithFilters(
                           query ?? '',
                           minPrice: range.start,
                           maxPrice: range.end,
-                          category: (category != null && category != 'All')
-                              ? category
-                              : null,
+                          categoryId: categoryId,
                         );
                       }
                     },

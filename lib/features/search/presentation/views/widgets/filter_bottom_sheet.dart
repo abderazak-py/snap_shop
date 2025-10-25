@@ -1,8 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import 'package:snap_shop/features/product/presentation/cubit/category/category_cubit.dart';
 import 'package:snap_shop/features/search/presentation/views/widgets/custom_slider_point.dart';
 
 class FilterBottomSheet extends StatefulWidget {
@@ -18,6 +24,7 @@ class FilterBottomSheet extends StatefulWidget {
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
   var _selectedCategory = 0;
+  int? selectedId;
   late RangeValues _values;
 
   @override
@@ -28,16 +35,6 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO add categoies to supa base and add a foreign key to products
-    final List<String> categoryList = [
-      'All',
-      'Electronics',
-      'Fashion',
-      'Clothing',
-      'Home',
-      'Books',
-    ];
-
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -98,37 +95,119 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             ),
           ),
           SizedBox(height: 30),
-          SizedBox(
-            height: 50,
-            child: ListView.builder(
-              padding: EdgeInsets.all(0),
-              scrollDirection: Axis.horizontal,
-              itemCount: categoryList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => setState(() => _selectedCategory = index),
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: (index != _selectedCategory)
-                          ? AppColors.kSecondaryColor
-                          : AppColors.kPrimaryColor,
-                      borderRadius: BorderRadius.circular(16),
+          BlocProvider(
+            create: (context) => sl<CategoryCubit>()..getCategories(),
+            child: BlocBuilder<CategoryCubit, CategoryState>(
+              builder: (context, state) {
+                if (state is CategorySuccess) {
+                  return SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      padding: EdgeInsets.all(0),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.categories.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return GestureDetector(
+                            onTap: () => setState(() {
+                              _selectedCategory = index;
+                              selectedId = null;
+                            }),
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: (index != _selectedCategory)
+                                    ? AppColors.kSecondaryColor
+                                    : AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'all',
+                                  style: Styles.titleText14.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: (index != _selectedCategory)
+                                        ? AppColors.kPrimaryColor
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return GestureDetector(
+                            onTap: () => setState(() {
+                              _selectedCategory = index;
+                              selectedId = state.categories[index - 1].id;
+                            }),
+                            child: Container(
+                              margin: EdgeInsets.only(right: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: (index != _selectedCategory)
+                                    ? AppColors.kSecondaryColor
+                                    : AppColors.kPrimaryColor,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  state.categories[index - 1].name,
+                                  style: Styles.titleText14.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: (index != _selectedCategory)
+                                        ? AppColors.kPrimaryColor
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
-                    child: Center(
-                      child: Text(
-                        categoryList[index],
-                        style: Styles.titleText14.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: (index != _selectedCategory)
-                              ? AppColors.kPrimaryColor
-                              : Colors.white,
-                        ),
+                  );
+                } else if (state is CategoryFailure) {
+                  return Center(
+                    child: Text(
+                      'Failed to get categories',
+                      style: Styles.titleText16.copyWith(
+                        color: AppColors.kTextColor2,
                       ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return Skeletonizer(
+                    child: SizedBox(
+                      height: 50,
+                      child: ListView.builder(
+                        padding: EdgeInsets.all(0),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(right: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Category',
+                                style: Styles.titleText14.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: (index != _selectedCategory)
+                                      ? AppColors.kPrimaryColor
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -136,10 +215,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 
           CustomBigButton(
             title: 'Apply',
-            onPressed: () => GoRouter.of(context).pop({
-              'range': _values,
-              'category': categoryList[_selectedCategory],
-            }),
+            onPressed: () => GoRouter.of(
+              context,
+            ).pop({'range': _values, 'category': selectedId}),
           ),
           SizedBox(height: 30),
         ],

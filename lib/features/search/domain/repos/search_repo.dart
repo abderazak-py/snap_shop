@@ -8,6 +8,6 @@ abstract class SearchRepository {
     String query,
     double? minPrice,
     double? maxPrice,
-    String? category,
+    int? categoryId,
   );
 }

@@ -4,36 +4,42 @@ import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/product/data/models/product_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SearchRemoteDataSource {
   final ISupabaseService supabaseService;
 
   SearchRemoteDataSource(this.supabaseService);
 
-  // Search products by name
+  // Search products by name or description
   Future<Either<Failure, List<ProductModel>>> search(String query) async {
     try {
       final response = await supabaseService
           .from('products')
-          .select(
-            'id, created_at, name, description, price, category, image(image_url, position)',
-          )
-          .ilike('name', '%$query%');
+          .select('''
+          id, 
+          created_at, 
+          name, 
+          description, 
+          price, 
+          category_id,
+          category(id, name, image),
+          image(image_url, position)
+          ''')
+          .or('name.ilike.%$query%,description.ilike.%$query%')
+          .order('id', ascending: true);
 
-      final products = (response as List).map((product) {
-        final imagesRaw = product['image'] as List?;
-        final imageList = (imagesRaw ?? [])
-            .map((img) => img['image_url']?.toString() ?? '')
-            .where((url) => url.isNotEmpty)
-            .toList();
-        // Important: pass as 'image' key to fit your ProductModel.fromMap
-        return ProductModel.fromMap({...product, 'image': imageList});
-      }).toList();
+      final products = (response as List)
+          .map((product) => ProductModel.fromMap(product))
+          .toList();
+
       return Right(products);
     } on SocketException {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to search products: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to search products: ${e.toString()}'));
     }
@@ -41,27 +47,31 @@ class SearchRemoteDataSource {
 
   // Search products by name, price range, and categories
   Future<Either<Failure, List<ProductModel>>> searchWithFilters({
-    //TODO update this
     required String query,
     double? minPrice,
     double? maxPrice,
-    String? category,
+    int? categoryId,
   }) async {
     try {
-      var request = supabaseService
-          .from('products')
-          .select(
-            'id, created_at, name, description, price, category, image(image_url, position)',
-          );
+      var request = supabaseService.from('products').select('''
+          id, 
+          created_at, 
+          name, 
+          description, 
+          price, 
+          category_id,
+          category(id, name, image),
+          image(image_url, position)
+          ''');
 
-      // search by name
+      // Search by name
       if (query.isNotEmpty) {
         request = request.ilike('name', '%$query%');
       }
 
-      // filter by category
-      if (category != null && category.isNotEmpty) {
-        request = request.eq('category', category);
+      // Filter by category ID
+      if (categoryId != null) {
+        request = request.eq('category_id', categoryId);
       }
 
       // filter by price range
@@ -69,26 +79,19 @@ class SearchRemoteDataSource {
         request = request.gte('price', minPrice).lte('price', maxPrice);
       }
 
-      final response = await request;
+      final response = await request.order('id', ascending: true);
 
-      final products = (response as List).map((product) {
-        final imagesRaw = product['image'] as List?;
-        final imageList = (imagesRaw ?? [])
-            .map((img) => img['image_url']?.toString() ?? '')
-            .where((url) => url.isNotEmpty)
-            .toList();
-        // Important: pass as 'image' key to fit your ProductModel.fromMap
-        return ProductModel.fromMap({...product, 'image': imageList});
-      }).toList();
-      if (response.isEmpty) {
-        return Right([]);
-      }
+      final products = (response as List)
+          .map((product) => ProductModel.fromMap(product))
+          .toList();
 
       return Right(products);
     } on SocketException {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to search products: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to search products: ${e.toString()}'));
     }
