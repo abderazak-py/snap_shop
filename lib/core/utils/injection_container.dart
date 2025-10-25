@@ -49,6 +49,13 @@ import 'package:snap_shop/features/search/domain/repos/search_repo.dart';
 import 'package:snap_shop/features/search/domain/usecases/search_usecase.dart';
 import 'package:snap_shop/features/search/domain/usecases/search_with_filters_usecase.dart';
 import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
+import 'package:snap_shop/features/settings/data/datasources/settings_remote_datasource.dart';
+import 'package:snap_shop/features/settings/data/repos/settings_repo_impl.dart';
+import 'package:snap_shop/features/settings/domain/repos/settings_repo.dart';
+import 'package:snap_shop/features/settings/domain/usecases/change_avatar_usecase.dart';
+import 'package:snap_shop/features/settings/domain/usecases/change_email_usecase.dart';
+import 'package:snap_shop/features/settings/domain/usecases/change_name_usecase.dart';
+import 'package:snap_shop/features/settings/domain/usecases/change_password_usecase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final sl = GetIt.instance;
@@ -260,5 +267,31 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<SaveOrderUsecase>(
     () => SaveOrderUsecase(sl<PaymentRepository>()),
+  );
+
+  // ||=====================||SETTINGS||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<SettingsRemoteDatasource>(
+    () => SettingsRemoteDatasource(sl<SupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(sl<SettingsRemoteDatasource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<ChangeNameUsecase>(
+    () => ChangeNameUsecase(sl<SettingsRepository>()),
+  );
+  sl.registerLazySingleton<ChangeEmailUsecase>(
+    () => ChangeEmailUsecase(sl<SettingsRepository>()),
+  );
+  sl.registerLazySingleton<ChangePasswordUsecase>(
+    () => ChangePasswordUsecase(sl<SettingsRepository>()),
+  );
+  sl.registerLazySingleton<ChangeAvatarUsecase>(
+    () => ChangeAvatarUsecase(sl<SettingsRepository>()),
   );
 }
