@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/private.dart';
+import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
 import 'package:snap_shop/features/cart/domain/usecases/empty_cart_usecase.dart';
 import 'package:snap_shop/features/payment/domain/usecases/paypal_transactions_usecase.dart';
 import 'package:snap_shop/features/payment/domain/usecases/save_order_usecase.dart';
@@ -31,33 +33,96 @@ class PaymentView extends StatelessWidget {
 
         final transactions = snapshot.data!;
 
-        return PaypalCheckoutView(
-          sandboxMode: true,
-          note: "Thank you for your order!",
-          onSuccess: (Map params) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('✅ Payment Successful')),
-            );
-            emptyCartUsecase.execute();
-            saveOrderUsecase.execute(transactions: transactions);
-            GoRouter.of(context).pop();
-          },
-          onError: (error) {
-            debugPrint(error.toString());
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('❌ Payment Error')));
-            GoRouter.of(context).pop();
-          },
-          onCancel: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('⚠️ Payment Canceled')),
-            );
-            GoRouter.of(context).pop();
-          },
-          transactions: transactions,
-          clientId: PaypalConstants.paypalClientId,
-          secretKey: PaypalConstants.paypalSecret,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: CustomBigButton(
+                title: 'buy',
+                onPressed: () {
+                  GoRouter.of(context).go(AppRouter.kHomeView);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    final ctx = GoRouter.of(context)
+                        .routerDelegate
+                        .navigatorKey
+                        .currentContext; // ensure Home context
+                    if (ctx != null) {
+                      showDialog(
+                        context: ctx,
+                        builder: (_) => AlertDialog(
+                          title: const Text('Thank you'),
+                          content: const Text(
+                            'Your order will be delivered soon.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => GoRouter.of(ctx).pop(),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  });
+                },
+              ),
+            ),
+            Visibility(
+              visible: false,
+              child: PaypalCheckoutView(
+                sandboxMode: true,
+                note: "Thank you for your order!",
+                onSuccess: (Map params) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('✅ Payment Successful')),
+                  );
+                  emptyCartUsecase.execute();
+                  saveOrderUsecase.execute(transactions: transactions);
+                  //TODO update the cart
+                  GoRouter.of(context).go(AppRouter.kHomeView);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    final ctx = GoRouter.of(context)
+                        .routerDelegate
+                        .navigatorKey
+                        .currentContext; // ensure Home context
+                    if (ctx != null) {
+                      showDialog(
+                        context: ctx,
+                        builder: (_) => AlertDialog(
+                          title: const Text('Thank you'),
+                          content: const Text(
+                            'Your order will be delivered soon.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => GoRouter.of(ctx).pop(),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  });
+                },
+                onError: (error) {
+                  debugPrint(error.toString());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('❌ Payment Error')),
+                  );
+                  GoRouter.of(context).pop();
+                },
+                onCancel: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('⚠️ Payment Canceled')),
+                  );
+                  GoRouter.of(context).pop();
+                },
+                transactions: transactions,
+                clientId: PaypalConstants.paypalClientId,
+                secretKey: PaypalConstants.paypalSecret,
+              ),
+            ),
+          ],
         );
       },
     );

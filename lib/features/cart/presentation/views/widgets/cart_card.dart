@@ -16,168 +16,120 @@ class CartCard extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        children: [
-          BlocBuilder<CartCubit, CartState>(
-            builder: (context, state) {
-              final cartCubit = context.read<CartCubit>();
-              bool isChecked = false;
-
-              if (state is CartSuccess) {
-                final found = state.cart.firstWhere(
-                  (e) => e.productId == product.productId,
-                  orElse: () => product,
-                );
-                isChecked = found.isSelected;
-              }
-              return Stack(
-                alignment: Alignment.center,
+      child: Expanded(
+        child: Row(
+          children: [
+            SizedBox(width: width * 0.05),
+            ClipRRect(
+              borderRadius: BorderRadiusGeometry.circular(16),
+              child: CachedNetworkImage(
+                width: width * 0.22,
+                height: width * 0.22,
+                fit: BoxFit.cover,
+                imageUrl: product.productImage,
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            SizedBox(width: width * 0.05),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Transform.scale(
-                    scale: 1.4,
-                    child: Checkbox(
-                      value: isChecked,
-                      onChanged: (_) {
-                        cartCubit.toggleSelection(product.productId);
-                      },
-                      checkColor: AppColors.kPrimaryColor,
-                      activeColor: AppColors.kPrimaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                  SizedBox(height: 5),
+                  SizedBox(
+                    width: width * 0.55,
+                    child: Text(
+                      product.productName,
+                      overflow: TextOverflow.ellipsis,
+                      style: Styles.titleText16.copyWith(
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
-                  if (isChecked)
-                    IgnorePointer(
-                      child: const Icon(
-                        Icons.check_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-
-          Expanded(
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(16),
-                  child: CachedNetworkImage(
-                    width: width * 0.22,
-                    height: width * 0.22,
-                    fit: BoxFit.cover,
-                    imageUrl: product.productImage,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
-                SizedBox(width: width * 0.05),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 5),
-                    SizedBox(
-                      width: width * 0.55,
-                      child: Text(
-                        product.productName,
-                        overflow: TextOverflow.ellipsis,
-                        style: Styles.titleText16.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: width * 0.05),
-                    SizedBox(
-                      width: width * 0.55,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: AppColors.kSecondaryColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: Colors.white,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      context.read<CartCubit>().updateQuantity(
-                                        product.productId,
-                                        true,
-                                      );
-                                      debugPrint(
-                                        context
-                                            .read<CartCubit>()
-                                            .state
-                                            .toString(),
-                                      );
-                                    },
-                                    child: Icon(
-                                      Icons.add_rounded,
-                                      color: AppColors.kTextColor,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 15),
-                                BlocBuilder<CartCubit, CartState>(
-                                  builder: (context, state) {
-                                    final item = state is CartSuccess
-                                        ? state.cart.firstWhere(
-                                            (e) =>
-                                                e.productId ==
-                                                product.productId,
-                                          )
-                                        : product;
-                                    return Text(
-                                      item.quantity.toString(),
-                                      style: Styles.titleText14,
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: width * 0.6,
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: AppColors.kSecondaryColor,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 13,
+                                backgroundColor: Colors.white,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.read<CartCubit>().updateQuantity(
+                                      product.productId,
+                                      true,
+                                    );
+                                    debugPrint(
+                                      context
+                                          .read<CartCubit>()
+                                          .state
+                                          .toString(),
                                     );
                                   },
-                                ),
-
-                                SizedBox(width: 15),
-                                CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: Colors.white,
-                                  child: GestureDetector(
-                                    onTap: () => context
-                                        .read<CartCubit>()
-                                        .updateQuantity(
-                                          product.productId,
-                                          false,
-                                        ),
-                                    child: Icon(
-                                      Icons.remove_outlined,
-                                      color: AppColors.kTextColor,
-                                      size: 20,
-                                    ),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    color: AppColors.kTextColor,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(width: 15),
+                              BlocBuilder<CartCubit, CartState>(
+                                builder: (context, state) {
+                                  final item = state is CartSuccess
+                                      ? state.cart.firstWhere(
+                                          (e) =>
+                                              e.productId == product.productId,
+                                        )
+                                      : product;
+                                  return Text(
+                                    item.quantity.toString(),
+                                    style: Styles.titleText14,
+                                  );
+                                },
+                              ),
+
+                              SizedBox(width: 15),
+                              CircleAvatar(
+                                radius: 13,
+                                backgroundColor: Colors.white,
+                                child: GestureDetector(
+                                  onTap: () => context
+                                      .read<CartCubit>()
+                                      .updateQuantity(product.productId, false),
+                                  child: Icon(
+                                    Icons.remove_outlined,
+                                    color: AppColors.kTextColor,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Spacer(),
-                          Text(
-                            '\$${(product.productPrice * product.quantity).toStringAsFixed(2)}',
-                            style: Styles.titleText20.copyWith(
-                              fontWeight: FontWeight.w900,
-                            ),
+                        ),
+                        Spacer(),
+                        Text(
+                          '\$${(product.productPrice * product.quantity).toStringAsFixed(2)}',
+                          style: Styles.titleText20.copyWith(
+                            fontWeight: FontWeight.w900,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:snap_shop/features/auth/presentation/views/register_view.dart';
 import 'package:snap_shop/features/cart/presentation/views/cart_view.dart';
 import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/home/presentation/views/home_view.dart';
+import 'package:snap_shop/features/payment/presentation/views/orders_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
@@ -29,48 +30,50 @@ abstract class AppRouter {
   static const kConfirmOtpView = '/confirm_otp';
   static const kPaymentView = '/payment';
   static const kSettingsView = '/settings';
+  static const kOrdersView = '/orders';
 
   static final GoRouter router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
+      GoRoute(path: kAuthView, builder: (context, state) => const AuthView()),
+      GoRoute(path: kLoginView, builder: (context, state) => const LoginView()),
       GoRoute(
-        path: '/auth_view',
-        builder: (context, state) => const AuthView(),
-      ),
-      GoRoute(path: '/login', builder: (context, state) => const LoginView()),
-      GoRoute(
-        path: '/register',
+        path: kRegisterView,
         builder: (context, state) => const RegisterView(),
       ),
       GoRoute(
-        path: '/confirm_otp',
+        path: kConfirmOtpView,
         builder: (context, state) =>
             ConfirmOtpView(email: state.extra as String),
       ),
-      GoRoute(path: '/home', builder: (context, state) => const HomeView()),
-      GoRoute(path: '/cart', builder: (context, state) => const CartView()),
+      GoRoute(path: kHomeView, builder: (context, state) => const HomeView()),
+      GoRoute(path: kCartView, builder: (context, state) => const CartView()),
       GoRoute(
-        path: '/product',
+        path: kProductView,
         builder: (context, state) => const ProductView(),
       ),
       GoRoute(
-        path: '/product_details',
+        path: kProductDetailsView,
         builder: (context, state) =>
             ProductDetailsView(product: state.extra as ProductEntity),
       ),
       GoRoute(
-        path: '/search_products',
+        path: kSearchProductsView,
         builder: (context, state) => BlocProvider.value(
           value: sl<FavoriteCubit>(),
           child: const SearchProductsView(),
         ),
       ),
       GoRoute(
-        path: '/payment',
+        path: kPaymentView,
         builder: (context, state) => const PaymentView(),
       ),
       GoRoute(
-        path: '/settings',
+        path: kOrdersView,
+        builder: (context, state) => const OrdersView(),
+      ),
+      GoRoute(
+        path: kSettingsView,
         builder: (context, state) => const SettingsView(),
       ),
     ],

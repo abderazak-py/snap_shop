@@ -5,8 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
+import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
 
 class ProductDetailsView extends StatelessWidget {
@@ -17,6 +19,7 @@ class ProductDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final AddOneToCartUsecase addOneToCartUsecase = sl<AddOneToCartUsecase>();
     final controller = PageController();
     return Scaffold(
       body: Center(
@@ -155,8 +158,16 @@ class ProductDetailsView extends StatelessWidget {
                   width: width * 0.48,
                   child: CustomBigButton(
                     title: 'Add to Cart',
-                    onPressed: () {
-                      //TODO add functionality
+                    onPressed: () async {
+                      final res = await addOneToCartUsecase.execute(product.id);
+                      res.fold(
+                        (l) => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed: ${l.message}')),
+                        ),
+                        (_) => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Added to cart')),
+                        ),
+                      );
                     },
                   ),
                 ),

@@ -59,19 +59,4 @@ class CartCubit extends Cubit<CartState> {
       debugPrint('Failed to sync with server: $failure');
     }, (_) => debugPrint('Server synced'));
   }
-
-  //for check box
-  void toggleSelection(int productId) {
-    if (state is! CartSuccess) return;
-    final currentState = state as CartSuccess;
-
-    final updatedCart = currentState.cart.map((item) {
-      if (item.productId == productId) {
-        return item.copyWith(isSelected: !item.isSelected);
-      }
-      return item;
-    }).toList();
-
-    emit(CartSuccess(updatedCart));
-  }
 }

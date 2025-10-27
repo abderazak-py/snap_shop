@@ -89,7 +89,9 @@ class ProfileView extends StatelessWidget {
                     ),
                   ),
                   title: 'Orders',
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).push(AppRouter.kOrdersView);
+                  },
                 ),
                 CustomWideButton(
                   icon: SvgPicture.asset(

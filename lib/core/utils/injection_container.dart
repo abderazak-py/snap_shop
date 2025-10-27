@@ -32,8 +32,10 @@ import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.da
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
+import 'package:snap_shop/features/payment/domain/usecases/get_orders_usecase.dart';
 import 'package:snap_shop/features/payment/domain/usecases/paypal_transactions_usecase.dart';
 import 'package:snap_shop/features/payment/domain/usecases/save_order_usecase.dart';
+import 'package:snap_shop/features/payment/presentation/cubit/orders_cubit.dart';
 import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:snap_shop/features/product/data/repos/product_repository_impl.dart';
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
@@ -211,6 +213,8 @@ Future<void> init() async {
   sl.registerLazySingleton<EmptyCartUsecase>(
     () => EmptyCartUsecase(sl<CartRepository>()),
   );
+
+  // Cubit/Bloc
   sl.registerFactory<CartCubit>(
     () => CartCubit(
       getCartItemsUsecase: sl<GetCartItemsUsecase>(),
@@ -242,6 +246,7 @@ Future<void> init() async {
     () => RemoveFromFavoriteUsecase(sl<FavoriteRepository>()),
   );
 
+  // Cubit/Bloc
   sl.registerLazySingleton<FavoriteCubit>(
     () => FavoriteCubit(
       addToFavoriteUsecase: sl<ToggleFavoriteeUsecase>(),
@@ -267,6 +272,14 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<SaveOrderUsecase>(
     () => SaveOrderUsecase(sl<PaymentRepository>()),
+  );
+  sl.registerLazySingleton<GetOrdersUsecase>(
+    () => GetOrdersUsecase(sl<PaymentRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<OrdersCubit>(
+    () => OrdersCubit(getOrdersUsecase: sl<GetOrdersUsecase>()),
   );
 
   // ||=====================||SETTINGS||=====================||
