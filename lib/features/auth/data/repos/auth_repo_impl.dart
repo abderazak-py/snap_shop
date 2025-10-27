@@ -3,7 +3,6 @@ import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -18,7 +17,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final response = await remoteDataSource.signInWithEmail(email, password);
     return response.fold(
       (failure) => Left(failure),
-      (userModel) => Right(_mapUserToEntity(userModel)),
+      (userModel) => Right(userModel.toEntity()),
     );
   }
 
@@ -30,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final response = await remoteDataSource.signUpWithEmail(email, password);
     return response.fold(
       (failure) => Left(failure),
-      (userModel) => Right(_mapUserToEntity(userModel)),
+      (userModel) => Right(userModel.toEntity()),
     );
   }
 
@@ -44,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     return response.fold(
       (failure) => Left(failure),
-      (userModel) => Right(_mapUserToEntity(userModel)),
+      (userModel) => Right(userModel.toEntity()),
     );
   }
 
@@ -53,7 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final response = await remoteDataSource.getCurrentUser();
     return response.fold(
       (failure) => Left(failure),
-      (userModel) => Right(_mapUserToEntity(userModel)),
+      (userModel) => Right(userModel.toEntity()),
     );
   }
 
@@ -80,7 +79,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final response = await remoteDataSource.verifyOTP(otp, email);
     return response.fold(
       (failure) => Left(failure),
-      (userModel) => Right(_mapUserToEntity(userModel)),
+      (userModel) => Right(userModel.toEntity()),
     );
   }
 
@@ -88,14 +87,5 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> resendOTP(String email) async {
     final response = await remoteDataSource.resendOTP(email);
     return response.fold((failure) => Left(failure), (_) => Right(null));
-  }
-
-  UserEntity _mapUserToEntity(User user) {
-    return UserEntity(
-      id: user.id,
-      email: user.email ?? '',
-      name: user.userMetadata?['name'] as String? ?? '',
-      avatarUrl: user.userMetadata?['avatar_url'] as String? ?? '',
-    );
   }
 }

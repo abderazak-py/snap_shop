@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
+import 'package:snap_shop/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteDataSource {
@@ -13,7 +14,7 @@ class AuthRemoteDataSource {
   AuthRemoteDataSource(this.supabaseService);
 
   //==============|| Sign up with email and password ||====
-  Future<Either<Failure, User>> signInWithEmail(
+  Future<Either<Failure, UserModel>> signInWithEmail(
     String email,
     String password,
   ) async {
@@ -23,7 +24,7 @@ class AuthRemoteDataSource {
         password: password,
       );
       if (response.user != null) {
-        return Right(response.user!);
+        return Right(UserModel.fromMap(response.user!.toJson()));
       } else {
         return Left(Failure('Invalid email or password'));
       }
@@ -41,7 +42,7 @@ class AuthRemoteDataSource {
   }
 
   //==============|| Sign up with email and password ||====
-  Future<Either<Failure, User>> signUpWithEmail(
+  Future<Either<Failure, UserModel>> signUpWithEmail(
     String email,
     String password,
   ) async {
@@ -51,7 +52,7 @@ class AuthRemoteDataSource {
         password: password,
       );
       if (response.user != null) {
-        return Right(response.user!);
+        return Right(UserModel.fromMap(response.user!.toJson()));
       } else {
         return Left(Failure('Invalid email or password'));
       }
@@ -69,7 +70,7 @@ class AuthRemoteDataSource {
   }
 
   //==============|| Sign up with google ||================
-  Future<Either<Failure, User>> signInWithGoogleNative({
+  Future<Either<Failure, UserModel>> signInWithGoogleNative({
     required String webClientId,
   }) async {
     final scopes = ['email', 'profile'];
@@ -97,42 +98,49 @@ class AuthRemoteDataSource {
       return Left(Failure('No user found.'));
     }
     final userName = user.userMetadata?['name'] ?? '';
-
-    //this to update user metadata with google so the user doesnt need to enter them manually
-    await supabaseService.auth.updateUser(
-      UserAttributes(
-        data: {
-          'name': userName.split(' ').first,
-          'avatar_url': user.userMetadata?['avatar_url'] ?? '',
-        },
-      ),
-    );
-    final response = await supabaseService.auth.getUser();
-    final updatedUser = response.user;
-    if (updatedUser == null) {
-      return Left(Failure('Fialed to get name and picture'));
-    } else {
-      return Right(updatedUser);
-    }
+    final avatarUrl = user.userMetadata?['avatar_url'] as String? ?? '';
+    await supabaseService.client.from('profiles').upsert({
+      'id': user.id,
+      'full_name': userName,
+      'avatar': avatarUrl,
+      'created_at': DateTime.now().toIso8601String(),
+    });
+    return Right(UserModel.fromMap(user.toJson()));
   }
 
   //==============|| Get current user ||===================
-  Future<Either<Failure, User>> getCurrentUser() async {
+  Future<Either<Failure, UserModel>> getCurrentUser() async {
     try {
-      final response = supabaseService.auth.currentSession;
-      if (response?.user != null) {
-        return Right(response!.user);
-      } else {
+      final session = supabaseService.auth.currentSession;
+      final user = session?.user;
+      if (user == null) {
         return Left(Failure('please login first'));
       }
+
+      final profile = await supabaseService.client
+          .from('profiles')
+          .select('full_name, avatar, user_role')
+          .eq('id', user.id)
+          .single();
+
+      final userJson = user.toJson();
+      final merged = {
+        ...userJson,
+        'name': profile['full_name'] ?? '',
+        'avatar': profile['avatar'] ?? '',
+        'role': profile['user_role'] ?? 'customer',
+      };
+
+      final userModel = UserModel.fromMap(merged);
+      return Right(userModel);
     } on SocketException {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
     } on PostgrestException catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure(e.message));
     } on AuthApiException catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure(e.message));
     } catch (e) {
       return Left(Failure(e.toString()));
     }
@@ -157,7 +165,7 @@ class AuthRemoteDataSource {
   }
 
   //==============|| verify with otp ||====================
-  Future<Either<Failure, User>> verifyOTP(String otp, String email) async {
+  Future<Either<Failure, UserModel>> verifyOTP(String otp, String email) async {
     try {
       final response = await supabaseService.auth.verifyOTP(
         type: OtpType.signup,
@@ -167,7 +175,7 @@ class AuthRemoteDataSource {
       if (response.session == null || response.user == null) {
         throw Exception('Please login first');
       } else {
-        return Right(response.user!);
+        return Right(UserModel.fromMap(response.user!.toJson()));
       }
       //add this line if there is an error
       //return supabaseService.auth.currentUser!;

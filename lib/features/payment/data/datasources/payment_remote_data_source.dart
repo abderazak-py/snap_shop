@@ -84,7 +84,7 @@ class PaymentRemoteDataSource {
       // Map and insert order items with the order_id
       final orderItems = cartItems.map((item) {
         return {
-          'order_id': orderId,
+          'id': orderId,
           'product_id': item.productId,
           'quantity': item.quantity,
         };

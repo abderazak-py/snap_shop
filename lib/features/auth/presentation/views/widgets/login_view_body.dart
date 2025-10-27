@@ -25,9 +25,7 @@ class LoginViewBody extends StatelessWidget {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess || state is AuthSuccessConfirmed) {
-            GoRouter.of(context).go(
-              AppRouter.kHomeView,
-            ); //check here if there is a navigation problem
+            GoRouter.of(context).go(AppRouter.kHomeView);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(
               context,
