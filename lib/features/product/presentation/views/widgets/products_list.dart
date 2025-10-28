@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:snap_shop/core/widgets/error_widget.dart';
 import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
@@ -26,7 +27,9 @@ class ProductsList extends StatelessWidget {
             }, childCount: state.products.length),
           );
         } else if (state is ProductFailure) {
-          return SliverToBoxAdapter(child: ErrorWidget(state.error));
+          return SliverToBoxAdapter(
+            child: CustomErrorWidget(errorMsg: state.error),
+          );
         } else {
           return Skeletonizer.sliver(
             child: SliverGrid(

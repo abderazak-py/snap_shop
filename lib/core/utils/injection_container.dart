@@ -41,6 +41,7 @@ import 'package:snap_shop/features/product/data/repos/product_repository_impl.da
 import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_banners_usecase.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_categories_usecase.dart';
+import 'package:snap_shop/features/product/domain/usecases/get_products_by_category_usecase.dart';
 import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
 import 'package:snap_shop/features/product/presentation/cubit/banner/banner_cubit.dart';
 import 'package:snap_shop/features/product/presentation/cubit/category/category_cubit.dart';
@@ -146,10 +147,16 @@ Future<void> init() async {
   sl.registerLazySingleton<GetCategoriesUsecase>(
     () => GetCategoriesUsecase(sl<ProductRepository>()),
   );
+  sl.registerLazySingleton<GetProductsByCategoryUsecase>(
+    () => GetProductsByCategoryUsecase(sl<ProductRepository>()),
+  );
 
   // Cubit/Bloc
   sl.registerFactory<ProductCubit>(
-    () => ProductCubit(getProductsUseCase: sl<GetProductsUseCase>()),
+    () => ProductCubit(
+      getProductsUseCase: sl<GetProductsUseCase>(),
+      getProductsByCategoryUsecase: sl<GetProductsByCategoryUsecase>(),
+    ),
   );
   sl.registerFactory<BannerCubit>(
     () => BannerCubit(getBannersUseCase: sl<GetBannersUseCase>()),

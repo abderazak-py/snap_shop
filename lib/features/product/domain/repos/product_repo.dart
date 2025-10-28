@@ -13,7 +13,7 @@ abstract class ProductRepository {
   Future<Either<Failure, List<CategoryEntity>>> getCategories();
 
   Future<Either<Failure, List<ProductEntity>>> getProductsByCategory(
-    int category,
+    int categoryId,
   );
 
   //admin repository

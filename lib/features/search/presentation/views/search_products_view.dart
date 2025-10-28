@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
+import 'package:snap_shop/core/widgets/error_widget.dart';
 import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
@@ -45,7 +46,7 @@ class SearchProductsView extends StatelessWidget {
                       },
                     );
                   } else if (state is SearchFailure) {
-                    return ErrorWidget(state.error);
+                    return CustomErrorWidget(errorMsg: state.error);
                   } else if (state is SearchLoading) {
                     return Skeletonizer(
                       child: GridView.builder(

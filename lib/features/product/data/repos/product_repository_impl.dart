@@ -42,9 +42,9 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getProductsByCategory(
-    int category,
+    int categoryId,
   ) async {
-    final response = await remoteDataSource.getProductsByCategory(category);
+    final response = await remoteDataSource.getProductsByCategory(categoryId);
     return response.fold(
       (failure) => Left(failure),
       (products) => Right(products.map((model) => model.toEntity()).toList()),

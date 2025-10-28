@@ -10,7 +10,9 @@ import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.da
 import 'package:snap_shop/features/home/presentation/views/home_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/orders_view.dart';
 import 'package:snap_shop/features/payment/presentation/views/payment_view.dart';
+import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
 import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import 'package:snap_shop/features/product/presentation/views/category_view.dart';
 import 'package:snap_shop/features/product/presentation/views/product_details_view.dart';
 import 'package:snap_shop/features/product/presentation/views/product_view.dart';
 import 'package:snap_shop/features/search/presentation/views/search_products_view.dart';
@@ -31,6 +33,7 @@ abstract class AppRouter {
   static const kPaymentView = '/payment';
   static const kSettingsView = '/settings';
   static const kOrdersView = '/orders';
+  static const kCategoryView = '/category';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -75,6 +78,11 @@ abstract class AppRouter {
       GoRoute(
         path: kSettingsView,
         builder: (context, state) => const SettingsView(),
+      ),
+      GoRoute(
+        path: kCategoryView,
+        builder: (context, state) =>
+            CategoryView(category: state.extra as CategoryEntity),
       ),
     ],
   );

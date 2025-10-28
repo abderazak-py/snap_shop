@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 
-class ErrorWidget extends StatelessWidget {
+class CustomErrorWidget extends StatelessWidget {
   final String errorMsg;
-  const ErrorWidget({super.key, required this.errorMsg});
+  const CustomErrorWidget({super.key, required this.errorMsg});
 
   @override
   Widget build(BuildContext context) {

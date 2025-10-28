@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/product/presentation/views/category_view.dart';
+import 'package:snap_shop/features/product/presentation/views/categories_list_view.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/custom_tab_bar.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/product_banner_section.dart';
 import 'package:snap_shop/features/product/presentation/views/widgets/products_list.dart';
@@ -54,7 +54,7 @@ class ProductTabView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  CategoryView(),
+                  CategoriesListView(),
                 ],
               ),
             ),
