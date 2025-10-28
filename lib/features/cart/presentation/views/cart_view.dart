@@ -16,9 +16,7 @@ class CartView extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: BlocProvider(
-        create: (context) =>
-            sl<CartCubit>()
-              ..getCartItems(), //TODO update this when the payment is done
+        create: (context) => sl<CartCubit>()..getCartItems(),
         child: BlocBuilder<CartCubit, CartState>(
           builder: (context, state) {
             if (state is CartFailure) {

@@ -78,7 +78,6 @@ class PaymentView extends StatelessWidget {
                   );
                   emptyCartUsecase.execute();
                   saveOrderUsecase.execute(transactions: transactions);
-                  //TODO update the cart
                   GoRouter.of(context).go(AppRouter.kHomeView);
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     final ctx = GoRouter.of(context)
