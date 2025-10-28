@@ -73,20 +73,27 @@ class OrderItemModel extends Equatable {
   final int orderId;
   final int productId;
   final int quantity;
+  final String productName;
+  final double productPrice;
 
   const OrderItemModel({
     required this.id,
     required this.orderId,
     required this.productId,
     required this.quantity,
+    required this.productName,
+    required this.productPrice,
   });
 
   factory OrderItemModel.fromMap(Map<String, dynamic> map) {
+    final product = map['products'] ?? {};
     return OrderItemModel(
       id: map['id'] as int,
       orderId: map['order_id'] as int,
       productId: map['product_id'] as int,
       quantity: map['quantity'] as int,
+      productName: product['name'] ?? '',
+      productPrice: (product['price'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -104,8 +111,17 @@ class OrderItemModel extends Equatable {
     orderId: orderId,
     productId: productId,
     quantity: quantity,
+    productName: productName,
+    productPrice: productPrice,
   );
 
   @override
-  List<Object?> get props => [id, orderId, productId, quantity];
+  List<Object?> get props => [
+    id,
+    orderId,
+    productId,
+    quantity,
+    productName,
+    productPrice,
+  ];
 }

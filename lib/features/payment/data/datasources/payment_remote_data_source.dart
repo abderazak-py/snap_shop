@@ -116,7 +116,7 @@ class PaymentRemoteDataSource {
                     currency,
                     shipping,
                     created_at,
-                    order_item (id,order_id, product_id, quantity)''')
+                    order_item (id,order_id, product_id, quantity, products(name, price))''')
           .eq('user_id', user.id)
           .order('created_at', ascending: false);
 

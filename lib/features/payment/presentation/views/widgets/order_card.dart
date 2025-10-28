@@ -50,44 +50,61 @@ class OrderCard extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                SizedBox(height: 10),
                 for (var item in order.items)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Text(
-                          'Product N°${item.productId}',
-                          style: Styles.titleText14.copyWith(
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.kTextColor2,
-                          ),
+                        if (item == order.items.first) Divider(),
+                        Row(
+                          children: [
+                            Text(
+                              'Name: ${item.productName}',
+                              style: Styles.titleText14.copyWith(
+                                fontWeight: FontWeight.w900,
+                                //color: AppColors.kTextColor2,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              'N°${item.productId}',
+                              style: Styles.titleText14.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.kTextColor2,
+                              ),
+                            ),
+                          ],
                         ),
-                        Spacer(),
-                        Text(
-                          '. . . . . . . . . . . . . . .',
-                          style: Styles.titleText14.copyWith(
-                            fontWeight: FontWeight.w900,
-                          ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text(
+                              'Price: ${item.productPrice} - Quantity: ${item.quantity}',
+                              style: Styles.titleText14.copyWith(
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.kTextColor2,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              'Subtotal: ${item.productPrice * item.quantity}',
+                              style: Styles.titleText14.copyWith(
+                                fontWeight: FontWeight.w900,
+                                //color: AppColors.kTextColor2,
+                              ),
+                            ),
+                          ],
                         ),
-                        Spacer(),
-                        Text(
-                          'Quantity: ${item.quantity}',
-                          style: Styles.titleText14.copyWith(
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.kTextColor2,
-                          ),
-                        ),
+                        Divider(),
                       ],
                     ),
                   ),
               ],
             ),
-            SizedBox(height: 20),
-
+            SizedBox(height: 10),
             Text(
               'Total: ${order.total}',
-              style: Styles.titleText18.copyWith(fontWeight: FontWeight.w900),
+              style: Styles.titleText22.copyWith(fontWeight: FontWeight.w900),
             ),
           ],
         ),
