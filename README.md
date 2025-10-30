@@ -6,15 +6,15 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 
 | Splach | Landing | Login |
 | :-----------: | :---------: | :----------: |
-| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/splach.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/auth-home.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/login.webp) |
+| ![](screenshots/splach.webp) | ![](screenshots/auth-home.webp) | ![](screenshots/login.webp) |
 | **Register** | **Home** | **Catalog** |   |
-| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/register.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/home.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/catalog.webp)|   |
+| ![](screenshots/register.webp) | ![](screenshots/home.webp) | ![](screenshots/catalog.webp)|   |
 | **Favorite** | **Profile** | **Search** |   |
-| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/favorite.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/profile.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search-filters.webp)|   |
+| ![](screenshots/favorite.webp) | ![](screenshots/profile.webp) | ![](screenshots/search-filters.webp)|   |
 | **Cart** | **Orders** | **Settings** |   |
-| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/cart.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/orders.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/settings.webp)|   |
+| ![](screenshots/cart.webp) | ![](screenshots/orders.webp) | ![](screenshots/settings.webp)|   |
 | **Loading** | **Popup** | **Search** |   |
-| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search-loading.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/logout-popup.webp) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search.webp)|   |
+| ![](screenshots/search-loading.webp) | ![](screenshots/logout-popup.webp) | ![](screenshots/search.webp)|   |
 
 ## 📱 Features
 
