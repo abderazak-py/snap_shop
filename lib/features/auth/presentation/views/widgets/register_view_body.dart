@@ -54,7 +54,7 @@ class RegisterViewBody extends StatelessWidget {
                 children: [
                   SizedBox(height: height * 0.1),
                   Text(
-                    'Login Account',
+                    'Register Account',
                     style: Styles.titleText24.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
@@ -62,7 +62,7 @@ class RegisterViewBody extends StatelessWidget {
                   SizedBox(height: 8),
 
                   Text(
-                    'Please login with registred account',
+                    'Enter your information to register',
                     style: Styles.titleText14.copyWith(
                       color: AppColors.kTextColor2,
                     ),
