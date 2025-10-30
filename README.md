@@ -6,15 +6,15 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 
 | Splach | Landing | Login |
 | :-----------: | :---------: | :----------: |
-| ![](screenshots/splach.webp) | ![](screenshots/auth-home.webp) | ![](screenshots/login.webp) |
+| ![screenshots/splach.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/splach.webp) | ![screenshots/auth-home.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/auth-home.webp) | ![screenshots/login.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/login.webp) |
 | **Register** | **Home** | **Catalog** |   |
-| ![](screenshots/register.webp) | ![](screenshots/home.webp) | ![](screenshots/catalog.webp)|   |
+| ![screenshots/register.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/register.webp) | ![screenshots/home.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/home.webp) | ![screenshots/catalog.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/catalog.webp) |   |
 | **Favorite** | **Profile** | **Search** |   |
-| ![](screenshots/favorite.webp) | ![](screenshots/profile.webp) | ![](screenshots/search-filters.webp)|   |
+| ![screenshots/favorite.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/favorite.webp) | ![screenshots/profile.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/profile.webp) | ![screenshots/search-filters.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-filters.webp) |   |
 | **Cart** | **Orders** | **Settings** |   |
-| ![](screenshots/cart.webp) | ![](screenshots/orders.webp) | ![](screenshots/settings.webp)|   |
+| ![screenshots/cart.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
 | **Loading** | **Popup** | **Search** |   |
-| ![](screenshots/search-loading.webp) | ![](screenshots/logout-popup.webp) | ![](screenshots/search.webp)|   |
+| ![screenshots/search-loading.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp) | ![screenshots/logout-popup.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp) | ![screenshots/search.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp) |   |
 
 ## 📱 Features
 
