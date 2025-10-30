@@ -2,6 +2,20 @@
 
 A modern e-commerce mobile application built with Flutter, featuring a clean architecture pattern and integrated with Supabase backend services.
 
+## Screenshots
+
+| Splach | Landing | Login |
+| :-----------: | :---------: | :----------: |
+| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/splach.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/auth-home.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/login.png) |
+| **Register** | **Home** | **Catalog** |   |
+| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/register.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/home.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/catalog.png)|   |
+| **Favorite** | **Profile** | **Search** |   |
+| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/favorite.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/profile.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search-filters.png)|   |
+| **Cart** | **Orders** | **Settings** |   |
+| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/cart.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/orders.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/settings.png)|   |
+| **Loading** | **Popup** | **Search** |   |
+| ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search-loading.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/logout-popup.png) | ![](https://raw.githubusercontent.com/abderazak-py/snap_shop/main/screenshots/search.png)|   |
+
 ## 📱 Features
 
 - **User Authentication**
@@ -42,7 +56,7 @@ The project follows a Clean Architecture pattern with separation of concerns:
   - Profile: User profile management
   - Search: Product search capabilities
   - Settings: Application preferences
-  - Splash: Initial loading screen
+  - Splash: Initial 
 
 Each feature module is organized into:
 ```
