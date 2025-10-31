@@ -12,7 +12,7 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 | **Favorite** | **Profile** | **Search** |   |
 | ![screenshots/favorite.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/favorite.webp) | ![screenshots/profile.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/profile.webp) | ![screenshots/search-filters.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-filters.webp) |   |
 | **Cart** | **Orders** | **Settings** |   |
-| ![screenshots/cart.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
+| ![screenshots/cart-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart-page.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
 | **Loading** | **Popup** | **Search** |   |
 | ![screenshots/search-loading.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp) | ![screenshots/logout-popup.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp) | ![screenshots/search.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp) |   |
 | **Payment** | **Product** | |   |
