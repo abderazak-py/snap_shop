@@ -71,31 +71,26 @@ class ProductTopSection extends StatelessWidget {
         ),
         Spacer(),
         IconButton(
-          padding: EdgeInsets.all(-10),
           onPressed: () {
             GoRouter.of(context).push(AppRouter.kSearchProductsView);
           },
-          icon: Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 10,
-              right: 10,
-              bottom: 10,
-            ),
-
-            child: SvgPicture.asset(
-              AppIcons.search,
-
-              colorFilter: const ColorFilter.mode(
-                AppColors.kTextColor,
-                BlendMode.srcIn,
-              ),
+          icon: SvgPicture.asset(
+            AppIcons.search,
+            colorFilter: const ColorFilter.mode(
+              AppColors.kTextColor,
+              BlendMode.srcIn,
             ),
           ),
         ),
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.notifications_rounded, size: 30),
+          icon: SvgPicture.asset(
+            AppIcons.notification,
+            colorFilter: const ColorFilter.mode(
+              AppColors.kTextColor,
+              BlendMode.srcIn,
+            ),
+          ),
         ),
       ],
     );

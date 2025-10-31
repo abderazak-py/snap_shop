@@ -6,6 +6,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
   runApp(const SnapShop());
+  //TODO: make loadings good in all screens
+  //TODO: add forgot password
+  //TODO: make errors better
+  //TODO: make the response cached
+  //TODO make all future builders to bloc
 }
 
 class SnapShop extends StatelessWidget {

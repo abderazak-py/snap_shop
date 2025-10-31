@@ -15,6 +15,8 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 | ![screenshots/cart.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
 | **Loading** | **Popup** | **Search** |   |
 | ![screenshots/search-loading.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp) | ![screenshots/logout-popup.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp) | ![screenshots/search.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp) |   |
+| **Payment** | **Product** | |   |
+| ![screenshots/payment.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp) | ![screenshots/product-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp) |   |
 
 ## 📱 Features
 
