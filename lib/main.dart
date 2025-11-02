@@ -5,6 +5,7 @@ import 'core/utils/injection_container.dart' as di;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+
   runApp(const SnapShop());
   //TODO: make loadings good in all screens
   //TODO: add forgot password

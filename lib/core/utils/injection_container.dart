@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get_it/get_it.dart';
 import 'package:snap_shop/core/utils/private.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
@@ -29,6 +30,11 @@ import 'package:snap_shop/features/favorite/domain/usecases/toggle_favorite_usec
 import 'package:snap_shop/features/favorite/domain/usecases/get_favorite_items_usecase.dart';
 import 'package:snap_shop/features/favorite/domain/usecases/remove_from_favorite_usecase.dart';
 import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
+import 'package:snap_shop/features/notifications/data/datasources/notifications_remote_data_source.dart';
+import 'package:snap_shop/features/notifications/data/repos/notification_repo_impl.dart';
+import 'package:snap_shop/features/notifications/domain/repos/notification_repo.dart';
+import 'package:snap_shop/features/notifications/domain/usecases/get_notifications_usecase.dart';
+import 'package:snap_shop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
 import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
@@ -59,7 +65,9 @@ import 'package:snap_shop/features/settings/domain/usecases/change_avatar_usecas
 import 'package:snap_shop/features/settings/domain/usecases/change_email_usecase.dart';
 import 'package:snap_shop/features/settings/domain/usecases/change_name_usecase.dart';
 import 'package:snap_shop/features/settings/domain/usecases/change_password_usecase.dart';
+import 'package:snap_shop/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 final sl = GetIt.instance;
 
@@ -75,6 +83,42 @@ Future<void> init() async {
   sl.registerLazySingleton<ISupabaseService>(
     () => SupabaseService(Supabase.instance.client),
   );
+  sl.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
+
+  // ||=====================||FIREBASE FCM||=====================||
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final notificationSettings = await sl<FirebaseMessaging>().requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  final userId = sl<ISupabaseService>().auth.currentUser?.id;
+
+  if (userId != null) {
+    final token = await sl<FirebaseMessaging>().getToken();
+    if (token != null) {
+      await Supabase.instance.client
+          .from('profiles')
+          .update({'fcm_token': token})
+          .eq('id', userId);
+    }
+  }
+
+  if ((notificationSettings.authorizationStatus ==
+              AuthorizationStatus.authorized ||
+          notificationSettings.authorizationStatus ==
+              AuthorizationStatus.provisional) &&
+      userId != null) {
+    sl<FirebaseMessaging>().onTokenRefresh.listen((fcmToken) async {
+      sl<ISupabaseService>()
+          .from('profiles')
+          .update({'fcm_token': fcmToken})
+          .eq('user_id', sl<ISupabaseService>().auth.currentUser!.id);
+    });
+  }
 
   // ||=====================||AUTH||=====================||
 
@@ -287,6 +331,30 @@ Future<void> init() async {
   // Cubit/Bloc
   sl.registerFactory<OrdersCubit>(
     () => OrdersCubit(getOrdersUsecase: sl<GetOrdersUsecase>()),
+  );
+
+  // ||=====================||NOTIFICATIONS||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<NotificationsRemoteDataSource>(
+    () => NotificationsRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<NotificationsRepository>(
+    () => NotificationRepositoryImpl(sl<NotificationsRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<GetNotificationsUsecase>(
+    () => GetNotificationsUsecase(sl<NotificationsRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(
+      getNotificationsUsecase: sl<GetNotificationsUsecase>(),
+    ),
   );
 
   // ||=====================||SETTINGS||=====================||

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/cart/data/models/cart_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartRemoteDataSource {
   final ISupabaseService supabaseService;
@@ -38,6 +39,8 @@ class CartRemoteDataSource {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to add to cart: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to add to cart: ${e.toString()}'));
     }
@@ -72,8 +75,10 @@ class CartRemoteDataSource {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to remove from cart: ${e.message}'));
     } catch (e) {
-      return Left(Failure('Failed to add to cart: ${e.toString()}'));
+      return Left(Failure('Failed to remove from cart: ${e.toString()}'));
     }
     return const Right(null);
   }
@@ -85,6 +90,8 @@ class CartRemoteDataSource {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to remove from cart: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to remove from cart: ${e.toString()}'));
     }
@@ -113,6 +120,8 @@ class CartRemoteDataSource {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to get cart items: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to get cart items: ${e.toString()}'));
     }
@@ -131,6 +140,8 @@ class CartRemoteDataSource {
       return Left(
         Failure('No internet connection. Please check your network.'),
       );
+    } on PostgrestException catch (e) {
+      return Left(Failure('Failed to empty cart: ${e.message}'));
     } catch (e) {
       return Left(Failure('Failed to empty cart: ${e.toString()}'));
     }

@@ -83,7 +83,9 @@ class ProductTopSection extends StatelessWidget {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            GoRouter.of(context).push(AppRouter.kNotificationsView);
+          },
           icon: SvgPicture.asset(
             AppIcons.notification,
             colorFilter: const ColorFilter.mode(

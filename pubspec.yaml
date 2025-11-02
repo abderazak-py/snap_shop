@@ -33,6 +33,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   equatable: ^2.0.7
+  firebase_core: ^4.2.0
+  firebase_messaging: ^16.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
