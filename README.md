@@ -15,8 +15,8 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 | ![screenshots/cart-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart-page.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
 | **Loading** | **Popup** | **Search** |   |
 | ![screenshots/search-loading.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp) | ![screenshots/logout-popup.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp) | ![screenshots/search.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp) |   |
-| **Payment** | **Product** | |   |
-| ![screenshots/payment.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp) | ![screenshots/product-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp) |   |
+| **Payment** | **Product** | **Notifications** |   |
+| ![screenshots/payment.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp) | ![screenshots/product-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp) | ![screenshots/notifications.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/notifications.webp) |   |
 
 ## 📱 Features
 
@@ -38,6 +38,10 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 - **Payment Processing**
   - Integrated PayPal payments
   - Order history tracking
+- **Notifications**
+  - In-app notification center
+  - Order completion alerts
+  - User-specific notifications
 - **User Profile**
   - Personal information management
   - Avatar upload capability (soon)
@@ -53,6 +57,7 @@ The project follows a Clean Architecture pattern with separation of concerns:
   - Cart: Shopping cart functionality
   - Favorite: Wishlist management
   - Home: Main dashboard
+  - Notifications: In-app notifications system
   - Payment: Checkout and order processing
   - Product: Product catalog and details
   - Profile: User profile management
@@ -135,6 +140,7 @@ lib/
 │   ├── cart/
 │   ├── favorite/
 │   ├── home/
+│   ├── notifications/
 │   ├── payment/
 │   ├── product/
 │   ├── profile/
