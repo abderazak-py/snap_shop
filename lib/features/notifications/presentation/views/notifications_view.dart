@@ -9,20 +9,30 @@ class NotificationsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: BlocProvider(
-        create: (context) => sl<NotificationsCubit>(),
+        create: (context) => sl<NotificationsCubit>()..getNotifications(),
         child: BlocBuilder<NotificationsCubit, NotificationsState>(
           builder: (context, state) {
             if (state is NotificationsSuccess) {
-              return ListView.builder(
-                itemCount: state.notifications.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(state.notifications[index].title),
-                    subtitle: Text(state.notifications[index].body),
-                  );
-                },
+              return Column(
+                children: [
+                  SizedBox(height: height * 0.07),
+                  Text('Notifications'),
+                  Text(state.notifications.length.toString()),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.notifications.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(state.notifications[index].title),
+                          subtitle: Text(state.notifications[index].body),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             } else if (state is NotificationsFailure) {
               return CustomErrorWidget(errorMsg: state.message);

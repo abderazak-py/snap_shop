@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:snap_shop/core/utils/private.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -53,7 +54,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBZS_eSSLl4J8pFJr2H92Fd6aOoCfcCwwM',
+    apiKey: FireBaseConstants.apiKey,
     appId: '1:220408145485:android:df9fcae316f4cfed795e04',
     messagingSenderId: '220408145485',
     projectId: 'snap-shop-1eca6',

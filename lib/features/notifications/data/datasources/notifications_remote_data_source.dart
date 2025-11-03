@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/notifications/data/models/notification_model.dart';
@@ -19,6 +20,10 @@ class NotificationsRemoteDataSource {
           .from('notifications')
           .select()
           .eq('user_id', supabaseService.auth.currentUser!.id);
+      debugPrint('ther reuslt is ========');
+      debugPrint(response.toString());
+      debugPrint(supabaseService.auth.currentUser!.id);
+
       final result = (response as List)
           .map((notification) => NotificationModel.fromMap(notification))
           .toList();
