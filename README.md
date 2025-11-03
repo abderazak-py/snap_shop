@@ -6,17 +6,18 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 
 | Splach | Landing | Login |
 | :-----------: | :---------: | :----------: |
-| ![screenshots/splach.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/splach.webp) | ![screenshots/auth-home.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/auth-home.webp) | ![screenshots/login.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/login.webp) |
-| **Register** | **Home** | **Catalog** |   |
-| ![screenshots/register.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/register.webp) | ![screenshots/home.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/home.webp) | ![screenshots/catalog.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/catalog.webp) |   |
-| **Favorite** | **Profile** | **Search** |   |
-| ![screenshots/favorite.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/favorite.webp) | ![screenshots/profile.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/profile.webp) | ![screenshots/search-filters.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-filters.webp) |   |
-| **Cart** | **Orders** | **Settings** |   |
-| ![screenshots/cart-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart-page.webp) | ![screenshots/orders.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp) | ![screenshots/settings.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp) |   |
-| **Loading** | **Popup** | **Search** |   |
-| ![screenshots/search-loading.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp) | ![screenshots/logout-popup.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp) | ![screenshots/search.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp) |   |
-| **Payment** | **Product** | **Notifications** |   |
-| ![screenshots/payment.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp) | ![screenshots/product-page.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp) | ![screenshots/notifications.webp](https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/notifications.webp) |   |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/splach.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/auth-home.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/login.webp" width="260"/> |
+| **Register** | **Home** | **Catalog** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/register.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/home.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/catalog.webp" width="260"/> |
+| **Favorite** | **Profile** | **Search** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/favorite.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/profile.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-filters.webp" width="260"/> |
+| **Cart** | **Orders** | **Settings** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/cart-page.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/orders.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/settings.webp" width="260"/> |
+| **Loading** | **Popup** | **Search** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp" width="260"/> |
+| **Payment** | **Product** | **Notifications** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/notifications.webp" width="260"/> |
+
 
 ## 📱 Features
 
