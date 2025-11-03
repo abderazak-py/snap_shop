@@ -60,4 +60,4 @@ class DefaultFirebaseOptions {
     projectId: 'snap-shop-1eca6',
     storageBucket: 'snap-shop-1eca6.firebasestorage.app',
   );
-}
+} //

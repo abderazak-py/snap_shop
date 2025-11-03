@@ -33,7 +33,9 @@ import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.da
 import 'package:snap_shop/features/notifications/data/datasources/notifications_remote_data_source.dart';
 import 'package:snap_shop/features/notifications/data/repos/notification_repo_impl.dart';
 import 'package:snap_shop/features/notifications/domain/repos/notification_repo.dart';
+import 'package:snap_shop/features/notifications/domain/usecases/delete_notification_usecase.dart';
 import 'package:snap_shop/features/notifications/domain/usecases/get_notifications_usecase.dart';
+import 'package:snap_shop/features/notifications/domain/usecases/send_notification_usecase.dart';
 import 'package:snap_shop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
 import 'package:snap_shop/features/payment/data/repos/payment_repo_impl.dart';
@@ -83,22 +85,30 @@ Future<void> init() async {
   sl.registerLazySingleton<ISupabaseService>(
     () => SupabaseService(Supabase.instance.client),
   );
-  sl.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
 
   // ||=====================||FIREBASE FCM||=====================||
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  final notificationSettings = await sl<FirebaseMessaging>().requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
+  await Firebase.initializeApp(
+    name: DefaultFirebaseOptions.currentPlatform.projectId,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   print('Got a message whilst in the foreground!');
+  //   print('Message data: ${message.data.entries}');
+
+  //   if (message.notification != null) {
+  //     print('Message also contained a notification: ${message.notification}');
+  //   }
+  // });
+
+  final notificationSettings = await FirebaseMessaging.instance
+      .requestPermission(alert: true, badge: true, sound: true);
 
   final userId = sl<ISupabaseService>().auth.currentUser?.id;
 
   if (userId != null) {
-    final token = await sl<FirebaseMessaging>().getToken();
+    final token = await FirebaseMessaging.instance.getToken();
     if (token != null) {
       await Supabase.instance.client
           .from('profiles')
@@ -112,7 +122,7 @@ Future<void> init() async {
           notificationSettings.authorizationStatus ==
               AuthorizationStatus.provisional) &&
       userId != null) {
-    sl<FirebaseMessaging>().onTokenRefresh.listen((fcmToken) async {
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
       sl<ISupabaseService>()
           .from('profiles')
           .update({'fcm_token': fcmToken})
@@ -349,11 +359,18 @@ Future<void> init() async {
   sl.registerLazySingleton<GetNotificationsUsecase>(
     () => GetNotificationsUsecase(sl<NotificationsRepository>()),
   );
+  sl.registerLazySingleton<SendNotificationUsecase>(
+    () => SendNotificationUsecase(sl<NotificationsRepository>()),
+  );
+  sl.registerLazySingleton<DeleteNotificationUsecase>(
+    () => DeleteNotificationUsecase(sl<NotificationsRepository>()),
+  );
 
   // Cubit/Bloc
   sl.registerFactory<NotificationsCubit>(
     () => NotificationsCubit(
       getNotificationsUsecase: sl<GetNotificationsUsecase>(),
+      deleteNotificationUsecase: sl<DeleteNotificationUsecase>(),
     ),
   );
 

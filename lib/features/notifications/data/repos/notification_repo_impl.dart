@@ -16,4 +16,19 @@ class NotificationRepositoryImpl extends NotificationsRepository {
       (r) => Right(r.map((e) => e.toEntity()).toList()),
     );
   }
+
+  @override
+  Future<Either<Failure, void>> deleteNotification(int id) async {
+    final response = await remoteDataSource.deleteNotification(id);
+    return response.fold((l) => Left(l), (r) => Right(r));
+  }
+
+  @override
+  Future<Either<Failure, void>> sendNotification(
+    String title,
+    String body,
+  ) async {
+    final response = await remoteDataSource.sendNotification(title, body);
+    return response.fold((l) => Left(l), (r) => Right(r));
+  }
 }
