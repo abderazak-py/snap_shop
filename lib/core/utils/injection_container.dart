@@ -1,5 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:snap_shop/core/utils/private.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -79,8 +82,12 @@ Future<void> init() async {
     url: SupaBaseConstants.supabaseUrl,
     anonKey: SupaBaseConstants.supabaseAnonKey,
   );
-
   // ||=====================||CORE||=====================||
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
 
   sl.registerLazySingleton<ISupabaseService>(
     () => SupabaseService(Supabase.instance.client),

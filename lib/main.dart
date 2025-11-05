@@ -7,10 +7,8 @@ void main() async {
   await di.init();
 
   runApp(const SnapShop());
-  //TODO: make loadings good in all screens
   //TODO: add forgot password
   //TODO: make errors better
-  //TODO: make the response cached
   //TODO make all future builders to bloc
 }
 

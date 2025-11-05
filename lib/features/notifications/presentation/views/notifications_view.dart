@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/core/widgets/error_widget.dart';
+import 'package:snap_shop/features/notifications/domain/entities/notification_entity.dart';
 import 'package:snap_shop/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:snap_shop/features/notifications/presentation/widgets/notification_card.dart';
 
@@ -17,21 +19,21 @@ class NotificationsView extends StatelessWidget {
         create: (context) => sl<NotificationsCubit>()..getNotifications(),
         child: BlocBuilder<NotificationsCubit, NotificationsState>(
           builder: (context, state) {
-            if (state is NotificationsSuccess) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: height * 0.07),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: Text(
-                      'Notifications',
-                      style: Styles.titleText26.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: height * 0.07),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: Text(
+                    'Notifications',
+                    style: Styles.titleText26.copyWith(
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
-                  SizedBox(height: 10),
+                ),
+                SizedBox(height: 10),
+                if (state is NotificationsSuccess)
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
@@ -41,14 +43,30 @@ class NotificationsView extends StatelessWidget {
                         return NotificationCard(notification: notification);
                       },
                     ),
+                  )
+                else if (state is NotificationsFailure)
+                  CustomErrorWidget(errorMsg: state.message)
+                else
+                  Expanded(
+                    child: Skeletonizer(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          final notification = NotificationEntity(
+                            id: 0,
+                            title: 'this a title',
+                            body: 'this a placeholder text for body',
+                            createdAt: DateTime.now(),
+                            userId: 'ss',
+                          );
+                          return NotificationCard(notification: notification);
+                        },
+                      ),
+                    ),
                   ),
-                ],
-              );
-            } else if (state is NotificationsFailure) {
-              return CustomErrorWidget(errorMsg: state.message);
-            } else {
-              return Column(children: [Text('Notifications')]);
-            }
+              ],
+            );
           },
         ),
       ),

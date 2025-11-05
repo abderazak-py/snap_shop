@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
@@ -14,6 +15,8 @@ class CartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final isLoading = Skeletonizer.maybeOf(context)?.enabled ?? false;
+
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Expanded(
@@ -22,13 +25,20 @@ class CartCard extends StatelessWidget {
             SizedBox(width: width * 0.05),
             ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(16),
-              child: CachedNetworkImage(
-                width: width * 0.22,
-                height: width * 0.22,
-                fit: BoxFit.cover,
-                imageUrl: product.productImage,
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              child: isLoading
+                  ? Skeleton.replace(
+                      width: width * 0.22,
+                      height: width * 0.22,
+                      child: SizedBox.expand(),
+                    )
+                  : CachedNetworkImage(
+                      width: width * 0.22,
+                      height: width * 0.22,
+                      fit: BoxFit.cover,
+                      imageUrl: product.productImage,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
             ),
             SizedBox(width: width * 0.05),
             Expanded(
@@ -64,16 +74,14 @@ class CartCard extends StatelessWidget {
                                 backgroundColor: Colors.white,
                                 child: GestureDetector(
                                   onTap: () {
-                                    context.read<CartCubit>().updateQuantity(
-                                      product.productId,
-                                      true,
-                                    );
-                                    debugPrint(
-                                      context
-                                          .read<CartCubit>()
-                                          .state
-                                          .toString(),
-                                    );
+                                    isLoading
+                                        ? null
+                                        : context
+                                              .read<CartCubit>()
+                                              .updateQuantity(
+                                                product.productId,
+                                                true,
+                                              );
                                   },
                                   child: Icon(
                                     Icons.add_rounded,
@@ -82,29 +90,40 @@ class CartCard extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(width: 15),
-                              BlocBuilder<CartCubit, CartState>(
-                                builder: (context, state) {
-                                  final item = state is CartSuccess
-                                      ? state.cart.firstWhere(
-                                          (e) =>
-                                              e.productId == product.productId,
-                                        )
-                                      : product;
-                                  return Text(
-                                    item.quantity.toString(),
-                                    style: Styles.titleText14,
-                                  );
-                                },
-                              ),
+                              isLoading
+                                  ? Text(
+                                      product.quantity.toString(),
+                                      style: Styles.titleText14,
+                                    )
+                                  : BlocBuilder<CartCubit, CartState>(
+                                      builder: (context, state) {
+                                        final item = state is CartSuccess
+                                            ? state.cart.firstWhere(
+                                                (e) =>
+                                                    e.productId ==
+                                                    product.productId,
+                                              )
+                                            : product;
+                                        return Text(
+                                          item.quantity.toString(),
+                                          style: Styles.titleText14,
+                                        );
+                                      },
+                                    ),
 
                               SizedBox(width: 15),
                               CircleAvatar(
                                 radius: 13,
                                 backgroundColor: Colors.white,
                                 child: GestureDetector(
-                                  onTap: () => context
-                                      .read<CartCubit>()
-                                      .updateQuantity(product.productId, false),
+                                  onTap: () => isLoading
+                                      ? null
+                                      : context
+                                            .read<CartCubit>()
+                                            .updateQuantity(
+                                              product.productId,
+                                              false,
+                                            ),
                                   child: Icon(
                                     Icons.remove_outlined,
                                     color: AppColors.kTextColor,
