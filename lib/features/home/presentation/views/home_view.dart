@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:snap_shop/features/chat/presentation/views/chat.dart';
 import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/favorite/presentation/views/favorite_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
@@ -58,8 +59,8 @@ class HomeView extends StatelessWidget {
                 children: [
                   ProductView(),
                   FavoriteView(),
-                  Center(child: Text('Ai chat')), // ai chat
-                  ProfileView(), // Profile
+                  ChatView(), //ai chat
+                  ProfileView(),
                 ],
               ),
             ),
