@@ -1,14 +1,13 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
+import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
 import 'package:snap_shop/features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/verify_otp_usecase.dart';
-
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -18,6 +17,7 @@ class AuthCubit extends Cubit<AuthState> {
   final SignOutUseCase signOutUseCase;
   final VerifyOtpUsecase verifyOtpUseCase;
   final ResendOtpUsecase resendOtpUsecase;
+  final GetCurrentUserUseCase getCurrentUserUseCase;
 
   AuthCubit({
     required this.loginUseCase,
@@ -26,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.signOutUseCase,
     required this.verifyOtpUseCase,
     required this.resendOtpUsecase,
+    required this.getCurrentUserUseCase,
   }) : super(AuthInitial());
 
   /// Login with email and password
@@ -54,6 +55,15 @@ class AuthCubit extends Cubit<AuthState> {
     final response = await signInWithGoogleNativeUseCase.execute(
       webClientId: webClientId,
     );
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (user) => emit(AuthSuccessConfirmed(user: user)),
+    );
+  }
+
+  Future<void> getUser() async {
+    emit(AuthLoading());
+    final response = await getCurrentUserUseCase.execute();
     response.fold(
       (f) => emit(AuthFailure(error: f.message)),
       (user) => emit(AuthSuccessConfirmed(user: user)),

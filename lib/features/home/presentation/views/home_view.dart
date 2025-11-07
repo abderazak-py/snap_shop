@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
+import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
 import 'package:snap_shop/features/favorite/presentation/views/favorite_view.dart';
 import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
@@ -47,6 +48,9 @@ class HomeView extends StatelessWidget {
                 ),
                 BlocProvider<ProductCubit>(
                   create: (_) => sl<ProductCubit>()..getProducts(),
+                ),
+                BlocProvider<AuthCubit>(
+                  create: (_) => sl<AuthCubit>()..getUser(),
                 ),
               ],
               child: IndexedStack(

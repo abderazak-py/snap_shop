@@ -16,6 +16,7 @@ class PaymentView extends StatelessWidget {
     final paypalTransactionsUsecase = sl<PaypalTransactionsUsecase>();
     final emptyCartUsecase = sl<EmptyCartUsecase>();
     final saveOrderUsecase = sl<SaveOrderUsecase>();
+
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: paypalTransactionsUsecase.execute(),
       builder: (context, snapshot) {

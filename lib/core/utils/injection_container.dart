@@ -183,6 +183,7 @@ Future<void> init() async {
       signOutUseCase: sl<SignOutUseCase>(),
       verifyOtpUseCase: sl<VerifyOtpUsecase>(),
       resendOtpUsecase: sl<ResendOtpUsecase>(),
+      getCurrentUserUseCase: sl<GetCurrentUserUseCase>(),
     ),
   );
 

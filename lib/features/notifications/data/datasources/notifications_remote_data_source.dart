@@ -63,7 +63,6 @@ class NotificationsRemoteDataSource {
         'body': body,
         'user_id': supabaseService.auth.currentUser!.id,
       });
-      print('Done sending notification');
       return Right(null);
     } on SocketException {
       return Left(

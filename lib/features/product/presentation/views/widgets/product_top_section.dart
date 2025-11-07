@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
+import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
 
 class ProductTopSection extends StatelessWidget {
   const ProductTopSection({super.key});
@@ -15,22 +15,38 @@ class ProductTopSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final getCurrentUserUseCase = sl<GetCurrentUserUseCase>();
     return Row(
       children: [
         SizedBox(width: width * 0.05),
-        FutureBuilder(
-          future: getCurrentUserUseCase.execute(),
-          builder: (context, snapshot) {
-            UserEntity? user;
-            snapshot.data?.fold((l) {}, (r) => user = r);
-            return SizedBox(
-              width: width * 0.11,
-              child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(50),
-                child: (user?.avatarUrl?.isNotEmpty ?? false)
-                    ? CachedNetworkImage(imageUrl: user!.avatarUrl!)
-                    : const CircleAvatar(
+        BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state is AuthSuccessConfirmed) {
+              return SizedBox(
+                width: width * 0.11,
+                child: ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(50),
+                  child: (state.user.avatarUrl?.isNotEmpty ?? false)
+                      ? CachedNetworkImage(imageUrl: state.user.avatarUrl!)
+                      : const CircleAvatar(
+                          radius: 40,
+                          backgroundColor: AppColors.kPrimaryColor,
+                          child: Icon(
+                            Icons.person_outline_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                ),
+              );
+            } else if (state is AuthFailure) {
+              return Center(child: Text(state.error));
+            } else {
+              return Center(
+                child: Skeletonizer(
+                  child: SizedBox(
+                    width: width * 0.11,
+                    child: ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(50),
+                      child: const CircleAvatar(
                         radius: 40,
                         backgroundColor: AppColors.kPrimaryColor,
                         child: Icon(
@@ -38,31 +54,55 @@ class ProductTopSection extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-              ),
-            );
+                    ),
+                  ),
+                ),
+              );
+            }
           },
         ),
+
         SizedBox(width: width * 0.03),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FutureBuilder(
-              future: getCurrentUserUseCase.execute(),
-              builder: (context, snapshot) {
-                UserEntity? user;
-                snapshot.data?.fold((l) {}, (r) => user = r);
-                return SizedBox(
-                  width: width * 0.5,
-                  child: Text(
-                    'Hi, ${(user?.name?.isEmpty ?? true) ? 'Snapper' : user?.name}',
-                    overflow: TextOverflow.ellipsis,
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthSuccessConfirmed) {
+                  return SizedBox(
+                    width: width * 0.5,
+                    child: Text(
+                      'Hi, ${(state.user.name?.isEmpty ?? true) ? 'Snapper' : state.user.name}',
+                      overflow: TextOverflow.ellipsis,
+                      style: Styles.titleText16.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  );
+                } else if (state is AuthFailure) {
+                  return Text(
+                    'No user found',
                     style: Styles.titleText16.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return Skeletonizer(
+                    child: SizedBox(
+                      width: width * 0.5,
+                      child: Text(
+                        'Hi, Snapper',
+                        overflow: TextOverflow.ellipsis,
+                        style: Styles.titleText16.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
+
             Text(
               'Let\'s go shopping',
               style: Styles.titleText12.copyWith(color: AppColors.kTextColor2),
