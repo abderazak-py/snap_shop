@@ -26,7 +26,7 @@ class CartView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Text(
-                    'Notifications',
+                    'Cart',
                     style: Styles.titleText26.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
@@ -37,7 +37,7 @@ class CartView extends StatelessWidget {
                   CartListView(cart: state.cart)
                 else if (state is CartFailure)
                   CustomErrorWidget(errorMsg: state.error)
-                else if (state is CartSuccess)
+                else
                   Expanded(
                     child: Skeletonizer(
                       child: CartListView(
