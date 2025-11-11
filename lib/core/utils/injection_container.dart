@@ -1,6 +1,9 @@
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:snap_shop/core/utils/private.dart';
@@ -26,6 +29,13 @@ import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.d
 import 'package:snap_shop/features/cart/domain/usecases/remove_from_cart_usecase.dart';
 import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_usecase.dart';
 import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:snap_shop/features/chat/data/datasource/local_data_source.dart';
+import 'package:snap_shop/features/chat/data/datasource/remote_data_source.dart';
+import 'package:snap_shop/features/chat/data/repo/chat_repo.dart';
+import 'package:snap_shop/features/chat/domain/repo/chat_repo_impl.dart';
+import 'package:snap_shop/features/chat/domain/usecases/load_messages_usecase.dart';
+import 'package:snap_shop/features/chat/domain/usecases/save_messages_usecase.dart';
+import 'package:snap_shop/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:snap_shop/features/favorite/data/datasources/favorite_remote_data_source.dart';
 import 'package:snap_shop/features/favorite/data/repos/favorite_repo_impl.dart';
 import 'package:snap_shop/features/favorite/domain/repos/favorite_repo.dart';
@@ -93,6 +103,8 @@ Future<void> init() async {
     () => SupabaseService(Supabase.instance.client),
   );
 
+  await GetStorage.init();
+
   // ||=====================||FIREBASE FCM||=====================||
 
   await Firebase.initializeApp(
@@ -108,6 +120,25 @@ Future<void> init() async {
   //     print('Message also contained a notification: ${message.notification}');
   //   }
   // });
+  final model = FirebaseAI.googleAI().generativeModel(
+    model: 'gemini-2.5-flash',
+    systemInstruction: Content.system('''
+You are a store assistant for our shopping app. Your sole purpose is to help users browse products, check availability, explain prices, shipping, and returns, manage carts, place and track orders, apply coupons, and answer store policy questions.
+
+Hard constraints:
+- Only discuss this store, its products, categories, inventory, pricing, discounts, shipping, returns, payment, and order support.
+- If a request is unrelated (general knowledge, coding, news, politics, personal advice, etc.), reply briefly: 
+  "I can help with our store, products, and orders. What would you like to buy or track?"
+- Do not provide medical, legal, financial, or sensitive advice. Do not output personal data.
+- Keep answers concise, friendly, and action-oriented (offer next steps like: view category, add to cart, track order, contact support).
+
+When needed, ask at most one clarifying question specific to shopping (e.g., size, color, budget).
+    '''),
+  );
+  sl.registerLazySingleton<FirebaseProvider>(
+    () => FirebaseProvider(model: model),
+  );
+  sl.registerLazySingleton<GetStorage>(() => GetStorage());
 
   final notificationSettings = await FirebaseMessaging.instance
       .requestPermission(alert: true, badge: true, sound: true);
@@ -185,6 +216,35 @@ Future<void> init() async {
       resendOtpUsecase: sl<ResendOtpUsecase>(),
       getCurrentUserUseCase: sl<GetCurrentUserUseCase>(),
     ),
+  );
+
+  // ||=====================||CHAT||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<ChatRemoteDataSource>(
+    () => ChatRemoteDataSource(sl<FirebaseProvider>()),
+  );
+  sl.registerLazySingleton<ChatLocalDataSource>(
+    () => ChatLocalDataSource(sl<GetStorage>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<ChatRepository>(
+    () => ChatRepositoryImpl(
+      sl<ChatRemoteDataSource>(),
+      sl<ChatLocalDataSource>(),
+    ),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<SaveMessagesUsecase>(
+    () => SaveMessagesUsecase(sl<ChatRepository>()),
+  );
+  sl.registerLazySingleton<LoadMessagesUsecase>(
+    () => LoadMessagesUsecase(sl<ChatRepository>()),
+  );
+  sl.registerLazySingleton<SendMessageUsecase>(
+    () => SendMessageUsecase(sl<ChatRepository>()),
   );
 
   // ||=====================||PRODUCTS||=====================||

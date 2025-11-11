@@ -59,7 +59,7 @@ class HomeView extends StatelessWidget {
                 children: [
                   ProductView(),
                   FavoriteView(),
-                  ChatView(), //ai chat
+                  ChatView(chatId: '1'), //ai chat
                   ProfileView(),
                 ],
               ),

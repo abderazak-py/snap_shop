@@ -1,0 +1,26 @@
+import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart' show ChatMessage;
+import 'package:snap_shop/features/chat/data/datasource/local_data_source.dart';
+import 'package:snap_shop/features/chat/data/datasource/remote_data_source.dart';
+import 'package:snap_shop/features/chat/data/repo/chat_repo.dart';
+
+class ChatRepositoryImpl extends ChatRepository {
+  final ChatRemoteDataSource remoteDataSource;
+  final ChatLocalDataSource localDataSource;
+
+  ChatRepositoryImpl(this.remoteDataSource, this.localDataSource);
+
+  @override
+  Future<ChatMessage> send(String prompt) {
+    return remoteDataSource.send(prompt);
+  }
+
+  @override
+  Future<List<ChatMessage>> load(String chatId) {
+    return localDataSource.load(chatId);
+  }
+
+  @override
+  Future<void> save(String chatId, List<ChatMessage> history) {
+    return localDataSource.save(chatId, history);
+  }
+}
