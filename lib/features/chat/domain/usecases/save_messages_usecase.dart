@@ -6,7 +6,7 @@ class SaveMessagesUsecase {
 
   SaveMessagesUsecase(this.repository);
 
-  Future<void> execute(String chatId, List<ChatMessage> history) {
-    return repository.save(chatId, history);
+  Future<void> execute(List<ChatMessage> history) {
+    return repository.save(history);
   }
 }

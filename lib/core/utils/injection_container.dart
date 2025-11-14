@@ -36,6 +36,7 @@ import 'package:snap_shop/features/chat/domain/repo/chat_repo_impl.dart';
 import 'package:snap_shop/features/chat/domain/usecases/load_messages_usecase.dart';
 import 'package:snap_shop/features/chat/domain/usecases/save_messages_usecase.dart';
 import 'package:snap_shop/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:snap_shop/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:snap_shop/features/favorite/data/datasources/favorite_remote_data_source.dart';
 import 'package:snap_shop/features/favorite/data/repos/favorite_repo_impl.dart';
 import 'package:snap_shop/features/favorite/domain/repos/favorite_repo.dart';
@@ -245,6 +246,15 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
   );
   sl.registerLazySingleton<SendMessageUsecase>(
     () => SendMessageUsecase(sl<ChatRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<ChatCubit>(
+    () => ChatCubit(
+      provider: sl<FirebaseProvider>(),
+      loadMessages: sl<LoadMessagesUsecase>(),
+      saveMessages: sl<SaveMessagesUsecase>(),
+    ),
   );
 
   // ||=====================||PRODUCTS||=====================||

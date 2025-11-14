@@ -6,7 +6,7 @@ class LoadMessagesUsecase {
 
   LoadMessagesUsecase(this.repository);
 
-  Future<List<ChatMessage>> execute(String chatId) {
-    return repository.load(chatId);
+  Future<List<ChatMessage>> execute() {
+    return repository.load();
   }
 }

@@ -15,12 +15,12 @@ class ChatRepositoryImpl extends ChatRepository {
   }
 
   @override
-  Future<List<ChatMessage>> load(String chatId) {
-    return localDataSource.load(chatId);
+  Future<List<ChatMessage>> load() {
+    return localDataSource.load();
   }
 
   @override
-  Future<void> save(String chatId, List<ChatMessage> history) {
-    return localDataSource.save(chatId, history);
+  Future<void> save(List<ChatMessage> history) {
+    return localDataSource.save(history);
   }
 }
