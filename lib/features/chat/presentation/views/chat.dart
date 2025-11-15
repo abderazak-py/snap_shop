@@ -36,7 +36,7 @@ class ChatPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: Text(
-                    'Cart',
+                    'Chat with AI',
                     style: Styles.titleText26.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
