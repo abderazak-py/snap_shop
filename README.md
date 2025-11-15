@@ -49,6 +49,11 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
   - Personal information management
   - Avatar upload capability (soon)
   - Security settings (soon)
+- **AI Assistant**
+  - Integrated Gemini AI chatbot for shopping assistance
+  - Persistent chat history
+  - Context-aware responses about products and orders
+  - Smart shopping recommendations
 
 ## 🏗️ Architecture
 
@@ -92,6 +97,7 @@ feature/
 - **Routing**: go_router
 - **Dependency Injection**: get_it
 - **Payment**: PayPal integration
+- **AI Assistant**: Firebase AI with Gemini model
 - **UI Components**:
   - Material Design
   - Custom SVG icons
@@ -107,6 +113,8 @@ feature/
 - `flutter_paypal_payment`: Payment processing
 - `google_sign_in`: Google authentication
 - `cached_network_image`: Image caching
+- `firebase_ai`: AI capabilities
+- `flutter_ai_toolkit`: AI chat components
 
 ## 🚀 Getting Started
 
@@ -141,6 +149,7 @@ lib/
 ├── features/
 │   ├── auth/
 │   ├── cart/
+│   ├── chat/
 │   ├── favorite/
 │   ├── home/
 │   ├── notifications/
@@ -160,6 +169,7 @@ Before running the app, you need to set up your environment variables:
 1. Supabase configuration in `lib/core/utils/supabase_service.dart`
 2. PayPal credentials for payment processing
 3. Google Sign-In client IDs for OAuth
+4. Firebase AI configuration for AI chat functionality
 
 ## 🎨 UI/UX Design
 
