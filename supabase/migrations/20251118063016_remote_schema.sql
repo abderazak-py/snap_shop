@@ -1,170 +1,169 @@
+SET
+    statement_timeout = 0;
 
+SET
+    lock_timeout = 0;
 
+SET
+    idle_in_transaction_session_timeout = 0;
 
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
+SET
+    client_encoding = 'UTF8';
 
+SET
+    standard_conforming_strings = on;
+
+SELECT
+    pg_catalog.set_config('search_path', '', false);
+
+SET
+    check_function_bodies = false;
+
+SET
+    xmloption = content;
+
+SET
+    client_min_messages = warning;
+
+SET
+    row_security = off;
 
 CREATE EXTENSION IF NOT EXISTS "pg_net" WITH SCHEMA "extensions";
 
-
-
-
-
-
 COMMENT ON SCHEMA "public" IS 'standard public schema';
-
-
 
 CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
 
-
-
-
-
-
 CREATE EXTENSION IF NOT EXISTS "pg_stat_statements" WITH SCHEMA "extensions";
-
-
-
-
-
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "extensions";
 
-
-
-
-
-
 CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
-
-
-
-
-
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
-
-
-
-
-
-CREATE TYPE "public"."user_role" AS ENUM (
-    'customer',
-    'staff',
-    'admin'
-);
-
+CREATE TYPE "public"."user_role" AS ENUM ('customer', 'staff', 'admin');
 
 ALTER TYPE "public"."user_role" OWNER TO "postgres";
 
+CREATE
+OR REPLACE FUNCTION "public"."create_profile_for_new_user"() RETURNS "trigger" LANGUAGE "plpgsql" SECURITY DEFINER
+SET
+    "search_path" TO 'public' AS $ $ begin
+insert into
+    public.profiles (id, full_name, avatar, user_role)
+values
+    (
+        new.id,
+        coalesce(new.raw_user_meta_data ->> 'name', ''),
+        coalesce(new.raw_user_meta_data ->> 'avatar_url', ''),
+        'customer'
+    ) on conflict (id) do nothing;
 
-CREATE OR REPLACE FUNCTION "public"."create_profile_for_new_user"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    SET "search_path" TO 'public'
-    AS $$
-begin
-  insert into public.profiles (id, full_name, avatar, user_role)
-  values (
-    new.id,
-    coalesce(new.raw_user_meta_data->>'name', ''),
-    coalesce(new.raw_user_meta_data->>'avatar_url', ''),
-    'customer'
-  )
-  on conflict (id) do nothing;
-  return new;
+return new;
+
 end;
-$$;
 
+$ $;
 
 ALTER FUNCTION "public"."create_profile_for_new_user"() OWNER TO "postgres";
 
+CREATE
+OR REPLACE FUNCTION "public"."get_decrypted_secret"("secret_name" "text") RETURNS "text" LANGUAGE "plpgsql" AS $ $ DECLARE secret TEXT;
 
-CREATE OR REPLACE FUNCTION "public"."get_decrypted_secret"("secret_name" "text") RETURNS "text"
-    LANGUAGE "plpgsql"
-    AS $$
-DECLARE
-  secret TEXT;
 BEGIN
-  SELECT decrypted_secret INTO secret
-  FROM vault.decrypted_secrets
-  WHERE name = secret_name
-  LIMIT 1;
-  RETURN secret;
-END;
-$$;
+SELECT
+    decrypted_secret INTO secret
+FROM
+    vault.decrypted_secrets
+WHERE
+    name = secret_name
+LIMIT
+    1;
 
+RETURN secret;
+
+END;
+
+$ $;
 
 ALTER FUNCTION "public"."get_decrypted_secret"("secret_name" "text") OWNER TO "postgres";
 
+CREATE
+OR REPLACE FUNCTION "public"."is_admin"() RETURNS boolean LANGUAGE "sql" STABLE SECURITY DEFINER
+SET
+    "search_path" TO 'public' AS $ $
+select
+    exists (
+        select
+            1
+        from
+            public.profiles p
+        where
+            p.id = (
+                select
+                    auth.uid()
+            )
+            and p.user_role = 'admin'
+    );
 
-CREATE OR REPLACE FUNCTION "public"."is_admin"() RETURNS boolean
-    LANGUAGE "sql" STABLE SECURITY DEFINER
-    SET "search_path" TO 'public'
-    AS $$
-  select exists (
-    select 1
-    from public.profiles p
-    where p.id = (select auth.uid()) and p.user_role = 'admin'
-  );
-$$;
-
+$ $;
 
 ALTER FUNCTION "public"."is_admin"() OWNER TO "postgres";
 
+CREATE
+OR REPLACE FUNCTION "public"."notify_webhook"() RETURNS "trigger" LANGUAGE "plpgsql" SECURITY DEFINER AS $ $ DECLARE headers jsonb;
 
-CREATE OR REPLACE FUNCTION "public"."notify_webhook"() RETURNS "trigger"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-DECLARE
-  headers jsonb;
-  body    jsonb;
-BEGIN
-  -- Build headers with secret from Vault
-  headers := jsonb_build_object(
-    'Content-Type', 'application/json',
-    'Authorization', 'Bearer ' || get_decrypted_secret('sb_secret')
-  );
+body jsonb;
 
-  -- Build payload in the SAME shape your Edge Function expects
-  body := jsonb_build_object(
-    'type', TG_OP,             -- 'INSERT'
-    'table', TG_TABLE_NAME,    -- 'notifications'
-    'schema', TG_TABLE_SCHEMA, -- 'public'
-    'record', to_jsonb(NEW),   -- full new row, including user_id, title, body
-    'old_record', NULL
-  );
+BEGIN -- Build headers with secret from Vault
+headers := jsonb_build_object(
+    'Content-Type',
+    'application/json',
+    'Authorization',
+    'Bearer ' || get_decrypted_secret('sb_secret')
+);
 
-  -- Explicit 5‑arg net.http_post: (url, body, params, headers, timeout_ms)
-  PERFORM net.http_post(
+-- Build payload in the SAME shape your Edge Function expects
+body := jsonb_build_object(
+    'type',
+    TG_OP,
+    -- 'INSERT'
+    'table',
+    TG_TABLE_NAME,
+    -- 'notifications'
+    'schema',
+    TG_TABLE_SCHEMA,
+    -- 'public'
+    'record',
+    to_jsonb(NEW),
+    -- full new row, including user_id, title, body
+    'old_record',
+    NULL
+);
+
+-- Explicit 5‑arg net.http_post: (url, body, params, headers, timeout_ms)
+PERFORM net.http_post(
     'https://qxcrdbpinosdfcmtsnom.supabase.co/functions/v1/notifications',
     body,
-    '{}'::jsonb,
+    '{}' :: jsonb,
     headers,
     1000
-  );
+);
 
-  RETURN NEW;
+RETURN NEW;
+
 END;
-$$;
 
+$ $;
 
 ALTER FUNCTION "public"."notify_webhook"() OWNER TO "postgres";
 
-SET default_tablespace = '';
+SET
+    default_tablespace = '';
 
-SET default_table_access_method = "heap";
-
+SET
+    default_table_access_method = "heap";
 
 CREATE TABLE IF NOT EXISTS "public"."products" (
     "id" bigint NOT NULL,
@@ -172,24 +171,21 @@ CREATE TABLE IF NOT EXISTS "public"."products" (
     "name" "text" NOT NULL,
     "description" "text" NOT NULL,
     "price" numeric NOT NULL,
-    "category_id" bigint DEFAULT '0'::bigint NOT NULL,
-    CONSTRAINT "Products_price_check" CHECK (("price" > (0)::numeric))
+    "category_id" bigint DEFAULT '0' :: bigint NOT NULL,
+    CONSTRAINT "Products_price_check" CHECK (("price" > (0) :: numeric))
 );
 
+ALTER TABLE
+    "public"."products" OWNER TO "postgres";
 
-ALTER TABLE "public"."products" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."products" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."Products_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."products"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."Products_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."banner" (
     "id" bigint NOT NULL,
@@ -197,20 +193,17 @@ CREATE TABLE IF NOT EXISTS "public"."banner" (
     "image" "text" NOT NULL
 );
 
+ALTER TABLE
+    "public"."banner" OWNER TO "postgres";
 
-ALTER TABLE "public"."banner" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."banner" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."banner_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."banner"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."banner_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."cart" (
     "id" bigint NOT NULL,
@@ -220,20 +213,17 @@ CREATE TABLE IF NOT EXISTS "public"."cart" (
     "user_id" "uuid"
 );
 
+ALTER TABLE
+    "public"."cart" OWNER TO "postgres";
 
-ALTER TABLE "public"."cart" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."cart" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."cart_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."cart"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."cart_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."category" (
     "id" bigint NOT NULL,
@@ -242,20 +232,17 @@ CREATE TABLE IF NOT EXISTS "public"."category" (
     "image" "text" NOT NULL
 );
 
+ALTER TABLE
+    "public"."category" OWNER TO "postgres";
 
-ALTER TABLE "public"."category" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."category" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."category_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."category"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."category_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."favorite" (
     "id" bigint NOT NULL,
@@ -264,43 +251,37 @@ CREATE TABLE IF NOT EXISTS "public"."favorite" (
     "user_id" "uuid" DEFAULT "gen_random_uuid"()
 );
 
+ALTER TABLE
+    "public"."favorite" OWNER TO "postgres";
 
-ALTER TABLE "public"."favorite" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."favorite" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."favorite_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."favorite"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."favorite_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."image" (
     "id" bigint NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "product_id" bigint NOT NULL,
-    "position" smallint DEFAULT '1'::smallint,
+    "position" smallint DEFAULT '1' :: smallint,
     "image_url" "text" NOT NULL
 );
 
+ALTER TABLE
+    "public"."image" OWNER TO "postgres";
 
-ALTER TABLE "public"."image" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."image" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."image_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."image"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."image_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."notifications" (
     "id" bigint NOT NULL,
@@ -310,20 +291,17 @@ CREATE TABLE IF NOT EXISTS "public"."notifications" (
     "body" "text"
 );
 
+ALTER TABLE
+    "public"."notifications" OWNER TO "postgres";
 
-ALTER TABLE "public"."notifications" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."notifications" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."notifications_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."notifications"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."notifications_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."order_item" (
     "id" bigint NOT NULL,
@@ -332,20 +310,17 @@ CREATE TABLE IF NOT EXISTS "public"."order_item" (
     "order_id" bigint
 );
 
+ALTER TABLE
+    "public"."order_item" OWNER TO "postgres";
 
-ALTER TABLE "public"."order_item" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."order_item" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."order_item_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."order_item"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."order_item_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."orders" (
     "id" bigint NOT NULL,
@@ -356,619 +331,475 @@ CREATE TABLE IF NOT EXISTS "public"."orders" (
     "shipping" numeric
 );
 
+ALTER TABLE
+    "public"."orders" OWNER TO "postgres";
 
-ALTER TABLE "public"."orders" OWNER TO "postgres";
-
-
-ALTER TABLE "public"."orders" ALTER COLUMN "id" ADD GENERATED BY DEFAULT AS IDENTITY (
-    SEQUENCE NAME "public"."orders_id_seq"
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
+ALTER TABLE
+    "public"."orders"
+ALTER COLUMN
+    "id"
+ADD
+    GENERATED BY DEFAULT AS IDENTITY (
+        SEQUENCE NAME "public"."orders_id_seq" START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
+    );
 
 CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "user_role" "public"."user_role" DEFAULT 'customer'::"public"."user_role",
+    "user_role" "public"."user_role" DEFAULT 'customer' :: "public"."user_role",
     "full_name" "text",
     "avatar" "text",
     "fcm_token" "text"
 );
 
-
-ALTER TABLE "public"."profiles" OWNER TO "postgres";
-
-
-ALTER TABLE ONLY "public"."products"
-    ADD CONSTRAINT "Products_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."banner"
-    ADD CONSTRAINT "banner_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."cart"
-    ADD CONSTRAINT "cart_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."category"
-    ADD CONSTRAINT "category_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."favorite"
-    ADD CONSTRAINT "favorite_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."image"
-    ADD CONSTRAINT "image_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."notifications"
-    ADD CONSTRAINT "notifications_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."order_item"
-    ADD CONSTRAINT "order_item_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."orders"
-    ADD CONSTRAINT "orders_pkey" PRIMARY KEY ("id");
-
-
-
-ALTER TABLE ONLY "public"."products"
-    ADD CONSTRAINT "products_id_key" UNIQUE ("id");
-
-
-
-ALTER TABLE ONLY "public"."profiles"
-    ADD CONSTRAINT "profiles_pkey" PRIMARY KEY ("id");
-
-
-
-CREATE OR REPLACE TRIGGER "notifications-webhook" AFTER INSERT ON "public"."notifications" FOR EACH ROW EXECUTE FUNCTION "public"."notify_webhook"();
-
-
-
-CREATE OR REPLACE TRIGGER "notifications_notify_webhook_trigger" AFTER INSERT OR UPDATE ON "public"."notifications" FOR EACH ROW EXECUTE FUNCTION "public"."notify_webhook"();
-
-
-
-ALTER TABLE ONLY "public"."cart"
-    ADD CONSTRAINT "cart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."cart"
-    ADD CONSTRAINT "cart_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."favorite"
-    ADD CONSTRAINT "favorite_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."favorite"
-    ADD CONSTRAINT "favorite_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."image"
-    ADD CONSTRAINT "image_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."notifications"
-    ADD CONSTRAINT "notifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."order_item"
-    ADD CONSTRAINT "order_item_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."order_item"
-    ADD CONSTRAINT "order_item_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id");
-
-
-
-ALTER TABLE ONLY "public"."orders"
-    ADD CONSTRAINT "orders_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-ALTER TABLE ONLY "public"."products"
-    ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."category"("id") ON UPDATE CASCADE ON DELETE SET DEFAULT;
-
-
-
-ALTER TABLE ONLY "public"."profiles"
-    ADD CONSTRAINT "profiles_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE CASCADE;
-
-
-
-CREATE POLICY "Enable delete for users based on user_id" ON "public"."notifications" FOR DELETE USING ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
-
-
-
-CREATE POLICY "Enable insert for users based on user_id" ON "public"."notifications" FOR INSERT WITH CHECK ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
-
-
-
-CREATE POLICY "Enable insert for users based on user_id" ON "public"."orders" FOR INSERT WITH CHECK ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
-
-
-
-CREATE POLICY "Enable read access for all users" ON "public"."order_item" FOR SELECT USING (true);
-
-
-
-CREATE POLICY "Enable read access for authenticated" ON "public"."products" FOR SELECT TO "authenticated" USING (true);
-
-
-
-CREATE POLICY "Enable users to view their own data only" ON "public"."notifications" FOR SELECT TO "authenticated" USING ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
-
-
-
-CREATE POLICY "Enable users to view their own data only" ON "public"."orders" FOR SELECT TO "authenticated" USING ((( SELECT "auth"."uid"() AS "uid") = "user_id"));
-
-
-
-ALTER TABLE "public"."banner" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE
+    "public"."profiles" OWNER TO "postgres";
+
+ALTER TABLE
+    ONLY "public"."products"
+ADD
+    CONSTRAINT "Products_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."banner"
+ADD
+    CONSTRAINT "banner_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."cart"
+ADD
+    CONSTRAINT "cart_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."category"
+ADD
+    CONSTRAINT "category_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."favorite"
+ADD
+    CONSTRAINT "favorite_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."image"
+ADD
+    CONSTRAINT "image_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."notifications"
+ADD
+    CONSTRAINT "notifications_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."order_item"
+ADD
+    CONSTRAINT "order_item_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."orders"
+ADD
+    CONSTRAINT "orders_pkey" PRIMARY KEY ("id");
+
+ALTER TABLE
+    ONLY "public"."products"
+ADD
+    CONSTRAINT "products_id_key" UNIQUE ("id");
+
+ALTER TABLE
+    ONLY "public"."profiles"
+ADD
+    CONSTRAINT "profiles_pkey" PRIMARY KEY ("id");
+
+CREATE
+OR REPLACE TRIGGER "notifications-webhook"
+AFTER
+INSERT
+    ON "public"."notifications" FOR EACH ROW EXECUTE FUNCTION "public"."notify_webhook"();
+
+CREATE
+OR REPLACE TRIGGER "notifications_notify_webhook_trigger"
+AFTER
+INSERT
+    OR
+UPDATE
+    ON "public"."notifications" FOR EACH ROW EXECUTE FUNCTION "public"."notify_webhook"();
+
+ALTER TABLE
+    ONLY "public"."cart"
+ADD
+    CONSTRAINT "cart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."cart"
+ADD
+    CONSTRAINT "cart_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."favorite"
+ADD
+    CONSTRAINT "favorite_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."favorite"
+ADD
+    CONSTRAINT "favorite_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."image"
+ADD
+    CONSTRAINT "image_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."notifications"
+ADD
+    CONSTRAINT "notifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."order_item"
+ADD
+    CONSTRAINT "order_item_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."order_item"
+ADD
+    CONSTRAINT "order_item_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id");
+
+ALTER TABLE
+    ONLY "public"."orders"
+ADD
+    CONSTRAINT "orders_user_id_fkey1" FOREIGN KEY ("user_id") REFERENCES "public"."profiles"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE
+    ONLY "public"."products"
+ADD
+    CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "public"."category"("id") ON UPDATE CASCADE ON DELETE
+SET
+    DEFAULT;
+
+ALTER TABLE
+    ONLY "public"."profiles"
+ADD
+    CONSTRAINT "profiles_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE POLICY "Enable delete for users based on user_id" ON "public"."notifications" FOR DELETE USING (
+    (
+        (
+            SELECT
+                "auth"."uid"() AS "uid"
+        ) = "user_id"
+    )
+);
+
+CREATE POLICY "Enable insert for users based on user_id" ON "public"."notifications" FOR
+INSERT
+    WITH CHECK (
+        (
+            (
+                SELECT
+                    "auth"."uid"() AS "uid"
+            ) = "user_id"
+        )
+    );
+
+CREATE POLICY "Enable insert for users based on user_id" ON "public"."orders" FOR
+INSERT
+    WITH CHECK (
+        (
+            (
+                SELECT
+                    "auth"."uid"() AS "uid"
+            ) = "user_id"
+        )
+    );
+
+CREATE POLICY "Enable read access for all users" ON "public"."order_item" FOR
+SELECT
+    USING (true);
+
+CREATE POLICY "Enable read access for authenticated" ON "public"."products" FOR
+SELECT
+    TO "authenticated" USING (true);
+
+CREATE POLICY "Enable users to view their own data only" ON "public"."notifications" FOR
+SELECT
+    TO "authenticated" USING (
+        (
+            (
+                SELECT
+                    "auth"."uid"() AS "uid"
+            ) = "user_id"
+        )
+    );
+
+CREATE POLICY "Enable users to view their own data only" ON "public"."orders" FOR
+SELECT
+    TO "authenticated" USING (
+        (
+            (
+                SELECT
+                    "auth"."uid"() AS "uid"
+            ) = "user_id"
+        )
+    );
+
+ALTER TABLE
+    "public"."banner" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "banner" ON "public"."banner" USING (true);
 
-
-
-ALTER TABLE "public"."cart" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE
+    "public"."cart" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "cart" ON "public"."cart" USING (true);
 
-
-
-ALTER TABLE "public"."category" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE
+    "public"."category" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "category" ON "public"."category" USING (true);
 
-
-
-ALTER TABLE "public"."favorite" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE
+    "public"."favorite" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "favorite" ON "public"."favorite" USING (true);
 
-
-
-ALTER TABLE "public"."image" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE
+    "public"."image" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "image" ON "public"."image" USING (true);
 
+CREATE POLICY "insert own profile" ON "public"."profiles" FOR
+INSERT
+    TO "authenticated" WITH CHECK (
+        (
+            (
+                SELECT
+                    "auth"."uid"() AS "uid"
+            ) = "id"
+        )
+    );
 
+ALTER TABLE
+    "public"."notifications" ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "insert own profile" ON "public"."profiles" FOR INSERT TO "authenticated" WITH CHECK ((( SELECT "auth"."uid"() AS "uid") = "id"));
+ALTER TABLE
+    "public"."order_item" ENABLE ROW LEVEL SECURITY;
 
+ALTER TABLE
+    "public"."orders" ENABLE ROW LEVEL SECURITY;
 
+ALTER TABLE
+    "public"."products" ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE "public"."notifications" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE
+    "public"."profiles" ENABLE ROW LEVEL SECURITY;
 
+CREATE POLICY "select own or admin" ON "public"."profiles" FOR
+SELECT
+    TO "authenticated" USING (
+        (
+            (
+                (
+                    SELECT
+                        "auth"."uid"() AS "uid"
+                ) = "id"
+            )
+            OR "public"."is_admin"()
+        )
+    );
 
-ALTER TABLE "public"."order_item" ENABLE ROW LEVEL SECURITY;
-
-
-ALTER TABLE "public"."orders" ENABLE ROW LEVEL SECURITY;
-
-
-ALTER TABLE "public"."products" ENABLE ROW LEVEL SECURITY;
-
-
-ALTER TABLE "public"."profiles" ENABLE ROW LEVEL SECURITY;
-
-
-CREATE POLICY "select own or admin" ON "public"."profiles" FOR SELECT TO "authenticated" USING (((( SELECT "auth"."uid"() AS "uid") = "id") OR "public"."is_admin"()));
-
-
-
-CREATE POLICY "update own or admin" ON "public"."profiles" FOR UPDATE TO "authenticated" USING (((( SELECT "auth"."uid"() AS "uid") = "id") OR "public"."is_admin"())) WITH CHECK (((( SELECT "auth"."uid"() AS "uid") = "id") OR "public"."is_admin"()));
-
-
-
-
+CREATE POLICY "update own or admin" ON "public"."profiles" FOR
+UPDATE
+    TO "authenticated" USING (
+        (
+            (
+                (
+                    SELECT
+                        "auth"."uid"() AS "uid"
+                ) = "id"
+            )
+            OR "public"."is_admin"()
+        )
+    ) WITH CHECK (
+        (
+            (
+                (
+                    SELECT
+                        "auth"."uid"() AS "uid"
+                ) = "id"
+            )
+            OR "public"."is_admin"()
+        )
+    );
 
 ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
 
-
-
-
-
 GRANT USAGE ON SCHEMA "public" TO "postgres";
+
 GRANT USAGE ON SCHEMA "public" TO "anon";
+
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
+
 GRANT USAGE ON SCHEMA "public" TO "service_role";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 GRANT ALL ON FUNCTION "public"."create_profile_for_new_user"() TO "anon";
+
 GRANT ALL ON FUNCTION "public"."create_profile_for_new_user"() TO "authenticated";
+
 GRANT ALL ON FUNCTION "public"."create_profile_for_new_user"() TO "service_role";
 
-
-
 GRANT ALL ON FUNCTION "public"."get_decrypted_secret"("secret_name" "text") TO "anon";
+
 GRANT ALL ON FUNCTION "public"."get_decrypted_secret"("secret_name" "text") TO "authenticated";
+
 GRANT ALL ON FUNCTION "public"."get_decrypted_secret"("secret_name" "text") TO "service_role";
 
-
-
 GRANT ALL ON FUNCTION "public"."is_admin"() TO "anon";
+
 GRANT ALL ON FUNCTION "public"."is_admin"() TO "authenticated";
+
 GRANT ALL ON FUNCTION "public"."is_admin"() TO "service_role";
-
-
 
 GRANT ALL ON FUNCTION "public"."notify_webhook"() TO "service_role";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 GRANT ALL ON TABLE "public"."products" TO "anon";
+
 GRANT ALL ON TABLE "public"."products" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."products" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."Products_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."Products_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."Products_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."banner" TO "anon";
+
 GRANT ALL ON TABLE "public"."banner" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."banner" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."banner_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."banner_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."banner_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."cart" TO "anon";
+
 GRANT ALL ON TABLE "public"."cart" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."cart" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."cart_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."cart_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."cart_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."category" TO "anon";
+
 GRANT ALL ON TABLE "public"."category" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."category" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."category_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."category_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."category_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."favorite" TO "anon";
+
 GRANT ALL ON TABLE "public"."favorite" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."favorite" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."favorite_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."favorite_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."favorite_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."image" TO "anon";
+
 GRANT ALL ON TABLE "public"."image" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."image" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."image_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."image_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."image_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."notifications" TO "anon";
+
 GRANT ALL ON TABLE "public"."notifications" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."notifications" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."notifications_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."notifications_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."notifications_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."order_item" TO "anon";
+
 GRANT ALL ON TABLE "public"."order_item" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."order_item" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."order_item_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."order_item_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."order_item_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."orders" TO "anon";
+
 GRANT ALL ON TABLE "public"."orders" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."orders" TO "service_role";
 
-
-
 GRANT ALL ON SEQUENCE "public"."orders_id_seq" TO "anon";
+
 GRANT ALL ON SEQUENCE "public"."orders_id_seq" TO "authenticated";
+
 GRANT ALL ON SEQUENCE "public"."orders_id_seq" TO "service_role";
 
-
-
 GRANT ALL ON TABLE "public"."profiles" TO "anon";
+
 GRANT ALL ON TABLE "public"."profiles" TO "authenticated";
+
 GRANT ALL ON TABLE "public"."profiles" TO "service_role";
 
-
-
-
-
-
-
-
-
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "postgres";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "anon";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "authenticated";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES TO "service_role";
 
-
-
-
-
-
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS TO "postgres";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS TO "anon";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS TO "authenticated";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS TO "service_role";
 
-
-
-
-
-
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "postgres";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "anon";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "authenticated";
+
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES TO "service_role";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE TRIGGER create_profile_on_signup AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.create_profile_for_new_user();
-
-
+CREATE TRIGGER create_profile_on_signup
+AFTER
+INSERT
+    ON auth.users FOR EACH ROW EXECUTE FUNCTION public.create_profile_for_new_user();
