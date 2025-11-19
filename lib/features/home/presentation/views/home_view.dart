@@ -14,16 +14,6 @@ import 'package:snap_shop/features/product/presentation/views/product_view.dart'
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:snap_shop/features/profile/presentation/views/profile_view.dart';
 
-// Cubit class managing an int index state
-class NavCubit extends Cubit<int> {
-  NavCubit() : super(0);
-
-  void changeIndex(int newIndex) {
-    if (state == newIndex) return;
-    emit(newIndex);
-  }
-}
-
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
