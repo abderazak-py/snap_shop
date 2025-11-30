@@ -8,9 +8,15 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:snap_shop/core/utils/private.dart';
 import 'package:snap_shop/core/utils/supabase_service.dart';
+import 'package:snap_shop/features/address/data/datasources/address_remote_data_source.dart';
+import 'package:snap_shop/features/address/data/repos/address_repo_impl.dart';
+import 'package:snap_shop/features/address/domain/repos/address_repo.dart';
+import 'package:snap_shop/features/address/domain/usecases/get_addresses_usecase.dart';
+import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
 import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:snap_shop/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
+import 'package:snap_shop/features/address/domain/usecases/add_address_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/is_user_signed_in_usecase.dart';
 import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
@@ -206,6 +212,7 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
   sl.registerLazySingleton<ResendOtpUsecase>(
     () => ResendOtpUsecase(sl<AuthRepository>()),
   );
+
   // Cubit/Bloc
   sl.registerFactory<AuthCubit>(
     () => AuthCubit(
@@ -216,6 +223,33 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
       verifyOtpUseCase: sl<VerifyOtpUsecase>(),
       resendOtpUsecase: sl<ResendOtpUsecase>(),
       getCurrentUserUseCase: sl<GetCurrentUserUseCase>(),
+    ),
+  );
+  // ||=====================||ADDRESS||=====================||
+
+  // Data Sources
+  sl.registerLazySingleton<AddressRemoteDataSource>(
+    () => AddressRemoteDataSource(sl<ISupabaseService>()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<AddressRepository>(
+    () => AddressRepositoryImpl(sl<AddressRemoteDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton<AddAddressUsecase>(
+    () => AddAddressUsecase(sl<AddressRepository>()),
+  );
+  sl.registerLazySingleton<GetAddressesUsecase>(
+    () => GetAddressesUsecase(sl<AddressRepository>()),
+  );
+
+  // Cubit/Bloc
+  sl.registerFactory<AddressCubit>(
+    () => AddressCubit(
+      addAddressUsecase: sl<AddAddressUsecase>(),
+      getAddressesUsecase: sl<GetAddressesUsecase>(),
     ),
   );
 

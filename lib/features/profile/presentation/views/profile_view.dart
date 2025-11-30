@@ -93,6 +93,20 @@ class ProfileView extends StatelessWidget {
                   CustomWideButton(
                     icon: SvgPicture.asset(
                       height: 30,
+                      AppIcons.orders,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.kTextColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    title: 'Addresses',
+                    onPressed: () {
+                      GoRouter.of(context).push(AppRouter.kAddress);
+                    },
+                  ),
+                  CustomWideButton(
+                    icon: SvgPicture.asset(
+                      height: 30,
                       AppIcons.settings,
                       colorFilter: ColorFilter.mode(
                         AppColors.kTextColor,
