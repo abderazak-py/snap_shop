@@ -13,7 +13,11 @@ class AddressRemoteDataSource {
 
   //==============|| Add New Address ||===================
   Future<Either<Failure, void>> addAddress({
-    required String addressText,
+    required String street,
+    required String state,
+    required String city,
+    required String country,
+    required int postal,
     required double latitude,
     required double longitude,
   }) async {
@@ -26,7 +30,11 @@ class AddressRemoteDataSource {
 
       await supabaseService.client.from('user_addresses').insert({
         'user_id': user.id,
-        'address_text': addressText,
+        'street': street,
+        'state': state,
+        'city': city,
+        'country': country,
+        'postal': postal,
         'latitude': latitude,
         'longitude': longitude,
       });

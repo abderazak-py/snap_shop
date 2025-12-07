@@ -36,7 +36,7 @@ class FavoriteView extends StatelessWidget {
                     child: Text('No favorite items', style: Styles.titleText20),
                   ),
                 ] else ...[
-                  FavoriteGridView(products: state.favorite),
+                  Expanded(child: FavoriteGridView(products: state.favorite)),
                 ],
               ] else if (state is FavoriteFailure)
                 CustomErrorWidget(errorMsg: state.error)

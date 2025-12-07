@@ -16,36 +16,34 @@ class FavoriteGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.builder(
-        padding: EdgeInsets.all(0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.83,
-        ),
-        itemCount: isLoading ? 6 : products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return Column(
-            children: [
-              ProductCard(
-                product: ProductEntity(
-                  id: product.productId,
-                  createdAt: product.addedAt,
-                  name: product.productName,
-                  description: '',
-                  category: CategoryEntity(id: 0, name: '', image: ''),
-                  price: product.productPrice,
-                  images: [
-                    ImageEntity(imageUrl: product.productImage, position: 1),
-                  ],
-                  categoryId: 0,
-                ),
-              ),
-            ],
-          );
-        },
+    return GridView.builder(
+      padding: EdgeInsets.all(0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.83,
       ),
+      itemCount: isLoading ? 6 : products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return Column(
+          children: [
+            ProductCard(
+              product: ProductEntity(
+                id: product.productId,
+                createdAt: product.addedAt,
+                name: product.productName,
+                description: '',
+                category: CategoryEntity(id: 0, name: '', image: ''),
+                price: product.productPrice,
+                images: [
+                  ImageEntity(imageUrl: product.productImage, position: 1),
+                ],
+                categoryId: 0,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

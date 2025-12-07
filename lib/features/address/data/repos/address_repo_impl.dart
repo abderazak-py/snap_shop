@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:snap_shop/core/errors/failure.dart';
 import 'package:snap_shop/features/address/data/datasources/address_remote_data_source.dart';
-import 'package:snap_shop/features/address/data/models/address_model.dart';
+import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
 import 'package:snap_shop/features/address/domain/repos/address_repo.dart';
 
 class AddressRepositoryImpl implements AddressRepository {
@@ -11,12 +11,20 @@ class AddressRepositoryImpl implements AddressRepository {
 
   @override
   Future<Either<Failure, void>> addAddress(
-    String addressText,
+    String street,
+    String state,
+    String city,
+    String country,
+    int postal,
     double latitude,
     double longitude,
   ) async {
     final response = await remoteDataSource.addAddress(
-      addressText: addressText,
+      street: street,
+      state: state,
+      city: city,
+      country: country,
+      postal: postal,
       latitude: latitude,
       longitude: longitude,
     );
@@ -24,11 +32,12 @@ class AddressRepositoryImpl implements AddressRepository {
   }
 
   @override
-  Future<Either<Failure, List<AddressModel>>> getAddresses() async {
+  Future<Either<Failure, List<AddressEntity>>> getAddresses() async {
     final response = await remoteDataSource.getAddresses();
     return response.fold(
       (failure) => Left(failure),
-      (addresses) => Right(addresses),
+      (addresses) =>
+          Right(addresses.map((address) => address.toEntity()).toList()),
     );
   }
 }

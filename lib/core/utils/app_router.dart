@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
+import 'package:snap_shop/features/address/presentation/views/add_address_view.dart';
 import 'package:snap_shop/features/address/presentation/views/address_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/auth_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
@@ -38,6 +39,7 @@ abstract class AppRouter {
   static const kCategoryView = '/category';
   static const kNotificationsView = '/notifications';
   static const kAddress = '/Address';
+  static const kAddAddress = '/AddAddress';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -93,6 +95,7 @@ abstract class AppRouter {
         builder: (context, state) => NotificationsView(),
       ),
       GoRoute(path: kAddress, builder: (context, state) => AddressView()),
+      GoRoute(path: kAddAddress, builder: (context, state) => AddAddressView()),
     ],
   );
 }

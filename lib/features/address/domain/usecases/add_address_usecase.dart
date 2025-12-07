@@ -8,12 +8,20 @@ class AddAddressUsecase {
   AddAddressUsecase(this.repository);
 
   Future<Either<Failure, void>> execute(
-    String addressText,
+    String street,
+    String state,
+    String city,
+    String country,
+    int postal,
     double latitude,
     double longitude,
   ) async {
     final response = await repository.addAddress(
-      addressText,
+      street,
+      state,
+      city,
+      country,
+      postal,
       latitude,
       longitude,
     );

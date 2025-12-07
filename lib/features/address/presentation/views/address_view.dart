@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
@@ -62,7 +64,7 @@ class AddressView extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              address.addressText,
+                                              address.state,
                                               style: Styles.titleText20
                                                   .copyWith(
                                                     fontWeight: FontWeight.w900,
@@ -96,7 +98,11 @@ class AddressView extends StatelessWidget {
                               width: 200,
                               child: CustomBigButton(
                                 title: 'Add Address',
-                                onPressed: () {},
+                                onPressed: () {
+                                  GoRouter.of(
+                                    context,
+                                  ).push(AppRouter.kAddAddress);
+                                },
                               ),
                             ),
                           ),

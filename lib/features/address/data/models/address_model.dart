@@ -4,14 +4,22 @@ import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
 class AddressModel extends Equatable {
   final int id;
   final String userId;
-  final String addressText;
+  final String street;
+  final String state;
+  final String city;
+  final String country;
+  final int postal;
   final double latitude;
   final double longitude;
 
   const AddressModel({
     required this.id,
     required this.userId,
-    required this.addressText,
+    required this.street,
+    required this.state,
+    required this.city,
+    required this.country,
+    required this.postal,
     required this.latitude,
     required this.longitude,
   });
@@ -20,7 +28,11 @@ class AddressModel extends Equatable {
     return AddressModel(
       id: map['id'] as int,
       userId: map['user_id'] as String,
-      addressText: map['address_text'] ?? '',
+      street: map['street'] ?? '',
+      state: map['state'] ?? '',
+      city: map['city'] ?? '',
+      country: map['country'] ?? '',
+      postal: map['postal'] as int,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
     );
@@ -30,7 +42,11 @@ class AddressModel extends Equatable {
     return {
       'id': id,
       'user_id': userId,
-      'address_text': addressText,
+      'street': street,
+      'state': state,
+      'city': city,
+      'country': country,
+      'postal': postal,
       'latitude': latitude,
       'longitude': longitude,
     };
@@ -40,11 +56,26 @@ class AddressModel extends Equatable {
   AddressEntity toEntity() => AddressEntity(
     id: id,
     userId: userId,
-    addressText: addressText,
+
     latitude: latitude,
     longitude: longitude,
+    street: street,
+    state: state,
+    city: city,
+    country: country,
+    postal: postal,
   );
 
   @override
-  List<Object?> get props => [id, userId, addressText, latitude, longitude];
+  List<Object?> get props => [
+    id,
+    userId,
+    street,
+    state,
+    city,
+    country,
+    postal,
+    latitude,
+    longitude,
+  ];
 }

@@ -12,9 +12,19 @@ class AddressInitial extends AddressState {}
 class AddressLoading extends AddressState {}
 
 class AddressSuccess extends AddressState {
-  final List<AddressModel> addresses;
+  final List<AddressEntity> addresses;
 
   const AddressSuccess({required this.addresses});
+}
+
+class AddressLocationSuccess extends AddressState {
+  final double latitude;
+  final double longitude;
+
+  const AddressLocationSuccess({
+    required this.latitude,
+    required this.longitude,
+  });
 }
 
 class AddressFailure extends AddressState {
