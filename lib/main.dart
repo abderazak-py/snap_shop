@@ -8,6 +8,8 @@ void main() async {
 
   runApp(const SnapShop());
   //TODO: add forgot password
+  //TODO: optimize and complete add address
+  //TODO: add address in order
 }
 
 class SnapShop extends StatelessWidget {

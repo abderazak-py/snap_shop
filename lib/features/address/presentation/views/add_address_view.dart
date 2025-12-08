@@ -20,13 +20,14 @@ class _AddAddressViewState extends State<AddAddressView> {
   late final TextEditingController _stateController;
   late final TextEditingController _postalController;
   late final TextEditingController _countryController;
-  late final List<TextEditingController> controllers = [
+  late final List<TextEditingController> _controllers = [
     _streetController,
     _cityController,
     _stateController,
     _postalController,
     _countryController,
   ];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -40,11 +41,9 @@ class _AddAddressViewState extends State<AddAddressView> {
 
   @override
   void dispose() {
-    _streetController.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _postalController.dispose();
-    _countryController.dispose();
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -85,7 +84,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                                   GestureDetector(
                                     onTap: () async {
                                       context.read<AddressCubit>().getLocation(
-                                        controllers,
+                                        _controllers,
                                       );
                                     },
                                     child: CircleAvatar(
@@ -149,48 +148,64 @@ class _AddAddressViewState extends State<AddAddressView> {
                         ),
                       ),
                       SizedBox(height: height * .05),
-                      AddressTextField(
-                        hintText: 'Street',
-                        controller: _streetController,
-                      ),
-                      AddressTextField(
-                        hintText: 'City',
-                        controller: _cityController,
-                      ),
-                      AddressTextField(
-                        hintText: 'State/Province',
-                        controller: _stateController,
-                      ),
-                      AddressTextField(
-                        hintText: 'Postal code',
-                        isNumber: true,
-                        controller: _postalController,
-                      ),
-                      AddressTextField(
-                        hintText: 'Country',
-                        controller: _countryController,
-                      ),
-                      SizedBox(height: height * .05),
-                      Center(
-                        child: CustomBigButton(
-                          title: 'Save Address',
-                          onPressed: () async {
-                            if (state is AddressLocationSuccess) {
-                              await context.read<AddressCubit>().addAddress(
-                                street: _streetController.text,
-                                city: _cityController.text,
-                                state: _stateController.text,
-                                postal: toInt(_postalController.text) ?? 0,
-                                country: _countryController.text,
-                                latitude: state.latitude,
-                                longitude: state.longitude,
-                              );
-                            } else {
-                              if (state is AddressFailure) {
-                                print(state.error);
-                              }
-                            }
-                          },
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            AddressTextField(
+                              hintText: 'Street',
+                              controller: _streetController,
+                            ),
+                            AddressTextField(
+                              hintText: 'City',
+                              controller: _cityController,
+                            ),
+                            AddressTextField(
+                              hintText: 'State/Province',
+                              controller: _stateController,
+                            ),
+                            AddressTextField(
+                              hintText: 'Postal code',
+                              isNumber: true,
+                              controller: _postalController,
+                            ),
+                            AddressTextField(
+                              hintText: 'Country',
+                              controller: _countryController,
+                            ),
+                            SizedBox(height: height * .05),
+                            CustomBigButton(
+                              title: 'Save Address',
+                              onPressed: () async {
+                                if (!_formKey.currentState!.validate()) {
+                                  if (state is AddressLocationSuccess) {
+                                    await context
+                                        .read<AddressCubit>()
+                                        .addAddress(
+                                          street: _streetController.text,
+                                          city: _cityController.text,
+                                          state: _stateController.text,
+                                          postal:
+                                              toInt(_postalController.text) ??
+                                              0,
+                                          country: _countryController.text,
+                                          latitude: state.latitude,
+                                          longitude: state.longitude,
+                                        );
+                                  } else {
+                                    if (state is AddressFailure) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text(state.error)),
+                                      );
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ],

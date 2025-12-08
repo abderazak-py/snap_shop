@@ -17,7 +17,22 @@ class AddressTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 12.0),
-      child: TextField(
+      child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter a value';
+          }
+          if (isNumber) {
+            if (int.tryParse(value) == null) {
+              return 'Please enter a valid number';
+            }
+          } else {
+            if (value.length < 2) {
+              return 'Please enter a valid value';
+            }
+          }
+          return null;
+        },
         controller: controller,
         keyboardType: isNumber
             ? TextInputType.number
