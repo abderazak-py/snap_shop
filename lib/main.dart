@@ -10,6 +10,16 @@ void main() async {
   //TODO: add forgot password
   //TODO: optimize and complete add address
   //TODO: add address in order
+
+  // {
+  //    notes before production
+  //   -- add error hanling everywhere and loading indicators
+  //   -- test on real devices
+  //   -- add error handling everywhere and loading indicators
+  //   -- optimize images and assets
+  //   -- review security rules for database and storage
+  //   -- final testing for all features
+  // }
 }
 
 class SnapShop extends StatelessWidget {

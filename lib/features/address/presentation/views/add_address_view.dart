@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
-import 'package:snap_shop/features/address/presentation/views/widgets/address_text_field.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:snap_shop/features/address/presentation/views/widgets/location_bottom_section.dart';
+import 'package:snap_shop/features/address/presentation/views/widgets/location_top_section.dart';
 
 class AddAddressView extends StatefulWidget {
   const AddAddressView({super.key});
@@ -27,7 +26,6 @@ class _AddAddressViewState extends State<AddAddressView> {
     _postalController,
     _countryController,
   ];
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -73,145 +71,15 @@ class _AddAddressViewState extends State<AddAddressView> {
                         ),
                       ),
                       SizedBox(height: height * .08),
-                      SizedBox(
-                        height: height * .15,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      context.read<AddressCubit>().getLocation(
-                                        _controllers,
-                                      );
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: const Color(
-                                        0xff00d261,
-                                      ).withAlpha(40),
-                                      child: CircleAvatar(
-                                        radius: 30,
-                                        backgroundColor: const Color(
-                                          0xff00d261,
-                                        ),
-                                        child: Icon(
-                                          Icons.gps_fixed_rounded,
-                                          color: Colors.white,
-                                          size: 40,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'current location',
-                                    style: Styles.titleText16.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            VerticalDivider(endIndent: 5, indent: 2),
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 40,
-                                    backgroundColor: const Color(
-                                      0xff00d261,
-                                    ).withAlpha(40),
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: const Color(0xff00d261),
-                                      child: Icon(
-                                        Icons.map_rounded,
-                                        color: Colors.white,
-                                        size: 40,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'from map',
-                                    style: Styles.titleText16.copyWith(
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      LocationTopSection(controllers: _controllers),
                       SizedBox(height: height * .05),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            AddressTextField(
-                              hintText: 'Street',
-                              controller: _streetController,
-                            ),
-                            AddressTextField(
-                              hintText: 'City',
-                              controller: _cityController,
-                            ),
-                            AddressTextField(
-                              hintText: 'State/Province',
-                              controller: _stateController,
-                            ),
-                            AddressTextField(
-                              hintText: 'Postal code',
-                              isNumber: true,
-                              controller: _postalController,
-                            ),
-                            AddressTextField(
-                              hintText: 'Country',
-                              controller: _countryController,
-                            ),
-                            SizedBox(height: height * .05),
-                            CustomBigButton(
-                              title: 'Save Address',
-                              onPressed: () async {
-                                if (!_formKey.currentState!.validate()) {
-                                  if (state is AddressLocationSuccess) {
-                                    await context
-                                        .read<AddressCubit>()
-                                        .addAddress(
-                                          street: _streetController.text,
-                                          city: _cityController.text,
-                                          state: _stateController.text,
-                                          postal:
-                                              toInt(_postalController.text) ??
-                                              0,
-                                          country: _countryController.text,
-                                          latitude: state.latitude,
-                                          longitude: state.longitude,
-                                        );
-                                  } else {
-                                    if (state is AddressFailure) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(content: Text(state.error)),
-                                      );
-                                    }
-                                  }
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      LocationBottomSection(controllers: _controllers),
                     ],
                   ),
                   if (state is AddressLoading)
-                    const Center(child: CircularProgressIndicator()),
+                    Positioned.fill(
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
                 ],
               ),
             );

@@ -5,11 +5,13 @@ import 'package:snap_shop/core/utils/styles.dart';
 class AddressTextField extends StatelessWidget {
   final String hintText;
   final bool isNumber;
+  final bool isEnabled;
   final TextEditingController controller;
   const AddressTextField({
     super.key,
     required this.hintText,
     required this.controller,
+    required this.isEnabled,
     this.isNumber = false,
   });
 
@@ -33,6 +35,7 @@ class AddressTextField extends StatelessWidget {
           }
           return null;
         },
+        enabled: isEnabled,
         controller: controller,
         keyboardType: isNumber
             ? TextInputType.number

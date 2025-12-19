@@ -54,7 +54,7 @@ class AddressCubit extends Cubit<AddressState> {
     });
   }
 
-  Future<void> getLocation(List<TextEditingController> controllers) async {
+  Future<bool> getLocation(List<TextEditingController> controllers) async {
     emit(AddressLoading());
     bool serviceEnabled;
     LocationPermission permission;
@@ -62,13 +62,15 @@ class AddressCubit extends Cubit<AddressState> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       AddressFailure(error: 'Location services are disabled');
+      return false;
     }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        AddressFailure(error: 'Location permissions are denied.');
+        emit(AddressFailure(error: 'Location permissions are denied.'));
+        return false;
       }
     }
 
@@ -79,6 +81,7 @@ class AddressCubit extends Cubit<AddressState> {
               'Location permissions are permanently denied, we cannot request permissions.',
         ),
       );
+      return false;
     }
 
     final location = await Geolocator.getCurrentPosition();
@@ -86,16 +89,17 @@ class AddressCubit extends Cubit<AddressState> {
       location.latitude,
       location.longitude,
     );
-    controllers[0].text = placemarks.first.street.toString();
-    controllers[1].text = placemarks.first.subAdministrativeArea.toString();
-    controllers[2].text = placemarks.first.administrativeArea.toString();
-    controllers[3].text = toInt(placemarks.first.postalCode).toString();
-    controllers[4].text = placemarks.first.country.toString();
+    controllers[0].text = placemarks.first.street ?? '';
+    controllers[1].text = placemarks.first.subAdministrativeArea ?? '';
+    controllers[2].text = placemarks.first.administrativeArea ?? '';
+    controllers[3].text = placemarks.first.postalCode ?? '';
+    controllers[4].text = placemarks.first.country ?? '';
     emit(
       AddressLocationSuccess(
         latitude: location.latitude,
         longitude: location.longitude,
       ),
     );
+    return true;
   }
 }
