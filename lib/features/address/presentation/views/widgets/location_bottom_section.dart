@@ -17,6 +17,13 @@ class LocationBottomSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     final height = MediaQuery.of(context).size.height;
+    final List<String> fieldHints = [
+      'Street',
+      'City',
+      'State/Province',
+      'Postal code',
+      'Country',
+    ];
     return BlocBuilder<AddressCubit, AddressState>(
       builder: (context, state) {
         return Form(
@@ -24,32 +31,14 @@ class LocationBottomSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AddressTextField(
-                isEnabled: (state is AddressLocationSuccess),
-                hintText: 'Street',
-                controller: _controllers[0],
-              ),
-              AddressTextField(
-                isEnabled: (state is AddressLocationSuccess),
-                hintText: 'City',
-                controller: _controllers[1],
-              ),
-              AddressTextField(
-                isEnabled: (state is AddressLocationSuccess),
-                hintText: 'State/Province',
-                controller: _controllers[2],
-              ),
-              AddressTextField(
-                isEnabled: (state is AddressLocationSuccess),
-                hintText: 'Postal code',
-                isNumber: true,
-                controller: _controllers[3],
-              ),
-              AddressTextField(
-                isEnabled: (state is AddressLocationSuccess),
-                hintText: 'Country',
-                controller: _controllers[4],
-              ),
+              for (int i = 0; i < 5; i++)
+                AddressTextField(
+                  isEnabled: (state is AddressLocationSuccess),
+                  hintText: fieldHints[i],
+                  controller: _controllers[i],
+                  isNumber: (i == 3),
+                ),
+
               SizedBox(height: height * .05),
               CustomBigButton(
                 title: 'Save Address',
