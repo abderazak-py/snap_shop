@@ -38,7 +38,7 @@ class CartView extends StatelessWidget {
                 else if (state is CartFailure)
                   CustomErrorWidget(errorMsg: state.error)
                 else
-                  Expanded(
+                  Flexible(
                     child: Skeletonizer(
                       child: CartListView(
                         isLoading: true,

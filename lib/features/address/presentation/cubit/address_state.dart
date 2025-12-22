@@ -13,8 +13,19 @@ class AddressLoading extends AddressState {}
 
 class AddressSuccess extends AddressState {
   final List<AddressEntity> addresses;
+  final int? selectedAddressId;
 
-  const AddressSuccess({required this.addresses});
+  const AddressSuccess({required this.addresses, this.selectedAddressId});
+
+  @override
+  List<Object> get props => [addresses, selectedAddressId].cast<Object>();
+
+  AddressSuccess copyWith({int? selectedAddressId}) {
+    return AddressSuccess(
+      addresses: addresses,
+      selectedAddressId: selectedAddressId ?? this.selectedAddressId,
+    );
+  }
 }
 
 class AddressLocationSuccess extends AddressState {

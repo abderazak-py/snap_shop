@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
 import 'package:snap_shop/features/address/domain/usecases/add_address_usecase.dart';
 import 'package:snap_shop/features/address/domain/usecases/get_addresses_usecase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'address_state.dart';
 
@@ -28,7 +27,6 @@ class AddressCubit extends Cubit<AddressState> {
     required double latitude,
     required double longitude,
   }) async {
-    print('starteddddddddd');
     emit(AddressLoading());
     final response = await addAddressUsecase.execute(
       street,
@@ -41,7 +39,6 @@ class AddressCubit extends Cubit<AddressState> {
     );
     response.fold((f) {
       emit(AddressFailure(error: f.message));
-      print(f.message);
     }, (_) => emit(AddressInitial()));
   }
 
@@ -50,7 +47,8 @@ class AddressCubit extends Cubit<AddressState> {
     final response = await getAddressesUsecase.execute();
 
     response.fold((f) => emit(AddressFailure(error: f.message)), (addresses) {
-      emit(AddressSuccess(addresses: addresses));
+      final initialId = addresses.isNotEmpty ? addresses.first.id : null;
+      emit(AddressSuccess(addresses: addresses, selectedAddressId: initialId));
     });
   }
 
@@ -89,11 +87,13 @@ class AddressCubit extends Cubit<AddressState> {
       location.latitude,
       location.longitude,
     );
-    controllers[0].text = placemarks.first.street ?? '';
-    controllers[1].text = placemarks.first.subAdministrativeArea ?? '';
-    controllers[2].text = placemarks.first.administrativeArea ?? '';
-    controllers[3].text = placemarks.first.postalCode ?? '';
-    controllers[4].text = placemarks.first.country ?? '';
+    final l = placemarks.first;
+    controllers[0].text =
+        '${l.thoroughfare ?? l.street ?? ''} + ${l.subThoroughfare ?? ''}';
+    controllers[1].text = l.subAdministrativeArea ?? l.subLocality ?? '';
+    controllers[2].text = l.administrativeArea ?? l.locality ?? '';
+    controllers[3].text = l.postalCode ?? '';
+    controllers[4].text = l.country ?? '';
     emit(
       AddressLocationSuccess(
         latitude: location.latitude,
@@ -101,5 +101,12 @@ class AddressCubit extends Cubit<AddressState> {
       ),
     );
     return true;
+  }
+
+  void selectAddress(int addressId) {
+    if (state is AddressSuccess) {
+      final currentState = state as AddressSuccess;
+      emit(currentState.copyWith(selectedAddressId: addressId));
+    }
   }
 }
