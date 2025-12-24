@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
 import 'package:snap_shop/features/address/domain/usecases/add_address_usecase.dart';
 import 'package:snap_shop/features/address/domain/usecases/get_addresses_usecase.dart';
@@ -52,7 +53,7 @@ class AddressCubit extends Cubit<AddressState> {
     });
   }
 
-  Future<bool> getLocation(List<TextEditingController> controllers) async {
+  Future<void> getLocation(List<TextEditingController> controllers) async {
     emit(AddressLoading());
     bool serviceEnabled;
     LocationPermission permission;
@@ -60,7 +61,6 @@ class AddressCubit extends Cubit<AddressState> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       AddressFailure(error: 'Location services are disabled');
-      return false;
     }
 
     permission = await Geolocator.checkPermission();
@@ -68,7 +68,6 @@ class AddressCubit extends Cubit<AddressState> {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         emit(AddressFailure(error: 'Location permissions are denied.'));
-        return false;
       }
     }
 
@@ -79,7 +78,6 @@ class AddressCubit extends Cubit<AddressState> {
               'Location permissions are permanently denied, we cannot request permissions.',
         ),
       );
-      return false;
     }
 
     final location = await Geolocator.getCurrentPosition();
@@ -100,7 +98,29 @@ class AddressCubit extends Cubit<AddressState> {
         longitude: location.longitude,
       ),
     );
-    return true;
+  }
+
+  Future<void> setLocationFromMap(
+    PickedData pickedData,
+    List<TextEditingController> controllers,
+  ) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      pickedData.latLong.latitude,
+      pickedData.latLong.longitude,
+    );
+    final l = placemarks.first;
+    controllers[0].text =
+        '${l.thoroughfare ?? l.street ?? ''} + ${l.subThoroughfare ?? ''}';
+    controllers[1].text = l.subAdministrativeArea ?? l.subLocality ?? '';
+    controllers[2].text = l.administrativeArea ?? l.locality ?? '';
+    controllers[3].text = l.postalCode ?? '';
+    controllers[4].text = l.country ?? '';
+    emit(
+      AddressLocationSuccess(
+        latitude: pickedData.latLong.latitude,
+        longitude: pickedData.latLong.longitude,
+      ),
+    );
   }
 
   void selectAddress(int addressId) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
+import 'package:snap_shop/features/address/presentation/views/widgets/location_picker.dart';
 
 class LocationTopSection extends StatelessWidget {
   const LocationTopSection({
@@ -56,7 +57,16 @@ class LocationTopSection extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    //TODO add map picker here
+                    final addressCubit = context.read<AddressCubit>();
+                    showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return LocationPicker(
+                          controllers: _controllers,
+                          addressCubit: addressCubit,
+                        );
+                      },
+                    );
                   },
                   child: CircleAvatar(
                     radius: 40,
