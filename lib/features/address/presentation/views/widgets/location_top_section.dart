@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/styles.dart';
 import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
 import 'package:snap_shop/features/address/presentation/views/widgets/location_picker.dart';
@@ -29,10 +30,10 @@ class LocationTopSection extends StatelessWidget {
                   },
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundColor: const Color(0xff00d261).withAlpha(40),
+                    backgroundColor: AppColors.kPrimaryColor.withAlpha(40),
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundColor: const Color(0xff00d261),
+                      backgroundColor: AppColors.kPrimaryColor,
                       child: Icon(
                         Icons.gps_fixed_rounded,
                         color: Colors.white,
@@ -70,10 +71,10 @@ class LocationTopSection extends StatelessWidget {
                   },
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundColor: const Color(0xff00d261).withAlpha(40),
+                    backgroundColor: AppColors.kPrimaryColor.withAlpha(40),
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundColor: const Color(0xff00d261),
+                      backgroundColor: AppColors.kPrimaryColor,
                       child: Icon(
                         Icons.map_rounded,
                         color: Colors.white,
