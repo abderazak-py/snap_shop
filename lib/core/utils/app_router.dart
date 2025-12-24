@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/features/address/presentation/views/add_address_view.dart';
 import 'package:snap_shop/features/address/presentation/views/address_view.dart';
+import 'package:snap_shop/features/address/presentation/views/select_address_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/auth_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/confirm_otp_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/login_view.dart';
@@ -38,8 +39,9 @@ abstract class AppRouter {
   static const kOrdersView = '/orders';
   static const kCategoryView = '/category';
   static const kNotificationsView = '/notifications';
-  static const kAddress = '/Address';
-  static const kAddAddress = '/AddAddress';
+  static const kAddress = '/address';
+  static const kAddAddress = '/add_address';
+  static const kSelectAddressView = '/select_address';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -75,7 +77,7 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: kPaymentView,
-        builder: (context, state) => const PaymentView(),
+        builder: (context, state) => PaymentView(addressId: state.extra as int),
       ),
       GoRoute(
         path: kOrdersView,
@@ -96,6 +98,10 @@ abstract class AppRouter {
       ),
       GoRoute(path: kAddress, builder: (context, state) => AddressView()),
       GoRoute(path: kAddAddress, builder: (context, state) => AddAddressView()),
+      GoRoute(
+        path: kSelectAddressView,
+        builder: (context, state) => const SelectAddressView(),
+      ),
     ],
   );
 }

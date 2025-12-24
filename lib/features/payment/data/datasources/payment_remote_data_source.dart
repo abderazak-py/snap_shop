@@ -11,6 +11,8 @@ class PaymentRemoteDataSource {
   final ISupabaseService supabaseService;
   PaymentRemoteDataSource(this.supabaseService);
   final getCartItemsUsecase = sl<GetCartItemsUsecase>();
+
+  // TODO add either for failure handling
   Future<List<Map<String, dynamic>>> paypalTransactions() async {
     final res = await getCartItemsUsecase.execute();
     final cartItems = res.fold((l) => throw Exception(l.message), (r) => r);
@@ -35,36 +37,28 @@ class PaymentRemoteDataSource {
     final shipping = 0.0;
     final shippingDiscount = 0.0;
     final total = subtotal + shipping - shippingDiscount;
+    print(
+      'total: $total, subtotal: $subtotal, shipping: $shipping, shippingDiscount: $shippingDiscount, items: $items',
+    );
 
     return [
       {
         "amount": {
-          "total": total,
+          "total": total.toStringAsFixed(2),
           "currency": "USD",
           "details": {
-            "subtotal": subtotal,
-            "shipping": shipping,
-            "shipping_discount": shippingDiscount,
+            "subtotal": subtotal.toStringAsFixed(2),
+            "shipping": shipping.toStringAsFixed(2),
+            "shipping_discount": shippingDiscount.toStringAsFixed(2),
           },
         },
         "description": "The payment transaction description.",
         "item_list": {"items": items},
-        // shipping address is not required though
-        //   "shipping_address": {
-        //     "recipient_name": "tharwat",
-        //     "line1": "Alexandria",
-        //     "line2": "",
-        //     "city": "Alexandria",
-        //     "country_code": "EG",
-        //     "postal_code": "21505",
-        //     "phone": "+00000000",
-        //     "state": "Alexandria"
-        //  },
       },
     ];
   }
 
-  Future<void> saveOrder() async {
+  Future<void> saveOrder(int addressId) async {
     try {
       if (supabaseService.auth.currentUser == null) {
         throw Exception('User not logged in');
@@ -90,6 +84,7 @@ class PaymentRemoteDataSource {
             'total': total,
             'currency': 'USD',
             'shipping': shipping,
+            'address_id': addressId,
           })
           .select()
           .single();
@@ -102,6 +97,7 @@ class PaymentRemoteDataSource {
           'product_id': item.productId,
           'quantity': item.quantity,
           'order_id': orderId,
+          'user_id': supabaseService.auth.currentUser!.id,
         };
       }).toList();
 

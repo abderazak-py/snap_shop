@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/features/address/presentation/views/select_address_view.dart';
 import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
 import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
 import 'package:snap_shop/features/cart/presentation/views/widgets/cart_card.dart';
@@ -45,12 +44,8 @@ class CartListView extends StatelessWidget {
                 width: 200,
                 child: CustomBigButton(
                   title: 'Order and Pay',
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (context) => const SelectAddressView(),
-                    ),
-                  ),
-                  //GoRouter.of(context).push(AppRouter.kPaymentView),
+                  onPressed: () =>
+                      GoRouter.of(context).push(AppRouter.kSelectAddressView),
                 ),
               ),
             ),

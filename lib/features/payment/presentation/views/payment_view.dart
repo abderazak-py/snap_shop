@@ -9,7 +9,8 @@ import 'package:snap_shop/features/payment/domain/usecases/paypal_transactions_u
 import 'package:snap_shop/features/payment/domain/usecases/save_order_usecase.dart';
 
 class PaymentView extends StatelessWidget {
-  const PaymentView({super.key});
+  const PaymentView({super.key, required this.addressId});
+  final int addressId;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class PaymentView extends StatelessWidget {
     final saveOrderUsecase = sl<SaveOrderUsecase>();
 
     return FutureBuilder<List<Map<String, dynamic>>>(
+      //TODO: make this into bloc builder after implementing the cubit
       future: paypalTransactionsUsecase.execute(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -36,12 +38,13 @@ class PaymentView extends StatelessWidget {
         return PaypalCheckoutView(
           sandboxMode: true,
           note: "Thank you for your order!",
-          onSuccess: (Map params) {
+          onSuccess: (Map params) async {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('✅ Payment Successful')),
             );
+            await saveOrderUsecase.execute(addressId: addressId);
             emptyCartUsecase.execute();
-            saveOrderUsecase.execute(transactions: transactions);
+            if (!context.mounted) return;
             GoRouter.of(context).go(AppRouter.kHomeView);
             WidgetsBinding.instance.addPostFrameCallback((_) {
               final ctx = GoRouter.of(context)

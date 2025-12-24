@@ -14,8 +14,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
   }
 
   @override
-  Future<void> saveOrder() {
-    return remoteDataSource.saveOrder();
+  Future<void> saveOrder(int addressId) {
+    return remoteDataSource.saveOrder(addressId);
   }
 
   @override

@@ -9,7 +9,6 @@ void main() async {
   runApp(const SnapShop());
   //TODO: add forgot password
   //TODO: optimize and complete add address
-  //TODO: add address in order
 
   // {
   //    notes before production
@@ -20,6 +19,11 @@ void main() async {
   //   -- review security rules for database and storage
   //   -- final testing for all features
   // }
+
+  //things i want to add to make the app prod ready (though it can be prod ready without them)
+  // make a column for price in the order_item cuz the product price may change
+  // add shipping address to paypal transaction
+  //
 }
 
 class SnapShop extends StatelessWidget {

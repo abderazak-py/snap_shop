@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:snap_shop/core/utils/app_router.dart';
 import 'package:snap_shop/core/utils/constants.dart';
 import 'package:snap_shop/core/utils/injection_container.dart';
 import 'package:snap_shop/core/utils/styles.dart';
@@ -107,9 +109,19 @@ class SelectAddressView extends StatelessWidget {
                             child: SizedBox(
                               width: 200,
                               child: CustomBigButton(
-                                title: 'Pay Now',
+                                title: state.selectedAddressId == null
+                                    ? 'Add Address'
+                                    : 'Pay Now',
                                 onPressed: () {
-                                  // NAvigate to payment
+                                  if (state.selectedAddressId == null) {
+                                    GoRouter.of(
+                                      context,
+                                    ).push(AppRouter.kAddAddress);
+                                  }
+                                  GoRouter.of(context).push(
+                                    AppRouter.kPaymentView,
+                                    extra: state.selectedAddressId,
+                                  );
                                 },
                               ),
                             ),
