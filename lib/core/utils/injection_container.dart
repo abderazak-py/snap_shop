@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../features/payment/presentation/cubit/transactions_cubit.dart';
 import 'private.dart';
 import 'supabase_service.dart';
 import '../../features/address/data/datasources/address_remote_data_source.dart';
@@ -453,6 +454,11 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
   // Cubit/Bloc
   sl.registerFactory<OrdersCubit>(
     () => OrdersCubit(getOrdersUsecase: sl<GetOrdersUsecase>()),
+  );
+  sl.registerFactory<TransactionsCubit>(
+    () => TransactionsCubit(
+      paypalTransactionsUsecase: sl<PaypalTransactionsUsecase>(),
+    ),
   );
 
   // ||=====================||NOTIFICATIONS||=====================||

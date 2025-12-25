@@ -9,7 +9,8 @@ class PaymentRepositoryImpl implements PaymentRepository {
   PaymentRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<List<Map<String, dynamic>>> paypalTransactions() async {
+  Future<Either<Failure, List<Map<String, dynamic>>>>
+  paypalTransactions() async {
     return await remoteDataSource.paypalTransactions();
   }
 

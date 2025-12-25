@@ -12,13 +12,20 @@ class PaymentRemoteDataSource {
   PaymentRemoteDataSource(this.supabaseService);
   final getCartItemsUsecase = sl<GetCartItemsUsecase>();
 
-  // TODO add either for failure handling
-  Future<List<Map<String, dynamic>>> paypalTransactions() async {
+  Future<Either<Failure, List<Map<String, dynamic>>>>
+  paypalTransactions() async {
     final res = await getCartItemsUsecase.execute();
-    final cartItems = res.fold((l) => throw Exception(l.message), (r) => r);
+    if (res.isLeft()) {
+      return Left(res.fold((l) => l, (r) => Failure('unreachable code')));
+      // darts doesnt have getLeft so i did use fold
+      // this is stupid
+      // TODO dump dartz and use fpdart
+    }
+
+    final cartItems = res.fold((l) => [], (r) => r);
 
     if (cartItems.isEmpty) {
-      throw Exception('Cart is empty');
+      return Left(Failure('Cart is empty'));
     }
 
     final items = cartItems.map((item) {
@@ -38,7 +45,7 @@ class PaymentRemoteDataSource {
     final shippingDiscount = 0.0;
     final total = subtotal + shipping - shippingDiscount;
 
-    return [
+    return Right([
       {
         "amount": {
           "total": total.toStringAsFixed(2),
@@ -52,7 +59,7 @@ class PaymentRemoteDataSource {
         "description": "The payment transaction description.",
         "item_list": {"items": items},
       },
-    ];
+    ]);
   }
 
   Future<void> saveOrder(int addressId) async {
