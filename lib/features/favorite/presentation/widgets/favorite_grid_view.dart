@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/features/favorite/domain/entities/favorite_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
+import '../../domain/entities/favorite_entity.dart';
+import '../../../product/domain/entities/category_entity.dart';
+import '../../../product/domain/entities/image_entity.dart';
+import '../../../product/domain/entities/product_entity.dart';
+import '../../../product/presentation/views/widgets/product_card.dart';
 
 class FavoriteGridView extends StatelessWidget {
   final List<FavoriteEntity> products;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/custom_wide_button.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/custom_wide_button.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});

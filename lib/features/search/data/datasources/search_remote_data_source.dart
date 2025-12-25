@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/product/data/models/product_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../../../product/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SearchRemoteDataSource {

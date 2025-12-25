@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/product/presentation/cubit/category/category_cubit.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../cubit/category/category_cubit.dart';
 
 class CategoriesListView extends StatelessWidget {
   const CategoriesListView({super.key});

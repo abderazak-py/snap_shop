@@ -1,7 +1,7 @@
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart' show ChatMessage;
-import 'package:snap_shop/features/chat/data/datasource/local_data_source.dart';
-import 'package:snap_shop/features/chat/data/datasource/remote_data_source.dart';
-import 'package:snap_shop/features/chat/data/repo/chat_repo.dart';
+import '../../data/datasource/local_data_source.dart';
+import '../../data/datasource/remote_data_source.dart';
+import '../../data/repo/chat_repo.dart';
 
 class ChatRepositoryImpl extends ChatRepository {
   final ChatRemoteDataSource remoteDataSource;

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
+import '../../domain/entities/address_entity.dart';
 
 class AddressModel extends Equatable {
   final int id;

@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/settings/data/datasources/settings_remote_datasource.dart';
-import 'package:snap_shop/features/settings/domain/repos/settings_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/settings_remote_datasource.dart';
+import '../../domain/repos/settings_repo.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
   final SettingsRemoteDatasource remoteDataSource;

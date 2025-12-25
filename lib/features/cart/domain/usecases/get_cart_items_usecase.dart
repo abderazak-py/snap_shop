@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/cart_entity.dart';
+import '../repos/cart_repo.dart';
 
 class GetCartItemsUsecase {
   final CartRepository repository;

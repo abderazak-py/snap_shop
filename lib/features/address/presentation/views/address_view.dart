@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../cubit/address_cubit.dart';
+import '../../../auth/presentation/views/widgets/custom_big_button.dart';
 
 class AddressView extends StatelessWidget {
   const AddressView({super.key});

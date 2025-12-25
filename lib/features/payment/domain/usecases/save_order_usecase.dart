@@ -1,4 +1,4 @@
-import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
+import '../repos/payment_repo.dart';
 
 class SaveOrderUsecase {
   final PaymentRepository repository;

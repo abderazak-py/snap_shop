@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/notifications/domain/entities/notification_entity.dart';
-import 'package:snap_shop/features/notifications/presentation/cubit/notifications_cubit.dart';
-import 'package:snap_shop/features/notifications/presentation/widgets/notification_card.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../../domain/entities/notification_entity.dart';
+import '../cubit/notifications_cubit.dart';
+import '../widgets/notification_card.dart';
 
 class NotificationsView extends StatelessWidget {
   const NotificationsView({super.key});

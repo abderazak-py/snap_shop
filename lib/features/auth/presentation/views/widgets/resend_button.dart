@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../cubit/auth_cubit.dart';
 
 class ResendButton extends StatefulWidget {
   const ResendButton({super.key, required this.email});

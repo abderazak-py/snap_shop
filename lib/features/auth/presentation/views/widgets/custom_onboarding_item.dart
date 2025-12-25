@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
 
 class CustomOnboardingItem extends StatelessWidget {
   const CustomOnboardingItem({

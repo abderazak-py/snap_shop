@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/product/data/models/category_model.dart';
-import 'package:snap_shop/features/product/data/models/image_model.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import 'category_model.dart';
+import 'image_model.dart';
+import '../../domain/entities/product_entity.dart';
 
 class ProductModel extends Equatable {
   final int id;

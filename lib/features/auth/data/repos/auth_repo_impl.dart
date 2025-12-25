@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/auth_remote_data_source.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repos/auth_repo.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;

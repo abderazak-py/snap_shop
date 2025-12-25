@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/favorite/data/datasources/favorite_remote_data_source.dart';
-import 'package:snap_shop/features/favorite/domain/entities/favorite_entity.dart';
-import 'package:snap_shop/features/favorite/domain/repos/favorite_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/favorite_remote_data_source.dart';
+import '../../domain/entities/favorite_entity.dart';
+import '../../domain/repos/favorite_repo.dart';
 
 class FavoriteRepoImpl extends FavoriteRepository {
   final FavoriteRemoteDataSource remoteDataSource;

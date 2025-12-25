@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/features/address/presentation/views/widgets/add_address_body.dart';
+import 'widgets/add_address_body.dart';
 
 class AddAddressView extends StatefulWidget {
   const AddAddressView({super.key});

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/payment/data/datasources/payment_remote_data_source.dart';
-import 'package:snap_shop/features/payment/domain/entities/order_entity.dart';
-import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/payment_remote_data_source.dart';
+import '../../domain/entities/order_entity.dart';
+import '../../domain/repos/payment_repo.dart';
 
 class PaymentRepositoryImpl implements PaymentRepository {
   final PaymentRemoteDataSource remoteDataSource;

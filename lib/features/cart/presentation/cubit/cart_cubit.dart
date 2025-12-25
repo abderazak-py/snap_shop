@@ -2,10 +2,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
-import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
-import 'package:snap_shop/features/cart/domain/usecases/remove_one_from_cart_usecase.dart';
+import '../../domain/entities/cart_entity.dart';
+import '../../domain/usecases/add_one_to_cart_usecase.dart';
+import '../../domain/usecases/get_cart_items_usecase.dart';
+import '../../domain/usecases/remove_one_from_cart_usecase.dart';
 
 part 'cart_state.dart';
 

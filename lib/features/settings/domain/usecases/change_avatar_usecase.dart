@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/settings/domain/repos/settings_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../repos/settings_repo.dart';
 
 class ChangeAvatarUsecase {
   final SettingsRepository repository;

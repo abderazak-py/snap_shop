@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/notifications/domain/entities/notification_entity.dart';
-import 'package:snap_shop/features/notifications/presentation/cubit/notifications_cubit.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/styles.dart';
+import '../../domain/entities/notification_entity.dart';
+import '../cubit/notifications_cubit.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard({super.key, required this.notification});

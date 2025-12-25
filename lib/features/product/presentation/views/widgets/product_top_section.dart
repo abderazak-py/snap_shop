@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../../auth/presentation/cubit/auth_cubit.dart';
 
 class ProductTopSection extends StatelessWidget {
   const ProductTopSection({super.key});

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/cart/domain/usecases/get_cart_items_usecase.dart';
-import 'package:snap_shop/features/payment/data/models/order_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../../../cart/domain/usecases/get_cart_items_usecase.dart';
+import '../models/order_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PaymentRemoteDataSource {
@@ -37,9 +37,6 @@ class PaymentRemoteDataSource {
     final shipping = 0.0;
     final shippingDiscount = 0.0;
     final total = subtotal + shipping - shippingDiscount;
-    print(
-      'total: $total, subtotal: $subtotal, shipping: $shipping, shippingDiscount: $shippingDiscount, items: $items',
-    );
 
     return [
       {

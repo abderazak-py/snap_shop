@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/favorite/domain/entities/favorite_entity.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/favorite_entity.dart';
 
 abstract class FavoriteRepository {
   Future<Either<Failure, void>> toggleFavorite(int productId);

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/auth/domain/repos/auth_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../repos/auth_repo.dart';
 
 class SignOutUseCase {
   final AuthRepository repository;

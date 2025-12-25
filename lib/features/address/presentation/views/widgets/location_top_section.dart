@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
-import 'package:snap_shop/features/address/presentation/views/widgets/location_picker.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../cubit/address_cubit.dart';
+import 'location_picker.dart';
 
 class LocationTopSection extends StatelessWidget {
   const LocationTopSection({

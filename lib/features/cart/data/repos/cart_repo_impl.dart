@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/cart/data/datasources/cart_remote_data_source.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/cart_remote_data_source.dart';
+import '../../domain/entities/cart_entity.dart';
+import '../../domain/repos/cart_repo.dart';
 
 class CartRepoImpl extends CartRepository {
   final CartRemoteDataSource remoteDataSource;

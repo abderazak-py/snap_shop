@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_onboarding_item.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/styles.dart';
+import 'widgets/custom_big_button.dart';
+import 'widgets/custom_onboarding_item.dart';
 
 class AuthView extends StatelessWidget {
   const AuthView({super.key});

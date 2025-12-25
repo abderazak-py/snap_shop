@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
-import 'package:snap_shop/features/chat/domain/usecases/load_messages_usecase.dart';
-import 'package:snap_shop/features/chat/domain/usecases/save_messages_usecase.dart';
+import '../../domain/usecases/load_messages_usecase.dart';
+import '../../domain/usecases/save_messages_usecase.dart';
 
 part 'chat_state.dart';
 

@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
-import 'package:snap_shop/features/address/domain/usecases/add_address_usecase.dart';
-import 'package:snap_shop/features/address/domain/usecases/get_addresses_usecase.dart';
+import '../../domain/entities/address_entity.dart';
+import '../../domain/usecases/add_address_usecase.dart';
+import '../../domain/usecases/get_addresses_usecase.dart';
 
 part 'address_state.dart';
 

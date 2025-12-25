@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
-import 'package:snap_shop/features/search/presentation/views/widgets/filter_bottom_sheet.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../cubit/search_cubit.dart';
+import 'filter_bottom_sheet.dart';
 
 class SearchAppBar extends StatelessWidget {
   const SearchAppBar({super.key});

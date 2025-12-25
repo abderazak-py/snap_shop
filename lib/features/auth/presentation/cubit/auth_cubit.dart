@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
-import 'package:snap_shop/features/auth/domain/usecases/get_current_user_usecase.dart';
-import 'package:snap_shop/features/auth/domain/usecases/login_usecases.dart';
-import 'package:snap_shop/features/auth/domain/usecases/register_usecases.dart';
-import 'package:snap_shop/features/auth/domain/usecases/resend_otp_usecase.dart';
-import 'package:snap_shop/features/auth/domain/usecases/sign_in_with_google_native_usecase.dart';
-import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
-import 'package:snap_shop/features/auth/domain/usecases/verify_otp_usecase.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/usecases/get_current_user_usecase.dart';
+import '../../domain/usecases/login_usecases.dart';
+import '../../domain/usecases/register_usecases.dart';
+import '../../domain/usecases/resend_otp_usecase.dart';
+import '../../domain/usecases/sign_in_with_google_native_usecase.dart';
+import '../../domain/usecases/sign_out_usecase.dart';
+import '../../domain/usecases/verify_otp_usecase.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {

@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/product/data/datasources/product_remote_data_source.dart';
-import 'package:snap_shop/features/product/data/models/banner_model.dart';
-import 'package:snap_shop/features/product/domain/entities/banner_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/domain/repos/product_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/product_remote_data_source.dart';
+import '../models/banner_model.dart';
+import '../../domain/entities/banner_entity.dart';
+import '../../domain/entities/category_entity.dart';
+import '../../domain/entities/product_entity.dart';
+import '../../domain/repos/product_repo.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;

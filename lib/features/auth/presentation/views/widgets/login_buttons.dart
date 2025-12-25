@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/google_button.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../cubit/auth_cubit.dart';
+import 'custom_big_button.dart';
+import 'google_button.dart';
 
 class LoginButtons extends StatelessWidget {
   const LoginButtons({

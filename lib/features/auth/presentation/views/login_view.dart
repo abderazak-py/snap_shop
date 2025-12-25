@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/login_view_body.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../cubit/auth_cubit.dart';
+import 'widgets/login_view_body.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

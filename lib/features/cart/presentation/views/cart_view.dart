@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/features/cart/presentation/views/widgets/cart_list_view.dart';
-import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../../domain/entities/cart_entity.dart';
+import 'widgets/cart_list_view.dart';
+import '../cubit/cart_cubit.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});

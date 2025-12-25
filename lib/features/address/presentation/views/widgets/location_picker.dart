@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
+import '../../cubit/address_cubit.dart';
 
 class LocationPicker extends StatelessWidget {
   const LocationPicker({

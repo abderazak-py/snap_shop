@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingsRemoteDatasource {

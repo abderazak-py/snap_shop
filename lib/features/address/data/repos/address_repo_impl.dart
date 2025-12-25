@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/address/data/datasources/address_remote_data_source.dart';
-import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
-import 'package:snap_shop/features/address/domain/repos/address_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../datasources/address_remote_data_source.dart';
+import '../../domain/entities/address_entity.dart';
+import '../../domain/repos/address_repo.dart';
 
 class AddressRepositoryImpl implements AddressRepository {
   final AddressRemoteDataSource remoteDataSource;

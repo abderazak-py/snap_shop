@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/notifications/data/models/notification_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../models/notification_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class NotificationsRemoteDataSource {

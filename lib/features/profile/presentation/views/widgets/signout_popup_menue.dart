@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/domain/usecases/sign_out_usecase.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/injection_container.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../../auth/domain/usecases/sign_out_usecase.dart';
+import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
 
 class SignoutPopupMenue extends StatelessWidget {
   const SignoutPopupMenue({super.key});

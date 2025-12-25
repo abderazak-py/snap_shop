@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/features/address/presentation/cubit/address_cubit.dart';
-import 'package:snap_shop/features/address/presentation/views/widgets/address_text_field.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
+import '../../cubit/address_cubit.dart';
+import 'address_text_field.dart';
+import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LocationBottomSection extends StatelessWidget {

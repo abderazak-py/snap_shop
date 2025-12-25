@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/payment/domain/entities/order_entity.dart';
-import 'package:snap_shop/features/payment/domain/usecases/get_orders_usecase.dart';
+import '../../domain/entities/order_entity.dart';
+import '../../domain/usecases/get_orders_usecase.dart';
 
 part 'orders_state.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/features/cart/presentation/views/widgets/cart_card.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../domain/entities/cart_entity.dart';
+import 'cart_card.dart';
 
 class CartListView extends StatelessWidget {
   final List<CartEntity> cart;

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/usecases/get_categories_usecase.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../../domain/usecases/get_categories_usecase.dart';
 
 part 'category_state.dart';
 

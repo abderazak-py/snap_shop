@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/product/presentation/cubit/category/category_cubit.dart';
-import 'package:snap_shop/features/search/presentation/views/widgets/custom_slider_point.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/injection_container.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../product/presentation/cubit/category/category_cubit.dart';
+import 'custom_slider_point.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   const FilterBottomSheet({

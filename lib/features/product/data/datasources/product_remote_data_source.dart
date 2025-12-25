@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/product/data/models/banner_model.dart';
-import 'package:snap_shop/features/product/data/models/category_model.dart';
-import 'package:snap_shop/features/product/data/models/product_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../models/banner_model.dart';
+import '../models/category_model.dart';
+import '../models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductRemoteDataSource {

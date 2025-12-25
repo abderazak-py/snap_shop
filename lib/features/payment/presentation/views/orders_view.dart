@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/payment/presentation/cubit/orders_cubit.dart';
-import 'package:snap_shop/features/payment/presentation/views/widgets/order_card.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../cubit/orders_cubit.dart';
+import 'widgets/order_card.dart';
 
 class OrdersView extends StatelessWidget {
   const OrdersView({super.key});

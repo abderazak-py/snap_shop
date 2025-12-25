@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/resend_button.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../cubit/auth_cubit.dart';
+import 'custom_big_button.dart';
+import 'resend_button.dart';
 
 class OtpButtonsSection extends StatelessWidget {
   const OtpButtonsSection({

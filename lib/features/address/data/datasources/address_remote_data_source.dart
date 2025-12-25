@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/address/data/models/address_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../models/address_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddressRemoteDataSource {

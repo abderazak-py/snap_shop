@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/email_text_field.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/name_text_field.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/password_text_field.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import 'email_text_field.dart';
+import 'name_text_field.dart';
+import 'password_text_field.dart';
 
 class RegisterInputSection extends StatelessWidget {
   const RegisterInputSection({

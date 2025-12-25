@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+// ignore: prefer_relative_imports
 import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
 
 class UserModel extends Equatable {

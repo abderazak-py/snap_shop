@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/chat/presentation/cubit/chat_cubit.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../cubit/chat_cubit.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});

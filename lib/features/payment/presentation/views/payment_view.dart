@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/private.dart';
-import 'package:snap_shop/features/cart/domain/usecases/empty_cart_usecase.dart';
-import 'package:snap_shop/features/payment/domain/usecases/paypal_transactions_usecase.dart';
-import 'package:snap_shop/features/payment/domain/usecases/save_order_usecase.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/private.dart';
+import '../../../cart/domain/usecases/empty_cart_usecase.dart';
+import '../../domain/usecases/paypal_transactions_usecase.dart';
+import '../../domain/usecases/save_order_usecase.dart';
 
 class PaymentView extends StatelessWidget {
   const PaymentView({super.key, required this.addressId});

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/auth/domain/entities/user_entity.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> signInWithEmail(

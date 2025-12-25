@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/payment/domain/entities/order_entity.dart';
-import 'package:snap_shop/features/payment/domain/repos/payment_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/order_entity.dart';
+import '../repos/payment_repo.dart';
 
 class GetOrdersUsecase {
   final PaymentRepository repository;

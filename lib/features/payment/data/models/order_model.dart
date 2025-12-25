@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/payment/domain/entities/order_entity.dart';
+import '../../domain/entities/order_entity.dart';
 
 class OrderModel extends Equatable {
   final int id;

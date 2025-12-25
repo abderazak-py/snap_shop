@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/product/domain/entities/banner_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/banner_entity.dart';
+import '../entities/category_entity.dart';
+import '../entities/product_entity.dart';
 
 abstract class ProductRepository {
   //user repository

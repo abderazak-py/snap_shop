@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/presentation/views/widgets/custom_big_button.dart';
-import 'package:snap_shop/features/cart/domain/usecases/add_one_to_cart_usecase.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../cart/domain/usecases/add_one_to_cart_usecase.dart';
+import '../../domain/entities/product_entity.dart';
 
 class ProductDetailsView extends StatelessWidget {
   const ProductDetailsView({super.key, required this.product});

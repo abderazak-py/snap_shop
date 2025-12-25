@@ -1,4 +1,4 @@
-import 'package:snap_shop/features/cart/domain/repos/cart_repo.dart';
+import '../repos/cart_repo.dart';
 
 class EmptyCartUsecase {
   final CartRepository repository;

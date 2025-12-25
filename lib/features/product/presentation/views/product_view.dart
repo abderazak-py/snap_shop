@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/product_tab_view.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/product_top_section.dart';
+import 'widgets/product_tab_view.dart';
+import 'widgets/product_top_section.dart';
 
 class ProductView extends StatelessWidget {
   const ProductView({super.key});

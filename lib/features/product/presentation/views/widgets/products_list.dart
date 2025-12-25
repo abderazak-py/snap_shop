@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/presentation/cubit/product/product_cubit.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
+import '../../../../../core/widgets/error_widget.dart';
+import '../../../domain/entities/category_entity.dart';
+import '../../../domain/entities/image_entity.dart';
+import '../../../domain/entities/product_entity.dart';
+import '../../cubit/product/product_cubit.dart';
+import 'product_card.dart';
 
 class ProductsList extends StatelessWidget {
   const ProductsList({super.key});

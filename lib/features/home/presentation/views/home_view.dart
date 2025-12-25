@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:snap_shop/features/chat/presentation/views/chat.dart';
-import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
-import 'package:snap_shop/features/favorite/presentation/views/favorite_view.dart';
-import 'package:snap_shop/features/home/presentation/cubit/home_cubit.dart';
-import 'package:snap_shop/features/home/presentation/cubit/home_state.dart';
-import 'package:snap_shop/features/product/presentation/cubit/product/product_cubit.dart';
-import 'package:snap_shop/features/product/presentation/views/product_view.dart';
+import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../chat/presentation/views/chat.dart';
+import '../../../favorite/presentation/cubit/favorite_cubit.dart';
+import '../../../favorite/presentation/views/favorite_view.dart';
+import '../cubit/home_cubit.dart';
+import '../cubit/home_state.dart';
+import '../../../product/presentation/cubit/product/product_cubit.dart';
+import '../../../product/presentation/views/product_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:snap_shop/features/profile/presentation/views/profile_view.dart';
+import '../../../profile/presentation/views/profile_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

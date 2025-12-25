@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
+import '../../domain/entities/image_entity.dart';
 
 class ImageModel extends Equatable {
   final String imageUrl;

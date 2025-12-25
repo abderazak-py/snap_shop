@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:snap_shop/core/utils/constants.dart';
+import 'constants.dart';
 
 abstract class Styles {
   static TextStyle titleText40 = GoogleFonts.poppins(

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/favorite/data/models/favorite_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../models/favorite_model.dart';
 
 class FavoriteRemoteDataSource {
   final ISupabaseService supabaseService;

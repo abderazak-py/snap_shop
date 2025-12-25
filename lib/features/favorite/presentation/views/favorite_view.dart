@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/favorite/domain/entities/favorite_entity.dart';
-import 'package:snap_shop/features/favorite/presentation/cubit/favorite_cubit.dart';
-import 'package:snap_shop/features/favorite/presentation/widgets/favorite_grid_view.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../../domain/entities/favorite_entity.dart';
+import '../cubit/favorite_cubit.dart';
+import '../widgets/favorite_grid_view.dart';
 
 class FavoriteView extends StatelessWidget {
   const FavoriteView({super.key});

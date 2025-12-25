@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/features/splach/presentation/views/widgets/splach_view_body.dart';
+import '../../../../core/utils/constants.dart';
+import 'widgets/splach_view_body.dart';
 
 class SplashView extends StatelessWidget {
   const SplashView({super.key});

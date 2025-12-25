@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/payment/domain/entities/order_entity.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../domain/entities/order_entity.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderEntity order;

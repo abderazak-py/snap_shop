@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/notifications/domain/entities/notification_entity.dart';
-import 'package:snap_shop/features/notifications/domain/usecases/delete_notification_usecase.dart';
-import 'package:snap_shop/features/notifications/domain/usecases/get_notifications_usecase.dart';
+import '../../domain/entities/notification_entity.dart';
+import '../../domain/usecases/delete_notification_usecase.dart';
+import '../../domain/usecases/get_notifications_usecase.dart';
 
 part 'notifications_state.dart';
 

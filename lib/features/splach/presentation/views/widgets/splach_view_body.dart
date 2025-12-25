@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:snap_shop/core/utils/app_router.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/features/auth/domain/usecases/is_user_signed_in_usecase.dart';
-import 'package:snap_shop/features/splach/presentation/views/widgets/sliding_text.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/injection_container.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../../auth/domain/usecases/is_user_signed_in_usecase.dart';
+import 'sliding_text.dart';
 
 class SplachViewBody extends StatefulWidget {
   const SplachViewBody({super.key});

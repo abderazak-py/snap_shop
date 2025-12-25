@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/address/domain/entities/address_entity.dart';
-import 'package:snap_shop/features/address/domain/repos/address_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/address_entity.dart';
+import '../repos/address_repo.dart';
 
 class GetAddressesUsecase {
   final AddressRepository repository;

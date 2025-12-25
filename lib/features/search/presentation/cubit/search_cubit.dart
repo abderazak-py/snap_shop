@@ -2,9 +2,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/search/domain/usecases/search_usecase.dart';
-import 'package:snap_shop/features/search/domain/usecases/search_with_filters_usecase.dart';
+import '../../../product/domain/entities/product_entity.dart';
+import '../../domain/usecases/search_usecase.dart';
+import '../../domain/usecases/search_with_filters_usecase.dart';
 
 part 'search_state.dart';
 

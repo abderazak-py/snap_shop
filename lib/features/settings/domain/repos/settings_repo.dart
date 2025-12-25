@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
+import '../../../../core/errors/failure.dart';
 
 abstract class SettingsRepository {
   Future<Either<Failure, void>> changeName(String name);

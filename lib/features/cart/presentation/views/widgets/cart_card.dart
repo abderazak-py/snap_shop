@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/features/cart/domain/entities/cart_entity.dart';
-import 'package:snap_shop/core/utils/constants.dart';
-import 'package:snap_shop/core/utils/styles.dart';
+import '../../../domain/entities/cart_entity.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/utils/styles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:snap_shop/features/cart/presentation/cubit/cart_cubit.dart';
+import '../../cubit/cart_cubit.dart';
 
 class CartCard extends StatelessWidget {
   const CartCard({super.key, required this.product});

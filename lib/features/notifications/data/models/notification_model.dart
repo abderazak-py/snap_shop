@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/notifications/domain/entities/notification_entity.dart';
+import '../../domain/entities/notification_entity.dart';
 
 class NotificationModel extends Equatable {
   final int id;

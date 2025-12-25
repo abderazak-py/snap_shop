@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/core/utils/supabase_service.dart';
-import 'package:snap_shop/features/auth/data/models/user_model.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/utils/supabase_service.dart';
+import '../models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteDataSource {

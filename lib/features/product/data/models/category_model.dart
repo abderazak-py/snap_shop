@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
+import '../../domain/entities/category_entity.dart';
 
 class CategoryModel extends Equatable {
   final int id;

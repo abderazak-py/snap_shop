@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:snap_shop/core/utils/injection_container.dart';
-import 'package:snap_shop/core/utils/styles.dart';
-import 'package:snap_shop/core/widgets/error_widget.dart';
-import 'package:snap_shop/features/product/domain/entities/category_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/image_entity.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/presentation/views/widgets/product_card.dart';
-import 'package:snap_shop/features/search/presentation/cubit/search_cubit.dart';
-import 'package:snap_shop/features/search/presentation/views/widgets/search_app_bar.dart';
+import '../../../../core/utils/injection_container.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/error_widget.dart';
+import '../../../product/domain/entities/category_entity.dart';
+import '../../../product/domain/entities/image_entity.dart';
+import '../../../product/domain/entities/product_entity.dart';
+import '../../../product/presentation/views/widgets/product_card.dart';
+import '../cubit/search_cubit.dart';
+import 'widgets/search_app_bar.dart';
 
 class SearchProductsView extends StatelessWidget {
   const SearchProductsView({super.key});

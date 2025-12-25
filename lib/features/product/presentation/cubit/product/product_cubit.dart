@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:snap_shop/features/product/domain/entities/product_entity.dart';
-import 'package:snap_shop/features/product/domain/usecases/get_products_by_category_usecase.dart';
-import 'package:snap_shop/features/product/domain/usecases/get_products_usecase.dart';
+import '../../../domain/entities/product_entity.dart';
+import '../../../domain/usecases/get_products_by_category_usecase.dart';
+import '../../../domain/usecases/get_products_usecase.dart';
 part 'product_state.dart';
 
 class ProductCubit extends Cubit<ProductState> {

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:snap_shop/core/errors/failure.dart';
-import 'package:snap_shop/features/favorite/domain/repos/favorite_repo.dart';
+import '../../../../core/errors/failure.dart';
+import '../repos/favorite_repo.dart';
 
 class RemoveFromFavoriteUsecase {
   final FavoriteRepository repository;
