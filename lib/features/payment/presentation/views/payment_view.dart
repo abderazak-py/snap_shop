@@ -20,7 +20,7 @@ class PaymentView extends StatelessWidget {
     final saveOrderUsecase = sl<SaveOrderUsecase>();
 
     return BlocProvider(
-      create: (context) => sl<TransactionsCubit>(),
+      create: (context) => sl<TransactionsCubit>()..getTransactions(),
       child: BlocBuilder<TransactionsCubit, TransactionsState>(
         builder: (context, state) {
           if (state is TransactionsSuccess) {
