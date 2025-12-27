@@ -50,6 +50,7 @@ class RegisterViewBody extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: height * 0.1),
                   RegisterTopSection(),

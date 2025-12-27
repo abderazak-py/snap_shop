@@ -39,6 +39,7 @@ class LoginViewBody extends StatelessWidget {
             padding: EdgeInsets.all(16),
             child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: height * 0.07),
                   LoginTopSection(),

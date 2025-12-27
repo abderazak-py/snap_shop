@@ -37,10 +37,11 @@ class ForgotPasswordView extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: height * 0.09),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Forgot Password?',
@@ -65,14 +66,16 @@ class ForgotPasswordView extends StatelessWidget {
                   ),
 
                   SizedBox(height: height * 0.04),
-                  CustomBigButton(
-                    isLoading: state is AuthLoading,
-                    title: 'Send Code',
-                    onPressed: () {
-                      context.read<AuthCubit>().signInWithOtp(
-                        email: emailController.text,
-                      );
-                    },
+                  Center(
+                    child: CustomBigButton(
+                      isLoading: state is AuthLoading,
+                      title: 'Send Code',
+                      onPressed: () {
+                        context.read<AuthCubit>().signInWithOtp(
+                          email: emailController.text,
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
