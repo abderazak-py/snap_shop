@@ -164,12 +164,12 @@ class AuthRemoteDataSource {
     }
   }
 
-  //==============|| verify with otp ||====================
+  //==============|| Verify with otp ||====================
   Future<Either<Failure, UserModel>> verifyOTP(String otp, String email) async {
     try {
       final response = await supabaseService.auth.verifyOTP(
-        type: OtpType.signup,
-        token: otp, //====|| Sign up with email and password ||====
+        type: OtpType.email,
+        token: otp,
         email: email,
       );
       if (response.session == null || response.user == null) {
@@ -192,7 +192,7 @@ class AuthRemoteDataSource {
     }
   }
 
-  //==============|| resend otp ||=========================
+  //==============|| Resend otp ||=========================
   Future<Either<Failure, void>> resendOTP(String email) async {
     try {
       if (supabaseService.auth.currentUser?.emailConfirmedAt != null) {
@@ -212,6 +212,42 @@ class AuthRemoteDataSource {
       return Left(Failure(e.toString()));
     }
   }
+
+  //==============|| Sign in with otp ||=========================
+  Future<Either<Failure, void>> signInWithOtp(String email) async {
+    try {
+      await supabaseService.auth.signInWithOtp(email: email);
+      return Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      return Left(Failure(e.toString()));
+    } on AuthApiException catch (e) {
+      return Left(Failure(e.toString()));
+    } catch (e) {
+      return Left(Failure(e.toString()));
+    }
+  }
+
+  // //==============|| reset password ||=========================
+  // Future<Either<Failure, void>> resetPassword(String email) async {
+  //   try {
+  //     await supabaseService.auth.resetPasswordForEmail(email);
+  //     return Right(null);
+  //   } on SocketException {
+  //     return Left(
+  //       Failure('No internet connection. Please check your network.'),
+  //     );
+  //   } on PostgrestException catch (e) {
+  //     return Left(Failure(e.toString()));
+  //   } on AuthApiException catch (e) {
+  //     return Left(Failure(e.toString()));
+  //   } catch (e) {
+  //     return Left(Failure(e.toString()));
+  //   }
+  // }
 
   //==============|| Sign out user ||======================
   Future<Either<Failure, void>> signOut() async {

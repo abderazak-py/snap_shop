@@ -7,7 +7,6 @@ void main() async {
   await di.init();
 
   runApp(const SnapShop());
-  //TODO: add forgot password
 
   // {
   //    notes before production

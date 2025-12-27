@@ -12,7 +12,7 @@ abstract class AuthRepository {
     String email,
     String password,
   );
-
+  Future<Either<Failure, void>> signInWithOtp(String email);
   Future<Either<Failure, UserEntity>> verifyOTP(String otp, String email);
 
   Future<Either<Failure, void>> resendOTP(String email);

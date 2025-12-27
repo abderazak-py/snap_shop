@@ -34,6 +34,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> signInWithOtp(String email) async {
+    final response = await remoteDataSource.signInWithOtp(email);
+    return response.fold((failure) => Left(failure), (_) => Right(null));
+  }
+
+  @override
   Future<Either<Failure, UserEntity>> signInWithGoogleNative({
     required String webClientId,
     String? iosClientId,

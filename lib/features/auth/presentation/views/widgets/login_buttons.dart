@@ -13,13 +13,13 @@ class LoginButtons extends StatelessWidget {
     required this.isLoading,
     required this.emailController,
     required this.passwordController,
-    required this.width,
+    required this.formKey,
   });
 
   final bool isLoading;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final double width;
+  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +27,20 @@ class LoginButtons extends StatelessWidget {
       children: [
         CustomBigButton(
           title: 'Login',
-          onPressed: isLoading
-              ? () {}
-              : () {
-                  context.read<AuthCubit>().login(
-                    emailController.text,
-                    passwordController.text,
-                  );
-                },
-        ), // add loading in the button
+          isLoading: isLoading,
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              context.read<AuthCubit>().login(
+                emailController.text,
+                passwordController.text,
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Please fill all the fields')),
+              );
+            }
+          },
+        ),
         SizedBox(height: 20),
         Text('OR', style: Styles.titleText16),
         SizedBox(height: 20),
@@ -45,6 +50,7 @@ class LoginButtons extends StatelessWidget {
           title: 'Register',
           onPressed: () => GoRouter.of(context).push(AppRouter.kRegisterView),
         ),
+        SizedBox(height: 20),
       ],
     );
   }

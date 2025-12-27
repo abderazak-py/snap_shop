@@ -6,6 +6,7 @@ import '../../domain/usecases/login_usecases.dart';
 import '../../domain/usecases/register_usecases.dart';
 import '../../domain/usecases/resend_otp_usecase.dart';
 import '../../domain/usecases/sign_in_with_google_native_usecase.dart';
+import '../../domain/usecases/sign_in_with_otp.dart';
 import '../../domain/usecases/sign_out_usecase.dart';
 import '../../domain/usecases/verify_otp_usecase.dart';
 part 'auth_state.dart';
@@ -18,6 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
   final VerifyOtpUsecase verifyOtpUseCase;
   final ResendOtpUsecase resendOtpUsecase;
   final GetCurrentUserUseCase getCurrentUserUseCase;
+  final SignInWithOtp signInWithOtpUseCase;
 
   AuthCubit({
     required this.loginUseCase,
@@ -27,6 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
     required this.verifyOtpUseCase,
     required this.resendOtpUsecase,
     required this.getCurrentUserUseCase,
+    required this.signInWithOtpUseCase,
   }) : super(AuthInitial());
 
   /// Login with email and password
@@ -61,6 +64,16 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  /// Sign in with Google (native)
+  Future<void> signInWithOtp({required String email}) async {
+    emit(AuthLoading());
+    final response = await signInWithOtpUseCase.execute(email);
+    response.fold(
+      (f) => emit(AuthFailure(error: f.message)),
+      (_) => emit(AuthOtpSuccess()),
+    );
+  }
+
   Future<void> getUser() async {
     emit(AuthLoading());
     final response = await getCurrentUserUseCase.execute();
@@ -88,7 +101,6 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Timer? _otpTimer;
-
   void startOtpTimer() {
     _otpTimer?.cancel();
 

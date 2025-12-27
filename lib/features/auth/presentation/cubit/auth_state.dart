@@ -12,6 +12,10 @@ class AuthSuccess extends AuthState {
   AuthSuccess({required this.user});
 }
 
+class AuthOtpSuccess extends AuthState {
+  AuthOtpSuccess();
+}
+
 class AuthSuccessConfirmed extends AuthState {
   final UserEntity user;
 

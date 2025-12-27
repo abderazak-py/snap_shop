@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/auth/presentation/views/forgot_password_view.dart';
 import 'injection_container.dart';
 import '../../features/address/presentation/views/add_address_view.dart';
 import '../../features/address/presentation/views/address_view.dart';
@@ -42,6 +43,7 @@ abstract class AppRouter {
   static const kAddress = '/address';
   static const kAddAddress = '/add_address';
   static const kSelectAddressView = '/select_address';
+  static const kForgotPassword = '/forgot_password';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -101,6 +103,10 @@ abstract class AppRouter {
       GoRoute(
         path: kSelectAddressView,
         builder: (context, state) => const SelectAddressView(),
+      ),
+      GoRoute(
+        path: kForgotPassword,
+        builder: (context, state) => const ForgotPasswordView(),
       ),
     ],
   );

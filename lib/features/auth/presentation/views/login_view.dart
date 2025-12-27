@@ -26,6 +26,8 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,6 +35,7 @@ class _LoginViewState extends State<LoginView> {
       child: LoginViewBody(
         emailController: emailController,
         passwordController: passwordController,
+        formKey: _formKey,
       ),
     );
   }

@@ -24,6 +24,8 @@ class _RegisterViewState extends State<RegisterView> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -32,6 +34,7 @@ class _RegisterViewState extends State<RegisterView> {
         emailController: emailController,
         passwordController: passwordController,
         nameController: nameController,
+        formKey: _formKey,
       ),
     );
   }

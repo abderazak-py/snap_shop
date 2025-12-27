@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../core/utils/styles.dart';
 import 'email_text_field.dart';
@@ -40,11 +42,21 @@ class LoginInputSection extends StatelessWidget {
         SizedBox(height: 10),
         Align(
           alignment: AlignmentGeometry.topRight,
-          child: Text(
-            'Forgot Password?',
-            style: Styles.titleText14.copyWith(
-              color: AppColors.kPrimaryColor,
-              fontWeight: FontWeight.bold,
+          child: TextButton(
+            onPressed: isLoading
+                ? () {}
+                : () {
+                    GoRouter.of(context).push(
+                      AppRouter.kForgotPassword,
+                      extra: emailController.text,
+                    );
+                  },
+            child: Text(
+              'Forgot Password?',
+              style: Styles.titleText14.copyWith(
+                color: AppColors.kPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

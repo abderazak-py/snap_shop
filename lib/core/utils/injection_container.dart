@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../features/auth/domain/usecases/sign_in_with_otp.dart';
 import '../../features/payment/presentation/cubit/transactions_cubit.dart';
 import 'private.dart';
 import 'supabase_service.dart';
@@ -213,6 +214,9 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
   sl.registerLazySingleton<ResendOtpUsecase>(
     () => ResendOtpUsecase(sl<AuthRepository>()),
   );
+  sl.registerLazySingleton<SignInWithOtp>(
+    () => SignInWithOtp(sl<AuthRepository>()),
+  );
 
   // Cubit/Bloc
   sl.registerFactory<AuthCubit>(
@@ -224,6 +228,7 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
       verifyOtpUseCase: sl<VerifyOtpUsecase>(),
       resendOtpUsecase: sl<ResendOtpUsecase>(),
       getCurrentUserUseCase: sl<GetCurrentUserUseCase>(),
+      signInWithOtpUseCase: sl<SignInWithOtp>(),
     ),
   );
   // ||=====================||ADDRESS||=====================||

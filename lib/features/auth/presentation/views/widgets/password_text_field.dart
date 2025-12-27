@@ -8,10 +8,12 @@ class PasswordTextField extends StatefulWidget {
     super.key,
     required this.passwordController,
     required this.isLoading,
+    this.confirmPassword,
   });
 
   final TextEditingController passwordController;
   final bool isLoading;
+  final String? confirmPassword;
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -23,6 +25,9 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       validator: (value) {
+        if (widget.confirmPassword != null && widget.confirmPassword != value) {
+          return 'Passwords do not match';
+        }
         final password = value ?? '';
         if (password.isEmpty) {
           return 'Please enter your password';

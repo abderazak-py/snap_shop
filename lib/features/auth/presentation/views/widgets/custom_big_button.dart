@@ -7,17 +7,21 @@ class CustomBigButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.onPressed,
+    this.isLoading = false,
   });
   final String title;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? () {} : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.kPrimaryColor,
+        backgroundColor: isLoading
+            ? AppColors.kPrimaryColor.withAlpha(200)
+            : AppColors.kPrimaryColor,
         foregroundColor: AppColors.kSecondaryColor,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         fixedSize: Size(width - 50, 70),
