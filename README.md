@@ -17,9 +17,10 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
 | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search-loading.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/logout-popup.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/search.webp" width="260"/> |
 | **Payment** | **Product** | **Notifications** |
 | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/payment.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/product-page.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/notifications.webp" width="260"/> |
-| **Ai Chat** |
-| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/chat.webp" width="260"/> |
-
+| **Ai Chat** | **Forgot Password** | **OTP** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/chat.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/forgot-password.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/otp.webp" width="260"/> |
+| **Add Address** | **Addresses** | **Map** |
+| <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/add-address.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/addresses.webp" width="260"/> | <img src="https://cdn.jsdelivr.net/gh/abderazak-py/snap_shop@main/screenshots/map.webp" width="260"/> |
 
 ## 📱 Features
 
@@ -54,6 +55,12 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
   - Persistent chat history
   - Context-aware responses about products and orders
   - Smart shopping recommendations
+- **Address Management** 
+  - Add new addresses with GPS location selection or interactive map picker
+  - Auto-fill address fields (street, city, postal code, country) from selected coordinates via geocoding
+  - Manual editing of auto-filled fields for precision
+  - View and manage multiple saved addresses
+  - Set default shipping address for orders
 
 ## 🏗️ Architecture
 
@@ -61,8 +68,10 @@ The project follows a Clean Architecture pattern with separation of concerns:
 
 - **Core Layer**: Contains shared utilities, errors handling, routing, and dependency injection
 - **Feature Modules**:
+  - Address: Address management with geocoding and map integration
   - Auth: Authentication system
   - Cart: Shopping cart functionality
+  - Chat: AI assistant integration
   - Favorite: Wishlist management
   - Home: Main dashboard
   - Notifications: In-app notifications system
@@ -71,7 +80,7 @@ The project follows a Clean Architecture pattern with separation of concerns:
   - Profile: User profile management
   - Search: Product search capabilities
   - Settings: Application preferences
-  - Splash: Initial 
+  - Splash: Initial app loading 
 
 Each feature module is organized into:
 ```
@@ -98,6 +107,7 @@ feature/
 - **Dependency Injection**: get_it
 - **Payment**: PayPal integration
 - **AI Assistant**: Firebase AI with Gemini model
+- **Maps & Location**: Google Maps Flutter + Geocoding services
 - **UI Components**:
   - Material Design
   - Custom SVG icons
@@ -115,17 +125,19 @@ feature/
 - `cached_network_image`: Image caching
 - `firebase_ai`: AI capabilities
 - `flutter_ai_toolkit`: AI chat components
+- `location_picker_flutter_map`: Pick location from map
+- `geocoding`: Address geocoding services
 
 ## 🚀 Getting Started
 
 1. Clone the repository:
-   ```bash
+   ```
    git clone https://github.com/abderazak-py/snap_shop
    cd snap_shop
    ```
 
 2. Install dependencies:
-   ```bash
+   ```
    flutter pub get
    ```
 
@@ -133,8 +145,12 @@ feature/
    - Create a Supabase project
    - Update the Supabase credentials in `lib/core/utils/supabase_service.dart`
 
-4. Run the application:
-   ```bash
+4. Configure Google Maps (NEW):
+   - Add your Google Maps API key to `android/app/src/main/AndroidManifest.xml` and `ios/Runner/AppDelegate.swift`
+   - Enable Maps SDK and Geocoding API in Google Cloud Console
+
+5. Run the application:
+   ```
    flutter run
    ```
 
@@ -147,6 +163,7 @@ lib/
 │   ├── utils/
 │   └── widgets/
 ├── features/
+│   ├── address/         
 │   ├── auth/
 │   ├── cart/
 │   ├── chat/
@@ -170,6 +187,7 @@ Before running the app, you need to set up your environment variables:
 2. PayPal credentials for payment processing
 3. Google Sign-In client IDs for OAuth
 4. Firebase AI configuration for AI chat functionality
+5. Google Maps API key for address features
 
 ## 🎨 UI/UX Design
 

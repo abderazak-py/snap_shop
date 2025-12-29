@@ -20,8 +20,8 @@ class ForgotPasswordView extends StatelessWidget {
     return BlocProvider(
       create: (context) => sl<AuthCubit>(),
       child: Scaffold(
-        body: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
+        body: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
             if (state is AuthOtpSuccess) {
               context.read<AuthCubit>().startOtpTimer();
               GoRouter.of(
@@ -34,6 +34,8 @@ class ForgotPasswordView extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.error)));
               });
             }
+          },
+          builder: (context, state) {
             return Padding(
               padding: EdgeInsets.all(16),
               child: Column(

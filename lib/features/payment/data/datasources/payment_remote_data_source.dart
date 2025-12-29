@@ -19,7 +19,6 @@ class PaymentRemoteDataSource {
       return Left(res.fold((l) => l, (r) => Failure('unreachable code')));
       // darts doesnt have getLeft so i did use fold
       // this is stupid
-      // TODO dump dartz and use fpdart
     }
 
     final cartItems = res.fold((l) => [], (r) => r);

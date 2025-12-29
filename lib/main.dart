@@ -8,11 +8,14 @@ void main() async {
 
   runApp(const SnapShop());
 
+  //TODO: add settings
+  //TODO: add edit address
+  //TODO: improve addresses UI
+
   // {
   //    notes before production
   //   -- add error hanling everywhere and loading indicators
   //   -- test on real devices
-  //   -- add error handling everywhere and loading indicators
   //   -- optimize images and assets
   //   -- review security rules for database and storage
   //   -- final testing for all features
