@@ -7,7 +7,7 @@ import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/constants.dart';
 import '../../../../core/utils/injection_container.dart';
 import '../../../../core/utils/styles.dart';
-import '../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../core/widgets/custom_big_button.dart';
 import '../../../cart/domain/usecases/add_one_to_cart_usecase.dart';
 import '../../domain/entities/product_entity.dart';
 

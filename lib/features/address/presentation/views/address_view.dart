@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/utils/app_router.dart';
-import '../../../../core/utils/constants.dart';
 import '../../../../core/utils/injection_container.dart';
 import '../../../../core/utils/styles.dart';
 import '../cubit/address_cubit.dart';
-import '../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../core/widgets/custom_big_button.dart';
+import 'widgets/address_card.dart';
 
 class AddressView extends StatelessWidget {
   const AddressView({super.key});
@@ -43,50 +43,7 @@ class AddressView extends StatelessWidget {
                             itemCount: state.addresses.length,
                             itemBuilder: (context, index) {
                               final address = state.addresses[index];
-                              return Column(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-
-                                    padding: const EdgeInsets.all(20),
-                                    margin: const EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(
-                                        color: AppColors.kSecondaryColor,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              address.state,
-                                              style: Styles.titleText20
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w900,
-                                                  ),
-                                            ),
-                                            Text(
-                                              'Biskra, hai Sonthing',
-                                              style: Styles.titleText18
-                                                  .copyWith(
-                                                    color:
-                                                        AppColors.kTextColor2,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                        Spacer(),
-                                        CircleAvatar(),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
+                              return AddressCard(address: address);
                             },
                           ),
                         ),

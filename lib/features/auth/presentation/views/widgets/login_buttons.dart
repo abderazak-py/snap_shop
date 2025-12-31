@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../cubit/auth_cubit.dart';
-import 'custom_big_button.dart';
+import '../../../../../core/widgets/custom_big_button.dart';
 import 'google_button.dart';
 
 class LoginButtons extends StatelessWidget {
@@ -48,6 +48,7 @@ class LoginButtons extends StatelessWidget {
         SizedBox(height: 20),
         CustomBigButton(
           title: 'Register',
+          isLoading: isLoading,
           onPressed: () => GoRouter.of(context).push(AppRouter.kRegisterView),
         ),
         SizedBox(height: 20),

@@ -6,7 +6,7 @@ import '../../../../core/utils/constants.dart';
 import '../../../../core/utils/injection_container.dart';
 import '../../../../core/utils/styles.dart';
 import '../cubit/address_cubit.dart';
-import '../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../core/widgets/custom_big_button.dart';
 
 class SelectAddressView extends StatelessWidget {
   const SelectAddressView({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/auth_cubit.dart';
-import 'custom_big_button.dart';
+import '../../../../../core/widgets/custom_big_button.dart';
 import 'google_button.dart';
 
 class RegisterButtons extends StatelessWidget {
@@ -24,8 +24,8 @@ class RegisterButtons extends StatelessWidget {
       children: [
         Center(
           child: CustomBigButton(
-            isLoading: isLoading,
             title: 'Register',
+            isLoading: isLoading,
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 context.read<AuthCubit>().register(

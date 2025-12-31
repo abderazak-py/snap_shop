@@ -7,7 +7,7 @@ import '../../../../core/utils/constants.dart';
 import '../../../../core/utils/injection_container.dart';
 import '../../../../core/utils/styles.dart';
 import '../cubit/auth_cubit.dart';
-import 'widgets/custom_big_button.dart';
+import '../../../../core/widgets/custom_big_button.dart';
 import 'widgets/email_text_field.dart';
 
 class ForgotPasswordView extends StatelessWidget {

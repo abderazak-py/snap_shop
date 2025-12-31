@@ -4,7 +4,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/constants.dart';
 import '../../../../core/utils/styles.dart';
-import 'widgets/custom_big_button.dart';
+import '../../../../core/widgets/custom_big_button.dart';
 import 'widgets/custom_onboarding_item.dart';
 
 class AuthView extends StatelessWidget {

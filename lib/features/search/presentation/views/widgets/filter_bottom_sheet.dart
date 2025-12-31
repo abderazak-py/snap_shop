@@ -5,7 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../core/utils/injection_container.dart';
 import '../../../../../core/utils/styles.dart';
-import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../../core/widgets/custom_big_button.dart';
 import '../../../../product/presentation/cubit/category/category_cubit.dart';
 import 'custom_slider_point.dart';
 

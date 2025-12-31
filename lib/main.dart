@@ -9,8 +9,6 @@ void main() async {
   runApp(const SnapShop());
 
   //TODO: add settings
-  //TODO: add edit address
-  //TODO: improve addresses UI
 
   // {
   //    notes before production

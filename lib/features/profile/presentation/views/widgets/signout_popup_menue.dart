@@ -4,7 +4,7 @@ import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/injection_container.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../../../auth/domain/usecases/sign_out_usecase.dart';
-import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../../core/widgets/custom_big_button.dart';
 
 class SignoutPopupMenue extends StatelessWidget {
   const SignoutPopupMenue({super.key});

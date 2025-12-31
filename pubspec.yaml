@@ -40,6 +40,7 @@ dependencies:
     sdk: flutter
   flutter_ai_toolkit: ^0.10.0
   flutter_bloc: ^9.1.1
+  flutter_map: ^8.2.2
   flutter_otp_text_field: ^1.5.1+1
   flutter_paypal_payment: ^1.0.8
   flutter_svg: ^2.2.1
@@ -51,6 +52,7 @@ dependencies:
   google_fonts: ^6.3.2
   google_sign_in: ^7.2.0
   hydrated_bloc: ^10.1.1
+  latlong2: ^0.9.1
   location_picker_flutter_map: ^4.1.0
   path_provider: ^2.1.5
   skeletonizer: ^2.1.0+1

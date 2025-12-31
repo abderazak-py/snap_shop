@@ -60,7 +60,8 @@ A modern e-commerce mobile application built with Flutter, featuring a clean arc
   - Auto-fill address fields (street, city, postal code, country) from selected coordinates via geocoding
   - Manual editing of auto-filled fields for precision
   - View and manage multiple saved addresses
-  - Set default shipping address for orders
+  - Set default shipping address for orders (soon)
+  - Mini map to view address location
 
 ## 🏗️ Architecture
 
@@ -107,7 +108,7 @@ feature/
 - **Dependency Injection**: get_it
 - **Payment**: PayPal integration
 - **AI Assistant**: Firebase AI with Gemini model
-- **Maps & Location**: Google Maps Flutter + Geocoding services
+- **Maps & Location**: OpenStreetMap + Geocoding services
 - **UI Components**:
   - Material Design
   - Custom SVG icons
@@ -125,7 +126,7 @@ feature/
 - `cached_network_image`: Image caching
 - `firebase_ai`: AI capabilities
 - `flutter_ai_toolkit`: AI chat components
-- `location_picker_flutter_map`: Pick location from map
+- `location_picker_flutter_map`: Pick location from OpenStreetMap
 - `geocoding`: Address geocoding services
 
 ## 🚀 Getting Started

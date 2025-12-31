@@ -38,4 +38,5 @@ class AppIcons {
   static const String help = 'assets/icons/help.svg';
   static const String version = 'assets/icons/version.svg';
   static const String biometric = 'assets/icons/biometric.svg';
+  static const String address = 'assets/icons/address.svg';
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/address_cubit.dart';
 import 'address_text_field.dart';
-import '../../../../auth/presentation/views/widgets/custom_big_button.dart';
+import '../../../../../core/widgets/custom_big_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LocationBottomSection extends StatelessWidget {
