@@ -8,7 +8,7 @@ class AddressEntity extends Equatable {
   final String state;
   final String city;
   final String country;
-  final int postal;
+  final String postal;
   final double latitude;
   final double longitude;
 

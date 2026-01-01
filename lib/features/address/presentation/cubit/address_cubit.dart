@@ -24,7 +24,7 @@ class AddressCubit extends Cubit<AddressState> {
     required String state,
     required String city,
     required String country,
-    required int postal,
+    required String postal,
     required double latitude,
     required double longitude,
   }) async {
@@ -40,6 +40,7 @@ class AddressCubit extends Cubit<AddressState> {
     );
     response.fold((f) {
       emit(AddressFailure(error: f.message));
+      print(f.message);
     }, (_) => emit(AddressInitial()));
   }
 

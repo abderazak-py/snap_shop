@@ -16,15 +16,15 @@ class ProductsList extends StatelessWidget {
     return BlocBuilder<ProductCubit, ProductState>(
       builder: (context, state) {
         if (state is ProductSuccess) {
-          return SliverGrid(
+          return SliverGrid.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.83,
             ),
-            delegate: SliverChildBuilderDelegate((context, index) {
-              final product = state.products[index];
-              return ProductCard(product: product);
-            }, childCount: state.products.length),
+            itemCount: 8,
+            itemBuilder: (BuildContext context, int index) {
+              return ProductCard(product: state.products[index]);
+            },
           );
         } else if (state is ProductFailure) {
           return SliverToBoxAdapter(
@@ -32,12 +32,13 @@ class ProductsList extends StatelessWidget {
           );
         } else {
           return Skeletonizer.sliver(
-            child: SliverGrid(
+            child: SliverGrid.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.83,
               ),
-              delegate: SliverChildBuilderDelegate((context, index) {
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
                 final product = ProductEntity(
                   id: 0,
                   createdAt: DateTime.now(),
@@ -53,7 +54,7 @@ class ProductsList extends StatelessWidget {
                   categoryId: 0,
                 );
                 return ProductCard(product: product);
-              }, childCount: 6),
+              },
             ),
           );
         }

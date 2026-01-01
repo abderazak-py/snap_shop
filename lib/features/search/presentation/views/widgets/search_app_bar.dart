@@ -14,7 +14,7 @@ class SearchAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     String? query;
     return Padding(
-      padding: const EdgeInsets.only(top: 90, left: 15, right: 16),
+      padding: const EdgeInsets.only(top: 45, left: 15, right: 16),
       child: Row(
         children: [
           GestureDetector(

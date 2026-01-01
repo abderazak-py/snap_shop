@@ -8,7 +8,7 @@ class AddressModel extends Equatable {
   final String state;
   final String city;
   final String country;
-  final int postal;
+  final String postal;
   final double latitude;
   final double longitude;
 
@@ -32,7 +32,7 @@ class AddressModel extends Equatable {
       state: map['state'] ?? '',
       city: map['city'] ?? '',
       country: map['country'] ?? '',
-      postal: map['postal'] as int,
+      postal: map['postal'] ?? '',
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
     );
@@ -52,11 +52,9 @@ class AddressModel extends Equatable {
     };
   }
 
-  // If you use clean architecture entities:
   AddressEntity toEntity() => AddressEntity(
     id: id,
     userId: userId,
-
     latitude: latitude,
     longitude: longitude,
     street: street,

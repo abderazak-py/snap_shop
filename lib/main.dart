@@ -12,7 +12,7 @@ void main() async {
 
   // {
   //    notes before production
-  //   -- add error hanling everywhere and loading indicators
+  //   -- add error hanling everywhere and better loading
   //   -- test on real devices
   //   -- optimize images and assets
   //   -- review security rules for database and storage

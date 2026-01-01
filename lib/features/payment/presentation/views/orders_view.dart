@@ -10,37 +10,43 @@ class OrdersView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: BlocProvider(
         create: (context) => sl<OrdersCubit>()..getOrders(),
         child: BlocBuilder<OrdersCubit, OrdersState>(
           builder: (context, state) {
             if (state is OrdersSuccess) {
-              return ListView.builder(
-                itemCount: state.orders.length,
-                itemBuilder: (context, index) {
-                  final order = state.orders[index];
-                  return Column(
-                    children: [
-                      if (index == 0)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40, bottom: 15),
-                          child: Align(
-                            alignment: AlignmentGeometry.centerLeft,
-                            child: Text(
-                              'Orders',
-                              style: Styles.titleText30.copyWith(
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                          ),
-                        ),
-                      OrderCard(order: order),
-                      if (index != state.orders.length - 1)
-                        const Divider(endIndent: 15, indent: 15),
-                    ],
-                  );
-                },
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: height * 0.07),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: Text(
+                      'Orders',
+                      style: Styles.titleText26.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: state.orders.length,
+                      itemBuilder: (context, index) {
+                        final order = state.orders[index];
+                        return Column(
+                          children: [
+                            OrderCard(order: order),
+                            if (index != state.orders.length - 1)
+                              const Divider(endIndent: 15, indent: 15),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
               );
             } else if (state is OrdersFailure) {
               return Center(child: Text(state.error));

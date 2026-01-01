@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/views/forgot_password_view.dart';
+import '../../features/product/presentation/views/all_product_view.dart';
 import 'injection_container.dart';
 import '../../features/address/presentation/views/add_address_view.dart';
 import '../../features/address/presentation/views/address_view.dart';
@@ -44,6 +45,7 @@ abstract class AppRouter {
   static const kAddAddress = '/add_address';
   static const kSelectAddressView = '/select_address';
   static const kForgotPassword = '/forgot_password';
+  static const kAllProductView = '/all_product';
 
   static final GoRouter router = GoRouter(
     routes: [
@@ -69,6 +71,10 @@ abstract class AppRouter {
         path: kProductDetailsView,
         builder: (context, state) =>
             ProductDetailsView(product: state.extra as ProductEntity),
+      ),
+      GoRoute(
+        path: kAllProductView,
+        builder: (context, state) => AllProductView(),
       ),
       GoRoute(
         path: kSearchProductsView,

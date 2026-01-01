@@ -15,7 +15,7 @@ class AddressRepositoryImpl implements AddressRepository {
     String state,
     String city,
     String country,
-    int postal,
+    String postal,
     double latitude,
     double longitude,
   ) async {

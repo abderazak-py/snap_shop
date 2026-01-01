@@ -4,7 +4,6 @@ import '../../../../../core/utils/styles.dart';
 
 class AddressTextField extends StatelessWidget {
   final String hintText;
-  final bool isNumber;
   final bool isEnabled;
   final TextEditingController controller;
   const AddressTextField({
@@ -12,7 +11,6 @@ class AddressTextField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.isEnabled,
-    this.isNumber = false,
   });
 
   @override
@@ -21,25 +19,18 @@ class AddressTextField extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 12.0),
       child: TextFormField(
         validator: (value) {
+          value = value?.trim();
           if (value == null || value.isEmpty) {
             return 'Please enter a value';
           }
-          if (isNumber) {
-            if (int.tryParse(value) == null) {
-              return 'Please enter a valid number';
-            }
-          } else {
-            if (value.length < 2) {
-              return 'Please enter a valid value';
-            }
+          if (value.length < 2) {
+            return 'Please enter a valid value';
           }
           return null;
         },
         enabled: isEnabled,
         controller: controller,
-        keyboardType: isNumber
-            ? TextInputType.number
-            : TextInputType.streetAddress,
+        keyboardType: TextInputType.streetAddress,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           hintText: hintText,
@@ -48,7 +39,7 @@ class AddressTextField extends StatelessWidget {
           filled: true,
           border: customOutlineBorder(),
           enabledBorder: customOutlineBorder(),
-          disabledBorder: customOutlineBorder(),
+          disabledBorder: customOutlineBorder(color: AppColors.kTextColor2),
           focusedBorder: customOutlineBorder(color: AppColors.kPrimaryColor),
         ),
       ),

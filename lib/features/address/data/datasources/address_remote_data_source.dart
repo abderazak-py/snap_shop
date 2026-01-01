@@ -17,7 +17,7 @@ class AddressRemoteDataSource {
     required String state,
     required String city,
     required String country,
-    required int postal,
+    required String postal,
     required double latitude,
     required double longitude,
   }) async {

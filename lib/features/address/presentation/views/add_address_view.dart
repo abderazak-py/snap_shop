@@ -9,6 +9,7 @@ class AddAddressView extends StatefulWidget {
 }
 
 class _AddAddressViewState extends State<AddAddressView> {
+  late final GlobalKey<FormState> _formKey;
   late final TextEditingController _streetController;
   late final TextEditingController _cityController;
   late final TextEditingController _stateController;
@@ -25,6 +26,7 @@ class _AddAddressViewState extends State<AddAddressView> {
   @override
   void initState() {
     super.initState();
+    _formKey = GlobalKey<FormState>();
     _streetController = TextEditingController();
     _cityController = TextEditingController();
     _stateController = TextEditingController();
@@ -44,7 +46,7 @@ class _AddAddressViewState extends State<AddAddressView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: AddAddressBody(controllers: _controllers),
+      body: AddAddressBody(controllers: _controllers, formKey: _formKey),
     );
   }
 }

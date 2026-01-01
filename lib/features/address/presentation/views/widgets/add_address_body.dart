@@ -10,8 +10,10 @@ class AddAddressBody extends StatelessWidget {
   const AddAddressBody({
     super.key,
     required List<TextEditingController> controllers,
+    required this.formKey,
   }) : _controllers = controllers;
   final List<TextEditingController> _controllers;
+  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,10 @@ class AddAddressBody extends StatelessWidget {
                     SizedBox(height: height * .08),
                     LocationTopSection(controllers: _controllers),
                     SizedBox(height: height * .05),
-                    LocationBottomSection(controllers: _controllers),
+                    LocationBottomSection(
+                      controllers: _controllers,
+                      formKey: formKey,
+                    ),
                   ],
                 ),
                 if (state is AddressLoading)

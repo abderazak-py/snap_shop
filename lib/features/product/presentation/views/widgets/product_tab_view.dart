@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../../core/utils/app_router.dart';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../core/utils/styles.dart';
 import '../categories_list_view.dart';
@@ -38,7 +40,11 @@ class ProductTabView extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    GoRouter.of(
+                                      context,
+                                    ).push(AppRouter.kAllProductView);
+                                  },
                                   child: Text(
                                     'See All',
                                     style: Styles.titleText14.copyWith(

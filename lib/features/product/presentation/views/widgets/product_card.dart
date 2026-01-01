@@ -33,70 +33,77 @@ class ProductCard extends StatelessWidget {
                     height: width * 0.43,
                     child: SizedBox.expand(),
                   )
-                : Stack(
-                    children: [
-                      CachedNetworkImage(
-                        width: width * 0.43,
-                        height: width * 0.43,
-                        fit: BoxFit.cover,
-                        imageUrl: product.images.first.imageUrl,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                      Positioned(
-                        top: 8,
-                        right: 8,
-                        child: Material(
-                          color: AppColors.kTextColor.withAlpha(90),
-                          shape: const CircleBorder(),
-                          child: InkWell(
-                            customBorder: const CircleBorder(),
-                            onTap: () async {
-                              context.read<FavoriteCubit>().toggleFavorite(
-                                product,
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(6),
-                              child: BlocBuilder<FavoriteCubit, FavoriteState>(
-                                buildWhen: (prev, curr) {
-                                  bool has(FavoriteState s) =>
-                                      s is FavoriteSuccess &&
-                                      s.favorite.any(
-                                        (e) => e.productId == product.id,
-                                      );
-                                  return has(prev) != has(curr);
-                                },
-                                builder: (context, state) {
-                                  final isFavorite =
-                                      state is FavoriteSuccess &&
-                                      state.favorite.any(
-                                        (e) => e.productId == product.id,
-                                      );
-                                  return isFavorite
-                                      ? SvgPicture.asset(
-                                          AppIcons.favoriteFilled,
-                                          width: 18,
-                                          colorFilter: ColorFilter.mode(
-                                            Colors.red,
-                                            BlendMode.srcIn,
-                                          ),
-                                        )
-                                      : SvgPicture.asset(
-                                          AppIcons.favorite,
-                                          width: 18,
-                                          colorFilter: ColorFilter.mode(
-                                            Colors.white,
-                                            BlendMode.srcIn,
-                                          ),
-                                        );
-                                },
+                : RepaintBoundary(
+                    child: Stack(
+                      children: [
+                        CachedNetworkImage(
+                          width: width * 0.43,
+                          height: width * 0.43,
+                          fit: BoxFit.cover,
+                          imageUrl: product.images.first.imageUrl,
+                          placeholder: (context, url) =>
+                              Container(color: Colors.grey.shade300),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          memCacheHeight: (width * 0.43).toInt(),
+                          memCacheWidth: (width * 0.43).toInt(),
+                        ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Material(
+                            color: AppColors.kTextColor.withAlpha(90),
+                            shape: const CircleBorder(),
+                            child: InkWell(
+                              customBorder: const CircleBorder(),
+                              onTap: () async {
+                                context.read<FavoriteCubit>().toggleFavorite(
+                                  product,
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(6),
+                                child:
+                                    BlocBuilder<FavoriteCubit, FavoriteState>(
+                                      buildWhen: (prev, curr) {
+                                        bool has(FavoriteState s) =>
+                                            s is FavoriteSuccess &&
+                                            s.favorite.any(
+                                              (e) => e.productId == product.id,
+                                            );
+                                        return has(prev) != has(curr);
+                                      },
+                                      builder: (context, state) {
+                                        final isFavorite =
+                                            state is FavoriteSuccess &&
+                                            state.favorite.any(
+                                              (e) => e.productId == product.id,
+                                            );
+                                        return isFavorite
+                                            ? SvgPicture.asset(
+                                                AppIcons.favoriteFilled,
+                                                width: 18,
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.red,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              )
+                                            : SvgPicture.asset(
+                                                AppIcons.favorite,
+                                                width: 18,
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.white,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              );
+                                      },
+                                    ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
           ),
           SizedBox(height: 10),
