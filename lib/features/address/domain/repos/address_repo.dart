@@ -12,5 +12,8 @@ abstract class AddressRepository {
     double latitude,
     double longitude,
   );
+
   Future<Either<Failure, List<AddressEntity>>> getAddresses();
+
+  Future<Either<Failure, void>> deleteAddress(int addressId);
 }

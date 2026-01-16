@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../features/address/domain/usecases/delete_address_usecase.dart';
 import '../../features/auth/domain/usecases/sign_in_with_otp.dart';
 import '../../features/payment/presentation/cubit/transactions_cubit.dart';
 import 'private.dart';
@@ -250,12 +251,16 @@ When needed, ask at most one clarifying question specific to shopping (e.g., siz
   sl.registerLazySingleton<GetAddressesUsecase>(
     () => GetAddressesUsecase(sl<AddressRepository>()),
   );
+  sl.registerLazySingleton<DeleteAddressUsecase>(
+    () => DeleteAddressUsecase(sl<AddressRepository>()),
+  );
 
   // Cubit/Bloc
   sl.registerFactory<AddressCubit>(
     () => AddressCubit(
       addAddressUsecase: sl<AddAddressUsecase>(),
       getAddressesUsecase: sl<GetAddressesUsecase>(),
+      deleteAddressUsecase: sl<DeleteAddressUsecase>(),
     ),
   );
 

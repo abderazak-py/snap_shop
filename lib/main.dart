@@ -9,6 +9,7 @@ void main() async {
   runApp(const SnapShop());
 
   //TODO: add settings
+  //TODO: add empty screen when there is no data
 
   // {
   //    notes before production

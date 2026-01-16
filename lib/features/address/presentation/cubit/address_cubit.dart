@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:location_picker_flutter_map/location_picker_flutter_map.dart';
 import '../../domain/entities/address_entity.dart';
 import '../../domain/usecases/add_address_usecase.dart';
+import '../../domain/usecases/delete_address_usecase.dart';
 import '../../domain/usecases/get_addresses_usecase.dart';
 
 part 'address_state.dart';
@@ -13,10 +14,12 @@ part 'address_state.dart';
 class AddressCubit extends Cubit<AddressState> {
   final AddAddressUsecase addAddressUsecase;
   final GetAddressesUsecase getAddressesUsecase;
+  final DeleteAddressUsecase deleteAddressUsecase;
 
   AddressCubit({
     required this.addAddressUsecase,
     required this.getAddressesUsecase,
+    required this.deleteAddressUsecase,
   }) : super(AddressInitial());
 
   Future<void> addAddress({
@@ -40,7 +43,6 @@ class AddressCubit extends Cubit<AddressState> {
     );
     response.fold((f) {
       emit(AddressFailure(error: f.message));
-      print(f.message);
     }, (_) => emit(AddressInitial()));
   }
 
@@ -129,5 +131,20 @@ class AddressCubit extends Cubit<AddressState> {
       final currentState = state as AddressSuccess;
       emit(currentState.copyWith(selectedAddressId: addressId));
     }
+  }
+
+  Future<void> deleteAddress(int addressId) async {
+    final response = await deleteAddressUsecase.execute(addressId);
+    response.fold((failure) => emit(AddressFailure(error: failure.message)), (
+      _,
+    ) {
+      if (state is AddressSuccess) {
+        final currentState = state as AddressSuccess;
+        final newAdressess = currentState.addresses.where((element) {
+          return element.id != addressId;
+        }).toList();
+        emit(currentState.copyWith(addresses: newAdressess));
+      }
+    });
   }
 }

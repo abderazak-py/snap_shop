@@ -20,9 +20,12 @@ class AddressSuccess extends AddressState {
   @override
   List<Object> get props => [addresses, selectedAddressId].cast<Object>();
 
-  AddressSuccess copyWith({int? selectedAddressId}) {
+  AddressSuccess copyWith({
+    List<AddressEntity>? addresses,
+    int? selectedAddressId,
+  }) {
     return AddressSuccess(
-      addresses: addresses,
+      addresses: addresses ?? this.addresses,
       selectedAddressId: selectedAddressId ?? this.selectedAddressId,
     );
   }

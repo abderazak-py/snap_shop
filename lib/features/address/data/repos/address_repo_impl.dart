@@ -40,4 +40,10 @@ class AddressRepositoryImpl implements AddressRepository {
           Right(addresses.map((address) => address.toEntity()).toList()),
     );
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAddress(int id) async {
+    final response = await remoteDataSource.deleteAddresse(id);
+    return response.fold((failure) => Left(failure), (_) => Right(null));
+  }
 }

@@ -75,4 +75,33 @@ class AddressRemoteDataSource {
       return Left(Failure(e.toString()));
     }
   }
+
+  //==============|| Delete Address ||===================
+  Future<Either<Failure, void>> deleteAddresse(int id) async {
+    try {
+      final session = supabaseService.auth.currentSession;
+      final user = session?.user;
+      if (user == null) {
+        return Left(Failure('please login first'));
+      }
+
+      await supabaseService.client
+          .from('user_addresses')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('id', id);
+
+      return Right(null);
+    } on SocketException {
+      return Left(
+        Failure('No internet connection. Please check your network.'),
+      );
+    } on PostgrestException catch (e) {
+      print(e);
+      return Left(Failure(e.message));
+    } catch (e) {
+      print(e);
+      return Left(Failure(e.toString()));
+    }
+  }
 }

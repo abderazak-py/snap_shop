@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/injection_container.dart';
 import '../../../../core/utils/styles.dart';
-import '../cubit/address_cubit.dart';
+import '../cubit/address_cubit.dart' hide AddressLoading;
 import '../../../../core/widgets/custom_big_button.dart';
 import 'widgets/address_card.dart';
+import 'widgets/address_loading.dart';
 
 class AddressView extends StatelessWidget {
   const AddressView({super.key});
@@ -29,7 +30,6 @@ class AddressView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-
             BlocBuilder<AddressCubit, AddressState>(
               builder: (context, state) {
                 if (state is AddressSuccess) {
@@ -70,7 +70,7 @@ class AddressView extends StatelessWidget {
                 } else if (state is AddressFailure) {
                   return Center(child: Text(state.error));
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return AddressLoading();
                 }
               },
             ),
