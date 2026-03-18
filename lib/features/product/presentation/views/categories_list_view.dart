@@ -15,58 +15,56 @@ class CategoriesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<CategoryCubit>()..getCategories(),
-      child: SingleChildScrollView(
-        child: BlocBuilder<CategoryCubit, CategoryState>(
-          builder: (context, state) {
+      child: BlocBuilder<CategoryCubit, CategoryState>(
+        builder: (context, state) {
+          if (state is CategorySuccess) {
             return Column(
               children: [
-                if (state is CategorySuccess)
-                  ...state.categories.map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: GestureDetector(
-                        onTap: () => GoRouter.of(
-                          context,
-                        ).push(AppRouter.kCategoryView, extra: category),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: CachedNetworkImage(
-                            imageUrl: category.image,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
+                for (final category in state.categories)
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: GestureDetector(
+                      onTap: () => GoRouter.of(
+                        context,
+                      ).push(AppRouter.kCategoryView, extra: category),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                          imageUrl: category.image,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
                       ),
-                    );
-                  })
-                else if (state is CategoryFailure)
-                  CustomErrorWidget(errorMsg: state.error)
-                else
-                  Skeletonizer(
-                    child: Column(
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: AspectRatio(
-                              aspectRatio: 2.5 / 1,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.grey[300],
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
                     ),
                   ),
               ],
             );
-          },
-        ),
+          } else if (state is CategoryFailure) {
+            return CustomErrorWidget(errorMsg: state.error);
+          } else {
+            return Skeletonizer(
+              child: Column(
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: AspectRatio(
+                        aspectRatio: 2.5 / 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            width: double.infinity,
+                            color: Colors.grey[300],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
