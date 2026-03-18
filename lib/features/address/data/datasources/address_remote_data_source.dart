@@ -25,16 +25,27 @@ class AddressRemoteDataSource {
       final session = supabaseService.auth.currentSession;
       final user = session?.user;
       if (user == null) {
-        return Left(Failure('please login first'));
+        return Left(Failure('Please login first'));
+      }
+
+      // Validate required fields
+      if (street.trim().isEmpty) {
+        return Left(Failure('Street address is required'));
+      }
+      if (city.trim().isEmpty) {
+        return Left(Failure('City is required'));
+      }
+      if (country.trim().isEmpty) {
+        return Left(Failure('Country is required'));
       }
 
       await supabaseService.client.from('user_addresses').insert({
         'user_id': user.id,
-        'street': street,
-        'state': state,
-        'city': city,
-        'country': country,
-        'postal': postal,
+        'street': street.trim(),
+        'state': state.trim(),
+        'city': city.trim(),
+        'country': country.trim(),
+        'postal': postal.trim(),
         'latitude': latitude,
         'longitude': longitude,
       });
@@ -45,9 +56,18 @@ class AddressRemoteDataSource {
         Failure('No internet connection. Please check your network.'),
       );
     } on PostgrestException catch (e) {
-      return Left(Failure(e.message));
+      if (e.code == '23505') {
+        return Left(Failure('This address already exists'));
+      } else if (e.code == '23503') {
+        return Left(Failure('User not found. Please login again'));
+      } else if (e.code == '23502') {
+        return Left(Failure('Missing required address information'));
+      }
+      return Left(Failure('Failed to save address. Please try again'));
+    } on AuthException {
+      return Left(Failure('Authentication error. Please login again'));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('An unexpected error occurred. Please try again'));
     }
   }
 
@@ -57,12 +77,18 @@ class AddressRemoteDataSource {
       final session = supabaseService.auth.currentSession;
       final user = session?.user;
       if (user == null) {
-        return Left(Failure('please login first'));
+        return Left(Failure('Please login first'));
       }
+
       final addresses = await supabaseService.client
           .from('user_addresses')
           .select()
-          .eq('user_id', user.id);
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
+
+      if (addresses.isEmpty) {
+        return Right([]);
+      }
 
       return Right(addresses.map((e) => AddressModel.fromMap(e)).toList());
     } on SocketException {
@@ -70,9 +96,14 @@ class AddressRemoteDataSource {
         Failure('No internet connection. Please check your network.'),
       );
     } on PostgrestException catch (e) {
-      return Left(Failure(e.message));
+      if (e.code == '42703') {
+        return Left(Failure('Database error. Please try again'));
+      }
+      return Left(Failure('Failed to load addresses. Please try again'));
+    } on AuthException {
+      return Left(Failure('Authentication error. Please login again'));
     } catch (e) {
-      return Left(Failure(e.toString()));
+      return Left(Failure('An unexpected error occurred. Please try again'));
     }
   }
 
@@ -82,14 +113,22 @@ class AddressRemoteDataSource {
       final session = supabaseService.auth.currentSession;
       final user = session?.user;
       if (user == null) {
-        return Left(Failure('please login first'));
+        return Left(Failure('Please login first'));
       }
 
-      await supabaseService.client
+      if (id <= 0) {
+        return Left(Failure('Invalid address ID'));
+      }
+
+      final result = await supabaseService.client
           .from('user_addresses')
           .delete()
           .eq('user_id', user.id)
           .eq('id', id);
+
+      if (result.isEmpty) {
+        return Left(Failure('Address not found or already deleted'));
+      }
 
       return Right(null);
     } on SocketException {
@@ -97,11 +136,16 @@ class AddressRemoteDataSource {
         Failure('No internet connection. Please check your network.'),
       );
     } on PostgrestException catch (e) {
-      print(e);
-      return Left(Failure(e.message));
+      if (e.code == '23503') {
+        return Left(Failure('User not found. Please login again'));
+      } else if (e.code == '23505') {
+        return Left(Failure('Cannot delete address due to existing orders'));
+      }
+      return Left(Failure('Failed to delete address. Please try again'));
+    } on AuthException {
+      return Left(Failure('Authentication error. Please login again'));
     } catch (e) {
-      print(e);
-      return Left(Failure(e.toString()));
+      return Left(Failure('An unexpected error occurred. Please try again'));
     }
   }
 }
