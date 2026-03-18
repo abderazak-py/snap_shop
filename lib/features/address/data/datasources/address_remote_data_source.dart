@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/widgets.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/supabase_service.dart';
 import '../models/address_model.dart';
@@ -120,15 +121,11 @@ class AddressRemoteDataSource {
         return Left(Failure('Invalid address ID'));
       }
 
-      final result = await supabaseService.client
+      await supabaseService.client
           .from('user_addresses')
           .delete()
           .eq('user_id', user.id)
           .eq('id', id);
-
-      if (result.isEmpty) {
-        return Left(Failure('Address not found or already deleted'));
-      }
 
       return Right(null);
     } on SocketException {
@@ -145,6 +142,7 @@ class AddressRemoteDataSource {
     } on AuthException {
       return Left(Failure('Authentication error. Please login again'));
     } catch (e) {
+      debugPrint('$e');
       return Left(Failure('An unexpected error occurred. Please try again'));
     }
   }
