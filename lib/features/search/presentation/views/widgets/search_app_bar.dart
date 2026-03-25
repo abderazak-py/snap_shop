@@ -2,17 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:async';
 import '../../../../../core/utils/constants.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../cubit/search_cubit.dart';
 import 'filter_bottom_sheet.dart';
 
-class SearchAppBar extends StatelessWidget {
+class SearchAppBar extends StatefulWidget {
   const SearchAppBar({super.key});
 
   @override
+  State<SearchAppBar> createState() => _SearchAppBarState();
+}
+
+class _SearchAppBarState extends State<SearchAppBar> {
+  late final TextEditingController _textController;
+  late final Timer _debounceTimer;
+  String? query;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {});
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _debounceTimer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String? query;
     return Padding(
       padding: const EdgeInsets.only(top: 45, left: 15, right: 16),
       child: Row(
@@ -28,6 +51,7 @@ class SearchAppBar extends StatelessWidget {
           SizedBox(width: 15),
           Expanded(
             child: TextField(
+              controller: _textController,
               style: Styles.titleText16.copyWith(color: AppColors.kTextColor),
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -102,7 +126,12 @@ class SearchAppBar extends StatelessWidget {
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   query = value;
-                  context.read<SearchCubit>().search(value);
+                  _debounceTimer.cancel();
+                  _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+                    if (context.mounted) {
+                      context.read<SearchCubit>().search(value);
+                    }
+                  });
                 }
               },
             ),
